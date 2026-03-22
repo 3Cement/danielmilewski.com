@@ -1,0 +1,91 @@
+---
+title: "InvestTracker — Personal Wealth & Portfolio Analytics Platform"
+slug: "investtracker"
+featured: true
+shortProblem: "No existing tool could consolidate Polish investment accounts (IKE, IKZE, OIPE, Finax) together with foreign stocks, ETFs, crypto, and precious metals into a single accurate dashboard."
+shortSolution: "Built a full-stack portfolio tracker from scratch — FastAPI backend with FIFO cost basis calculations, three market data providers, multi-currency reconciliation, and a React dashboard that shows everything in one place."
+stack: ["Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "Alembic", "React", "TypeScript", "Vite", "Recharts", "Docker", "CoinGecko API", "EODHD API", "NBP API"]
+role: "Solo Full-Stack Engineer & Product Owner"
+outcome: "Live production app at investtracker.eu. The only tool that correctly consolidates Finax transactions with Polish tax-advantaged accounts and international holdings into one accurate P&L view. Active development continues — potential SaaS release planned."
+overview: "InvestTracker is a private wealth and portfolio management platform built to solve a problem no existing tool addressed: consolidating Polish tax-advantaged investment accounts (IKE, IKZE, OIPE), Finax portfolios, foreign stocks, ETFs, crypto, precious metals, and multi-currency cash positions into a single dashboard with accurate cost basis and P&L calculations."
+demo: "https://www.investtracker.eu/"
+repo: ""
+images: []
+relatedSlugs: ["fastapi-product-dashboard", "ai-data-extraction-pipeline"]
+---
+
+## Problem / Context
+
+Every tool I tried had the same limitation: it either handled Polish-specific accounts or international markets — never both. None supported Finax transaction imports. Tracking investments across IKE, IKZE, OIPE, a Finax portfolio, foreign ETFs, crypto, and precious metals meant maintaining multiple spreadsheets and doing currency reconciliation by hand.
+
+The result was always slightly wrong. You'd check your "total portfolio value" and know it was missing something. Realised gains were a guess. FIFO cost basis across currency-denominated assets was essentially impossible to track manually.
+
+I wanted one view. Accurate numbers. Built for how Polish retail investors actually invest — not how US-centric apps assume they do.
+
+## Approach
+
+Rather than trying to adapt an existing tool, I built exactly what I needed:
+
+1. **Data model first** — designed a schema that correctly represents all Polish account types alongside international holdings, with proper transaction taxonomy (buys, sells, dividends, tax withholdings, forced buyouts, FX conversions)
+2. **FIFO engine** — implemented cost basis calculation from first principles, handling multi-currency lots and corporate actions
+3. **Market data layer** — connected three independent data sources and built a fallback system so prices are always available
+4. **Frontend** — React dashboard showing allocation, P&L, and value history across the full portfolio or scoped to individual account types
+
+## Architecture / Technical Decisions
+
+```
+React + TypeScript (Vite)
+        │
+        ▼
+FastAPI (Python 3.12, async)
+        │
+        ├── Holdings engine (FIFO, multi-currency)
+        ├── Market data service
+        │       ├── EODHD (stocks, ETFs, metals)
+        │       ├── CoinGecko (crypto)
+        │       └── NBP API (PLN FX rates)
+        └── PostgreSQL (SQLAlchemy + Alembic migrations)
+```
+
+**Key decisions:**
+
+- **FIFO from scratch**: No library does this correctly for multi-currency portfolios with Polish account types. Each purchase lot tracks its original currency, acquisition price, and account context. P&L is calculated in both the asset's native currency and PLN.
+
+- **Three market data providers with dual API keys**: EODHD covers stocks, ETFs, and precious metals. CoinGecko covers crypto. NBP provides official PLN exchange rates. Both EODHD and CoinGecko have dual API keys configured for automatic failover when rate limits hit — critical for a personal tool that needs to work reliably without babysitting.
+
+- **Market data decoupled from portfolio state**: Prices are cached independently from holdings data. This means I can backfill historical prices without touching transaction records, and the portfolio engine always works even when a price feed is temporarily unavailable.
+
+- **Alembic migrations**: Every schema change is versioned. Running the same migration twice is safe. This matters when you're the sole developer iterating quickly — you never wonder what state the database is in.
+
+- **TypeScript on the frontend**: The financial data shapes are complex (multi-currency amounts, P&L breakdowns, historical series). TypeScript catches the class of bugs where you forget a field is nullable or misread which currency a value is denominated in.
+
+- **Docker for PostgreSQL only**: The app runs in local processes (backend on `:8000`, frontend on `:5173`) for fast iteration, but the database runs in Docker to keep the environment clean and reproducible.
+
+## Challenges
+
+**FIFO across currencies and account types** was the core engineering challenge. A single equity position might have been purchased in USD across three separate lots, held in an IKZE account, with one lot partially sold and the proceeds converted to PLN. Calculating the correct cost basis, realised gain in both USD and PLN, and remaining unrealised position requires tracking a lot of state carefully.
+
+The edge cases compound: forced buyouts (where a position is involuntarily closed at a regulated price), tax withholdings on dividends, and Finax's specific transaction format which doesn't map cleanly to standard brokerage conventions. Each of these required explicit handling — there's no generic solution.
+
+**Market data reliability** was the second major challenge. Any single API has gaps — missing historical prices, rate limits, occasional downtime. The dual-key fallback system for EODHD and CoinGecko was added after real-world usage showed how often you hit limits when backfilling historical data.
+
+**Polish account type semantics**: IKE, IKZE, and OIPE each have different tax treatment and contribution rules. Modelling these correctly in the data layer — so future tax reporting features can work accurately — required careful schema design upfront.
+
+## Outcome / Impact
+
+InvestTracker is live at [investtracker.eu](https://www.investtracker.eu/) and in active daily use as my primary portfolio management tool. It's the only solution I'm aware of that correctly handles the combination of:
+
+- Polish tax-advantaged accounts (IKE, IKZE, OIPE)
+- Finax transaction imports
+- International stocks and ETFs
+- Crypto holdings via CoinGecko
+- Precious metals
+- Multi-currency cash positions
+
+All in one dashboard, with accurate FIFO cost basis and PLN-denominated P&L.
+
+The project is under active development. Planned next: performance metrics (TWR, IRR), full asset detail views with price charts, extended corporate actions support, and a proper CSV import UI. A public SaaS release is under consideration once the core feature set is complete.
+
+---
+
+*Built as a personal tool to solve a real gap in the Polish retail investor toolset. All data is private and self-hosted — no third-party portfolio data sharing.*
