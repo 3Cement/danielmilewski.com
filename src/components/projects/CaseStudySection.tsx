@@ -106,7 +106,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
 
           {/* Content */}
           <div className="lg:col-span-3 order-1 lg:order-2">
-            <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)]">
+            <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-img:rounded-xl prose-img:border prose-img:border-[var(--color-border)] prose-img:shadow-md">
               {mdxContent}
             </div>
           </div>
