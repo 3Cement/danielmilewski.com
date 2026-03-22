@@ -1,26 +1,87 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Dark mode via class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Brand colors */
+  --color-accent: oklch(0.623 0.214 259.1);
+  --color-accent-muted: oklch(0.473 0.164 259.1);
+  --color-accent-light: oklch(0.784 0.152 259.1);
+
+  /* Surface */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f4f5;
+  --color-surface-subtle: #e4e4e7;
+
+  /* Text */
+  --color-text-base: #18181b;
+  --color-text-muted: #52525b;
+  --color-text-faint: #a1a1aa;
+
+  /* Border */
+  --color-border: #e4e4e7;
+  --color-border-muted: #f4f4f5;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark mode overrides */
+.dark {
+  --color-surface: #09090b;
+  --color-surface-muted: #18181b;
+  --color-surface-subtle: #27272a;
+  --color-text-base: #fafafa;
+  --color-text-muted: #a1a1aa;
+  --color-text-faint: #52525b;
+  --color-border: #27272a;
+  --color-border-muted: #18181b;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-text-base);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+pre {
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.callout {
+  border-left: 3px solid var(--color-accent);
+  background: var(--color-surface-muted);
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1.5rem 0;
+}
+
+.callout-warning {
+  border-left-color: oklch(0.768 0.197 72);
+}
+
+.callout-tip {
+  border-left-color: oklch(0.696 0.192 142.5);
+}
+
+::selection {
+  background-color: oklch(0.623 0.214 259.1 / 0.2);
 }

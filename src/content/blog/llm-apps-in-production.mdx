@@ -1,0 +1,90 @@
+---
+title: "Practical Lessons from Building LLM Apps in Production"
+slug: "llm-apps-in-production"
+date: "2024-11-15"
+excerpt: "LLM demos are easy. Production LLM apps are not. Here's what I've learned shipping several of them — the problems nobody talks about in tutorials."
+tags: ["Python", "LLMs", "Production", "AI Engineering"]
+---
+
+Building a demo that impresses in a 5-minute screen share is easy. Building an LLM-powered feature that works reliably for real users, across edge cases, at 2 AM when no one is watching — that's the actual job.
+
+Here are the lessons I've learned the hard way.
+
+## 1. Prompt engineering is not a one-time task
+
+The biggest misconception I see is treating prompts like config: write them once, check them in, forget about them.
+
+In practice, prompts drift. Your data changes. Your users find edge cases. Your model provider quietly updates the underlying model. Every one of these can silently degrade your output quality.
+
+What actually works:
+
+- **Version-control your prompts** alongside code. Treat them as code.
+- **Maintain a regression test set** of representative inputs and expected outputs. Run it on every deployment.
+- **Log production outputs** (with consent). Real user queries reveal things your test set won't.
+
+## 2. Structured output is non-negotiable for production
+
+If your LLM call returns freeform text that you then parse with string operations, you have a time bomb.
+
+Use structured output from the start. With OpenAI's function calling or `instructor`, you get typed, validated output that your application code can depend on. Pydantic schemas mean extraction failures surface as explicit errors, not silent garbage.
+
+```python
+from pydantic import BaseModel
+from instructor import patch
+from openai import OpenAI
+
+client = patch(OpenAI())
+
+class ExtractionResult(BaseModel):
+    company_name: str
+    revenue: float | None
+    year: int
+
+result = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": document_text}],
+    response_model=ExtractionResult,
+)
+# result is now a typed Python object, not a string
+```
+
+## 3. Retrieval quality matters more than model quality
+
+In a RAG system, the bottleneck is almost always retrieval, not generation.
+
+I've seen teams spend weeks optimizing prompts while the real problem is that their chunking strategy destroys context, or their embeddings don't capture domain-specific semantics.
+
+Before you tune the prompt, audit your retrieval:
+
+- Sample 50 queries and inspect the retrieved chunks. Are they actually relevant?
+- Check precision and recall on a held-out set.
+- Try hybrid search (BM25 + dense embeddings) — it consistently outperforms pure vector search on keyword-heavy queries.
+
+## 4. Latency is a product problem
+
+A response that takes 8 seconds feels broken to users, even if it's technically correct.
+
+Options I've used in production:
+
+- **Streaming**: Deliver tokens as they arrive. Perceived latency drops dramatically.
+- **Smaller models for routing**: Use a fast, cheap model to classify the query before routing to the capable-but-slow model.
+- **Caching**: For knowledge assistant use cases, 20–40% of queries are semantically near-duplicates. Cache aggressively.
+- **Async everything**: Never block a web request waiting for an LLM call. Queue it, stream it, or return immediately and update via webhook.
+
+## 5. Failure modes need to be explicit
+
+LLMs fail silently. The model doesn't throw an exception when it confabulates — it just returns a confident-sounding wrong answer.
+
+Build explicit uncertainty signals into your system:
+
+- Add a confidence field to structured outputs
+- Design prompts that say "if the answer is not in the provided context, say so explicitly"
+- Treat "I don't know" as a valid, desirable output
+
+Users tolerate "I couldn't find that information" far better than they tolerate plausible-but-wrong answers.
+
+---
+
+These lessons cost time to learn. I'd have shipped better software faster if someone had told me them early. Hopefully this saves you some iteration cycles.
+
+If you're building something in this space and want to talk through your architecture, [reach out](/contact).

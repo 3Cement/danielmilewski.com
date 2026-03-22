@@ -24,6 +24,16 @@
 .DS_Store
 *.pem
 
+# Claude Code
+.claude/
+
+# IDE
+.idea/
+*.iml
+
+# Project placeholder
+main.py
+
 # debug
 npm-debug.log*
 yarn-debug.log*

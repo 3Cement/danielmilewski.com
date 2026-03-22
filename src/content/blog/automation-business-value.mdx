@@ -1,0 +1,66 @@
+---
+title: "What Makes Automation Projects Actually Valuable for Businesses"
+slug: "automation-business-value"
+date: "2024-09-10"
+excerpt: "Most automation projects fail not because of technical problems, but because they solve the wrong thing. Here's how to identify what's actually worth automating."
+tags: ["Python", "Automation", "Product Thinking", "Engineering"]
+---
+
+I've built enough automation projects to know that the technical work is usually the easier part. The harder part is figuring out what to automate, and whether it's worth doing at all.
+
+Here's the mental model I use before writing a single line of Python.
+
+## The three questions worth asking first
+
+Before touching code, ask:
+
+**1. What does this task cost?**
+
+Not just in time. Add up: hourly rate × hours per week × 52. Add error correction costs. Add opportunity cost — what could the person do instead? Most teams dramatically underestimate this number. A 4-hour weekly task from a €60/hr person costs €12,480/year, before you count the errors.
+
+**2. What's the error rate, and what's the cost of an error?**
+
+Humans make errors at predictable rates in repetitive tasks. For some tasks, errors are cheap (a formatting mistake in an internal report). For others, they're expensive (an incorrect figure sent to a client). The higher the error cost, the stronger the case for automation.
+
+**3. How stable is the process?**
+
+Automating a process that changes every quarter means rewriting the automation every quarter. The best automation targets are processes that are stable, repetitive, and well-understood. If the business can't describe the process precisely, it's not ready to automate.
+
+## Where Python automation adds the most value
+
+Based on what I've seen work in practice:
+
+**Data movement between systems**: Taking data from System A, transforming it, and putting it in System B is probably the highest-ROI automation target in most businesses. It's everywhere, it's repetitive, it's error-prone, and it's usually invisible until something breaks.
+
+**Report generation**: Anything that involves querying data, assembling a document, and sending it somewhere is a great automation candidate. These processes are usually well-defined and the business impact is immediate.
+
+**Monitoring and alerting**: Instead of someone manually checking dashboards or running queries, a scheduled script checks conditions and alerts when something needs attention. Simple to build, high leverage.
+
+**Document processing**: Extracting data from PDFs, emails, or forms — especially with LLMs now making unstructured data tractable.
+
+## What automation doesn't fix
+
+**Process problems are not technical problems.** If the process is messy, inconsistent, or poorly understood by the humans doing it, automating it won't help. You'll just get a fast, consistent version of the mess. Map and fix the process first.
+
+**Automation needs maintenance.** External systems change. APIs get updated. Data formats shift. Someone needs to own the automation long-term. If there's no ownership plan, don't build it.
+
+**"Automating" tasks that require judgment** is harder than it looks. Some tasks seem repetitive but actually contain judgment calls that humans make unconsciously. These can be automated, but they need LLMs or explicit business rules — not just scripting.
+
+## A practical framework for prioritization
+
+I use a simple matrix:
+
+| | High value | Low value |
+|---|---|---|
+| Easy to automate | Start here | Nice to have |
+| Hard to automate | Evaluate carefully | Skip |
+
+"Easy to automate" means: structured inputs, stable process, clear rules. "High value" means: significant time saving, high error cost, or strategic importance.
+
+Start with the top-left quadrant. You'll almost always find something there that delivers clear ROI within weeks.
+
+---
+
+The best automation projects I've been involved in were successful not because of clever engineering, but because someone asked the right questions before writing code. The technical work followed naturally from a clear problem definition.
+
+If you're trying to identify what to automate in your team or business, [let's talk](/contact) — happy to help think it through.
