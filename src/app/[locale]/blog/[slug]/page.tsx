@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from "@/lib/content";
 import { TableOfContents } from "@/components/blog/TableOfContents";
@@ -9,36 +10,41 @@ import { Tag } from "@/components/ui/Tag";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { buildMetadata } from "@/lib/metadata";
 import { blogPostingSchema } from "@/lib/schema";
+import { routing } from "@/i18n/routing";
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({ slug }));
+  const slugs = getAllPostSlugs();
+  return routing.locales.flatMap((locale) =>
+    slugs.map((slug) => ({ locale, slug }))
+  );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
   return buildMetadata({
     title: post.title,
     description: post.excerpt,
-    path: `/blog/${slug}`,
+    path: `${locale === "pl" ? "/pl" : ""}/blog/${slug}`,
     type: "article",
   });
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const t = await getTranslations({ locale, namespace: "blog" });
   const headings = extractHeadings(post.content);
   const allPosts = getAllPosts();
   const related = allPosts
-    .filter((p) => p.slug !== slug && p.tags.some((t) => post.tags.includes(t)))
+    .filter((p) => p.slug !== slug && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 2);
 
   const schema = blogPostingSchema({
@@ -49,13 +55,14 @@ export default async function BlogPostPage({ params }: Props) {
     tags: post.tags,
   });
 
-  const date = new Date(post.date).toLocaleDateString("en-GB", {
+  const date = new Date(post.date).toLocaleDateString(locale === "pl" ? "pl-PL" : "en-GB", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
   const mdxContent = await MDXRemote({ source: post.content });
+  const backHref = locale === "pl" ? "/pl/blog" : "/blog";
 
   return (
     <>
@@ -95,30 +102,11 @@ export default async function BlogPostPage({ params }: Props) {
                 {mdxContent}
               </div>
 
-              {/* Author card */}
-              <div className="mt-16 p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)]">
-                <p className="text-sm font-semibold text-[var(--color-text-base)] mb-1">
-                  Daniel Milewski
-                </p>
-                <p className="text-sm text-[var(--color-text-muted)]">
-                  Senior Python Developer specializing in AI/LLM applications, backend engineering, and automation. Available for new projects.
-                </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-[var(--color-accent)] hover:gap-2.5 transition-all"
-                >
-                  Get in touch
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </Link>
-              </div>
-
               {/* Related posts */}
               {related.length > 0 && (
                 <div className="mt-12">
                   <h2 className="text-lg font-semibold text-[var(--color-text-base)] mb-6">
-                    Related posts
+                    {t("relatedPosts")}
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {related.map((p) => (
@@ -131,13 +119,13 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Back link */}
               <div className="mt-12 pt-8 border-t border-[var(--color-border)]">
                 <Link
-                  href="/blog"
+                  href={backHref}
                   className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                   </svg>
-                  All posts
+                  {t("allPosts")}
                 </Link>
               </div>
             </div>

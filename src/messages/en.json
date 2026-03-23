@@ -1,0 +1,162 @@
+{
+  "nav": {
+    "projects": "Projects",
+    "blog": "Writing",
+    "about": "About",
+    "contact": "Contact",
+    "toggleMenu": "Toggle menu"
+  },
+  "hero": {
+    "badge": "Available for new projects",
+    "h1": "Senior Python Developer — backend systems, APIs, and software that ships.",
+    "sub": "I build backend systems and APIs in Python. I occasionally work on AI tools and frontend — when the project needs it.",
+    "cta1": "View selected work",
+    "cta2": "Contact me"
+  },
+  "credibility": {
+    "tags": ["Python", "Backend Systems", "REST APIs", "FastAPI", "PostgreSQL", "Automation", "AI / ML"]
+  },
+  "expertise": {
+    "heading": "What I work on",
+    "sub": "The areas where I can take ownership from first line to production.",
+    "items": [
+      {
+        "icon": "🐍",
+        "title": "Python Backend Engineering",
+        "description": "Production-grade Python services built to last: FastAPI, SQLAlchemy, async patterns, clean architecture, tests, CI/CD. Opinionated about maintainability."
+      },
+      {
+        "icon": "🔌",
+        "title": "APIs & System Design",
+        "description": "REST API design, async data pipelines, PostgreSQL, Redis, multi-tenant systems. Comfortable reasoning about scalability and making architectural tradeoffs explicit."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Automation & Integrations",
+        "description": "Python workflows that replace manual, error-prone processes. Celery, scheduled jobs, API integrations, data pipelines. Built to run unattended with clear observability."
+      },
+      {
+        "icon": "🤖",
+        "title": "AI / ML",
+        "description": "RAG pipelines, LLM agents, document intelligence, structured extraction. Practical tooling built as part of a larger system — not standalone demos."
+      },
+      {
+        "icon": "🖥️",
+        "title": "Frontend Delivery",
+        "description": "When the product requires it: Next.js, React, TypeScript, Tailwind. Not a designer, but builds interfaces that work well and don't embarrass the backend."
+      }
+    ]
+  },
+  "projects": {
+    "heading": "Selected work",
+    "sub": "Projects I'm comfortable putting my name on.",
+    "allProjects": "All projects",
+    "readCaseStudy": "Read case study",
+    "pageHeading": "Projects",
+    "pageSub": "Things I've built, from side projects to production systems.",
+    "comingSoon": "More projects coming",
+    "comingSoonSub": "Currently documenting additional work. Check back soon."
+  },
+  "about": {
+    "heading": "About",
+    "role": "Senior Python Developer",
+    "availability": "Availability",
+    "availableText": "Available for new projects",
+    "location": "Location",
+    "locationText": "Europe · Remote-friendly",
+    "getInTouch": "Get in touch",
+    "backgroundHeading": "Background",
+    "bio1": "I'm a Python developer with a background in backend engineering, financial systems, and automation. I've worked in energy market intelligence, fintech, and IT services — mostly building the kind of software that handles real data and real edge cases.",
+    "bio2": "My primary tool is Python. I occasionally work with AI/ML and React when the project calls for it, but backend systems and APIs are where I spend most of my time.",
+    "bio3": "I'm comfortable owning a project end-to-end: from architecture decisions through implementation to deployment. I care about code quality, clear architecture, and making technical decisions that the next engineer can understand.",
+    "bio4": "I work best with companies that have a clear problem, respect engineering, and want someone who communicates well with both technical and non-technical stakeholders.",
+    "experienceHeading": "Experience",
+    "experience": [
+      {
+        "period": "[YYYY] — Present",
+        "company": "JIT Team",
+        "role": "Senior Python Developer",
+        "domain": "IT services & software development · Warsaw / remote",
+        "note": "[Description coming soon]"
+      },
+      {
+        "period": "[YYYY] — [YYYY]",
+        "company": "Equiti",
+        "role": "Python Developer",
+        "domain": "Online brokerage & fintech (forex, CFD, multi-asset)",
+        "note": "[Description coming soon]"
+      },
+      {
+        "period": "[YYYY] — [YYYY]",
+        "company": "Energy Aspects",
+        "role": "Python Developer",
+        "domain": "Energy market intelligence & research analytics",
+        "note": "[Description coming soon]"
+      }
+    ],
+    "techHeading": "Tools & technologies",
+    "techStack": {
+      "Core languages": ["Python", "TypeScript"],
+      "Backend": ["FastAPI", "SQLAlchemy", "Alembic", "Pydantic", "Celery", "ARQ"],
+      "Data": ["PostgreSQL", "Redis", "SQLite", "Pandas"],
+      "Infrastructure": ["Docker", "GitHub Actions", "Vercel", "Linux"],
+      "Frontend": ["Next.js", "React", "Tailwind CSS"],
+      "AI / ML": ["LangChain", "OpenAI API", "Anthropic API", "instructor", "Pinecone", "Chroma"],
+      "Testing": ["pytest"]
+    },
+    "howHeading": "How I work",
+    "how1": "I start with the problem, not the stack. A good solution is one that fits the actual constraints — team size, operational maturity, timeline, budget — not the one that uses the most interesting technology.",
+    "how2": "I communicate clearly and early. If something is going to take longer than expected, you hear about it before it becomes a problem. If the requirements have a hidden complexity, I flag it in the planning phase.",
+    "how3": "I write code that other engineers can read. Good naming, clear structure, tests on the important paths. The kind of code that doesn't need a 30-minute explanation before you can contribute to it."
+  },
+  "contact": {
+    "heading": "Get in touch",
+    "sub": "I'm available for project-based and longer-term engagements. If you have a Python, backend, or automation project in mind — or just want to explore whether there's a fit — the best way is a short email.",
+    "emailHeading": "Send me an email",
+    "emailSub": "Tell me briefly what you're working on and what kind of help you're looking for. I reply within 1–2 business days.",
+    "linkedinConnect": "Connect or message",
+    "githubSee": "See public work",
+    "lookingHeading": "What I'm looking for",
+    "lookingItems": [
+      "Python-first projects (backend, APIs, automation)",
+      "Teams that value engineering quality and clear communication",
+      "Project-based or longer-term engagements (open to both)",
+      "Remote or hybrid, Europe timezone preferred"
+    ]
+  },
+  "blog": {
+    "heading": "Writing",
+    "sub": "Notes from building real systems, not theory.",
+    "allPosts": "All posts",
+    "minRead": "min read",
+    "relatedPosts": "Related posts",
+    "pageHeading": "Writing",
+    "pageSub": "Notes on Python, systems, and the occasional lesson learned the hard way."
+  },
+  "caseStudy": {
+    "outcome": "Outcome",
+    "stack": "Stack",
+    "links": "Links",
+    "related": "Related",
+    "viewRepo": "View repository",
+    "liveDemo": "Live demo",
+    "allProjects": "All projects"
+  },
+  "footer": {
+    "copyright": "© {year} Daniel Milewski"
+  },
+  "common": {
+    "moreAbout": "More about me",
+    "getInTouch": "Get in touch",
+    "viewProjects": "View projects",
+    "contactHeading": "Need a senior Python developer for backend, API, or automation work?",
+    "contactSub": "I'm available for project-based and long-term engagements. Let's talk about what you're building."
+  },
+  "metadata": {
+    "siteDescription": "Senior Python Developer — backend systems, APIs, and automation.",
+    "aboutDescription": "Senior Python Developer with a background in backend engineering, fintech, and energy market intelligence. Based in Europe, working remotely.",
+    "contactDescription": "Get in touch with Daniel Milewski. Available for senior Python development, backend systems, APIs, and automation projects.",
+    "projectsDescription": "Projects built by Daniel Milewski — from personal tools to production systems.",
+    "blogDescription": "Writing about Python, backend engineering, and software that ships."
+  }
+}

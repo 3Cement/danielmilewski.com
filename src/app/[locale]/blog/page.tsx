@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { getAllPosts } from "@/lib/content";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Writing",
-  description:
-    "Notes on Python, AI engineering, LLM applications, FastAPI, automation, and building software that works in production.",
-  path: "/blog",
-});
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function BlogPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  return buildMetadata({
+    title: locale === "pl" ? "Blog" : "Writing",
+    description: t("blogDescription"),
+    path: locale === "pl" ? "/pl/blog" : "/blog",
+  });
+}
+
+export default async function BlogPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "blog" });
   const posts = getAllPosts();
 
   return (
@@ -18,10 +28,10 @@ export default function BlogPage() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text-base)]">
-            Writing
+            {t("pageHeading")}
           </h1>
           <p className="mt-3 text-lg text-[var(--color-text-muted)] max-w-xl">
-            Notes from building real systems. No fluff.
+            {t("pageSub")}
           </p>
         </div>
 

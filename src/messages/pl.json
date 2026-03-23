@@ -1,0 +1,162 @@
+{
+  "nav": {
+    "projects": "Projekty",
+    "blog": "Blog",
+    "about": "O mnie",
+    "contact": "Kontakt",
+    "toggleMenu": "Otwórz menu"
+  },
+  "hero": {
+    "badge": "Dostępny dla nowych projektów",
+    "h1": "Senior Python Developer — systemy backendowe, API i oprogramowanie, które działa.",
+    "sub": "Buduję systemy backendowe i API w Pythonie. Czasem pracuję z AI i frontendem, gdy projekt tego wymaga.",
+    "cta1": "Zobacz projekty",
+    "cta2": "Napisz do mnie"
+  },
+  "credibility": {
+    "tags": ["Python", "Systemy backendowe", "REST API", "FastAPI", "PostgreSQL", "Automatyzacja", "AI / ML"]
+  },
+  "expertise": {
+    "heading": "Czym się zajmuję",
+    "sub": "Obszary, w których mogę wziąć pełną odpowiedzialność — od pierwszej linii kodu do produkcji.",
+    "items": [
+      {
+        "icon": "🐍",
+        "title": "Backend w Pythonie",
+        "description": "Produkcyjne serwisy Pythonowe: FastAPI, SQLAlchemy, wzorce async, czysta architektura, testy, CI/CD. Dbam o czytelność i możliwość utrzymania kodu."
+      },
+      {
+        "icon": "🔌",
+        "title": "API i projektowanie systemów",
+        "description": "Projektowanie REST API, potoki danych async, PostgreSQL, Redis, systemy multi-tenant. Potrafię myśleć o skalowalności i explicite przedstawiać kompromisy architektoniczne."
+      },
+      {
+        "icon": "⚙️",
+        "title": "Automatyzacja i integracje",
+        "description": "Workflow w Pythonie zastępujące ręczne, podatne na błędy procesy. Celery, zadania cykliczne, integracje API, potoki danych. Budowane do działania bez nadzoru z jasną obserwowalnością."
+      },
+      {
+        "icon": "🤖",
+        "title": "AI / ML",
+        "description": "Potoki RAG, agenci LLM, inteligencja dokumentów, ekstrakcja strukturalna. Praktyczne narzędzia budowane jako część większego systemu — nie samodzielne demo."
+      },
+      {
+        "icon": "🖥️",
+        "title": "Frontend",
+        "description": "Gdy produkt tego wymaga: Next.js, React, TypeScript, Tailwind. Nie jestem designerem, ale buduję interfejsy, które działają i nie przynoszą wstydu backendowi."
+      }
+    ]
+  },
+  "projects": {
+    "heading": "Wybrane projekty",
+    "sub": "Projekty, pod którymi podpisuję się nazwiskiem.",
+    "allProjects": "Wszystkie projekty",
+    "readCaseStudy": "Czytaj case study",
+    "pageHeading": "Projekty",
+    "pageSub": "Rzeczy, które zbudowałem — od side projektów po systemy produkcyjne.",
+    "comingSoon": "Więcej projektów wkrótce",
+    "comingSoonSub": "Trwa dokumentowanie kolejnych projektów. Zajrzyj wkrótce."
+  },
+  "about": {
+    "heading": "O mnie",
+    "role": "Senior Python Developer",
+    "availability": "Dostępność",
+    "availableText": "Dostępny dla nowych projektów",
+    "location": "Lokalizacja",
+    "locationText": "Europa · Praca zdalna",
+    "getInTouch": "Napisz do mnie",
+    "backgroundHeading": "O mnie",
+    "bio1": "Jestem Python developerem z doświadczeniem w inżynierii backendowej, systemach finansowych i automatyzacji. Pracowałem w obszarze analityki rynku energii, fintech i usług IT — głównie budując oprogramowanie obsługujące prawdziwe dane i brzegowe przypadki.",
+    "bio2": "Moim głównym narzędziem jest Python. Czasem pracuję z AI/ML i React, gdy projekt tego wymaga, ale systemy backendowe i API to moje główne pole działania.",
+    "bio3": "Potrafię wziąć odpowiedzialność za projekt od początku do końca: od decyzji architektonicznych przez implementację po wdrożenie. Zależy mi na jakości kodu, przejrzystej architekturze i decyzjach, które następny inżynier będzie w stanie zrozumieć.",
+    "bio4": "Najlepiej pracuję z firmami, które mają jasno określony problem, szanują inżynierię i potrzebują kogoś, kto komunikuje się sprawnie zarówno z technicznymi, jak i niete­chnicznymi interesariuszami.",
+    "experienceHeading": "Doświadczenie",
+    "experience": [
+      {
+        "period": "[RRRR] — Obecnie",
+        "company": "JIT Team",
+        "role": "Senior Python Developer",
+        "domain": "Usługi IT i tworzenie oprogramowania · Warszawa / zdalnie",
+        "note": "[Opis wkrótce]"
+      },
+      {
+        "period": "[RRRR] — [RRRR]",
+        "company": "Equiti",
+        "role": "Python Developer",
+        "domain": "Broker internetowy i fintech (forex, CFD, multi-asset)",
+        "note": "[Opis wkrótce]"
+      },
+      {
+        "period": "[RRRR] — [RRRR]",
+        "company": "Energy Aspects",
+        "role": "Python Developer",
+        "domain": "Analityka rynku energii i wywiad badawczy",
+        "note": "[Opis wkrótce]"
+      }
+    ],
+    "techHeading": "Narzędzia i technologie",
+    "techStack": {
+      "Języki": ["Python", "TypeScript"],
+      "Backend": ["FastAPI", "SQLAlchemy", "Alembic", "Pydantic", "Celery", "ARQ"],
+      "Dane": ["PostgreSQL", "Redis", "SQLite", "Pandas"],
+      "Infrastruktura": ["Docker", "GitHub Actions", "Vercel", "Linux"],
+      "Frontend": ["Next.js", "React", "Tailwind CSS"],
+      "AI / ML": ["LangChain", "OpenAI API", "Anthropic API", "instructor", "Pinecone", "Chroma"],
+      "Testy": ["pytest"]
+    },
+    "howHeading": "Jak pracuję",
+    "how1": "Zaczynam od problemu, nie od stosu technologicznego. Dobre rozwiązanie to takie, które pasuje do rzeczywistych ograniczeń — wielkości zespołu, dojrzałości operacyjnej, harmonogramu, budżetu — a nie to, które używa najbardziej interesującej technologii.",
+    "how2": "Komunikuję się jasno i wcześnie. Jeśli coś zajmie dłużej niż oczekiwano, dowiesz się o tym, zanim stanie się problemem. Jeśli wymagania mają ukrytą złożoność, sygnalizuję to na etapie planowania.",
+    "how3": "Piszę kod, który inni inżynierowie mogą czytać. Dobre nazewnictwo, przejrzysta struktura, testy na ważnych ścieżkach. Taki kod, który nie wymaga 30-minutowego wstępu, żeby móc do niego coś dołożyć."
+  },
+  "contact": {
+    "heading": "Napisz do mnie",
+    "sub": "Jestem dostępny dla projektów krótko- i długoterminowych. Jeśli masz projekt Pythonowy, backendowy lub automatyzacyjny — albo chcesz sprawdzić, czy jest tu jakaś współpraca — najlepiej napisz krótki e-mail.",
+    "emailHeading": "Wyślij e-mail",
+    "emailSub": "Opisz krótko, nad czym pracujesz i jakiej pomocy szukasz. Odpowiadam w ciągu 1–2 dni roboczych.",
+    "linkedinConnect": "Połącz się lub napisz",
+    "githubSee": "Zobacz publiczne projekty",
+    "lookingHeading": "Czego szukam",
+    "lookingItems": [
+      "Projekty Pythonowe (backend, API, automatyzacja)",
+      "Zespoły, które cenią jakość inżynierską i jasną komunikację",
+      "Projekty krótko- lub długoterminowe (obie opcje są OK)",
+      "Praca zdalna lub hybrydowa, strefa czasowa Europa"
+    ]
+  },
+  "blog": {
+    "heading": "Blog",
+    "sub": "Notatki z budowania prawdziwych systemów, nie teorii.",
+    "allPosts": "Wszystkie wpisy",
+    "minRead": "min czytania",
+    "relatedPosts": "Powiązane wpisy",
+    "pageHeading": "Blog",
+    "pageSub": "Notatki o Pythonie, systemach i lekcjach nauczonych na własnych błędach."
+  },
+  "caseStudy": {
+    "outcome": "Wynik",
+    "stack": "Stack",
+    "links": "Linki",
+    "related": "Powiązane",
+    "viewRepo": "Zobacz repozytorium",
+    "liveDemo": "Live demo",
+    "allProjects": "Wszystkie projekty"
+  },
+  "footer": {
+    "copyright": "© {year} Daniel Milewski"
+  },
+  "common": {
+    "moreAbout": "Więcej o mnie",
+    "getInTouch": "Napisz do mnie",
+    "viewProjects": "Zobacz projekty",
+    "contactHeading": "Szukasz seniora Python do backendu, API lub automatyzacji?",
+    "contactSub": "Jestem dostępny dla projektów krótko- i długoterminowych. Porozmawiajmy o tym, co budujesz."
+  },
+  "metadata": {
+    "siteDescription": "Senior Python Developer — systemy backendowe, API i automatyzacja.",
+    "aboutDescription": "Senior Python Developer z doświadczeniem w inżynierii backendowej, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
+    "contactDescription": "Skontaktuj się z Danielem Milewskim. Dostępny dla projektów Python, backend, API i automatyzacja.",
+    "projectsDescription": "Projekty Daniela Milewskiego — od narzędzi osobistych po systemy produkcyjne.",
+    "blogDescription": "Notatki o Pythonie, inżynierii backendowej i oprogramowaniu, które działa."
+  }
+}

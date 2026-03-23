@@ -27,12 +27,12 @@
 # Claude Code
 .claude/
 
+# Cloudflare
+.wrangler/
+
 # IDE
 .idea/
 *.iml
-
-# Project placeholder
-main.py
 
 # debug
 npm-debug.log*

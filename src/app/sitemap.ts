@@ -2,26 +2,45 @@ import type { MetadataRoute } from "next";
 import { getAllProjectSlugs, getAllPostSlugs } from "@/lib/content";
 import { SITE_URL } from "@/lib/metadata";
 
+const locales = ["en", "pl"] as const;
+
+function localePath(locale: string, path: string) {
+  const base = locale === "en" ? SITE_URL : `${SITE_URL}/pl`;
+  return path === "/" ? base : `${base}${path}`;
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = [
-    { url: SITE_URL, changeFrequency: "monthly" as const, priority: 1.0 },
-    { url: `${SITE_URL}/projects`, changeFrequency: "monthly" as const, priority: 0.9 },
-    { url: `${SITE_URL}/blog`, changeFrequency: "weekly" as const, priority: 0.8 },
-    { url: `${SITE_URL}/about`, changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${SITE_URL}/contact`, changeFrequency: "yearly" as const, priority: 0.6 },
+  const staticPaths = [
+    { path: "/", changeFrequency: "monthly" as const, priority: 1.0 },
+    { path: "/projects", changeFrequency: "monthly" as const, priority: 0.9 },
+    { path: "/blog", changeFrequency: "weekly" as const, priority: 0.8 },
+    { path: "/about", changeFrequency: "monthly" as const, priority: 0.7 },
+    { path: "/contact", changeFrequency: "yearly" as const, priority: 0.6 },
   ];
 
-  const projectRoutes = getAllProjectSlugs().map((slug) => ({
-    url: `${SITE_URL}/projects/${slug}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  const staticRoutes = locales.flatMap((locale) =>
+    staticPaths.map(({ path, changeFrequency, priority }) => ({
+      url: localePath(locale, path),
+      changeFrequency,
+      priority,
+    }))
+  );
 
-  const blogRoutes = getAllPostSlugs().map((slug) => ({
-    url: `${SITE_URL}/blog/${slug}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
+  const projectRoutes = locales.flatMap((locale) =>
+    getAllProjectSlugs().map((slug) => ({
+      url: localePath(locale, `/projects/${slug}`),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }))
+  );
+
+  const blogRoutes = locales.flatMap((locale) =>
+    getAllPostSlugs().map((slug) => ({
+      url: localePath(locale, `/blog/${slug}`),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  );
 
   return [...staticRoutes, ...projectRoutes, ...blogRoutes];
 }

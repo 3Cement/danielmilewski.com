@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://danielmilewski.com";
 export const SITE_NAME = "Daniel Milewski";
 export const SITE_DESCRIPTION =
-  "Senior Python Developer building AI-powered products, backend systems and smart automation.";
+  "Senior Python Developer — backend systems, APIs, and automation.";
 export const TWITTER_HANDLE = "@danielmilewski";
 export const GITHUB_URL = "https://github.com/3Cement";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
@@ -22,7 +22,7 @@ export function buildMetadata({
   image?: string;
   type?: "website" | "article";
 }): Metadata {
-  const metaTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Python & AI Developer`;
+  const metaTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Python Developer`;
   const metaDescription = description ?? SITE_DESCRIPTION;
   const url = `${SITE_URL}${urlPath}`;
   const ogImage = image ?? `${SITE_URL}/og-default.png`;

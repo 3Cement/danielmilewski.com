@@ -1,16 +1,18 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { SITE_NAME } from "@/lib/metadata";
 
-const footerLinks = [
-  { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Writing" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
-
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslations("nav");
   const year = new Date().getFullYear();
+
+  const footerLinks = [
+    { href: "/projects", label: t("projects") },
+    { href: "/blog", label: t("blog") },
+    { href: "/about", label: t("about") },
+    { href: "/contact", label: t("contact") },
+  ];
 
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">

@@ -1,35 +1,48 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { buildMetadata } from "@/lib/metadata";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/metadata";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Contact",
-  description:
-    "Get in touch with Daniel Milewski. Available for senior Python development, AI/LLM applications, backend systems, and automation projects.",
-  path: "/contact",
-});
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
-export default function ContactPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  return buildMetadata({
+    title: locale === "pl" ? "Kontakt" : "Contact",
+    description: t("contactDescription"),
+    path: locale === "pl" ? "/pl/contact" : "/contact",
+  });
+}
+
+export default async function ContactPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+
+  const lookingItems = t.raw("lookingItems") as string[];
+
   return (
     <div className="py-16 px-4">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-2xl">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text-base)] mb-4">
-            Get in touch
+            {t("heading")}
           </h1>
           <p className="text-lg text-[var(--color-text-muted)] leading-relaxed mb-10">
-            I&apos;m available for project-based and longer-term engagements. If you have a Python, AI, or automation project in mind — or just want to explore whether there&apos;s a fit — the best way is a short email.
+            {t("sub")}
           </p>
 
           {/* Primary CTA */}
           <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] mb-8">
             <p className="text-sm font-semibold text-[var(--color-text-base)] mb-2">
-              Send me an email
+              {t("emailHeading")}
             </p>
             <p className="text-sm text-[var(--color-text-muted)] mb-4">
-              Tell me briefly what you&apos;re working on and what kind of help you&apos;re looking for. I reply within 1–2 business days.
+              {t("emailSub")}
             </p>
             <Link
               href={`mailto:${EMAIL}`}
@@ -55,7 +68,7 @@ export default function ContactPage() {
               </svg>
               <div>
                 <p className="text-sm font-medium text-[var(--color-text-base)]">LinkedIn</p>
-                <p className="text-xs text-[var(--color-text-faint)]">Connect or message</p>
+                <p className="text-xs text-[var(--color-text-faint)]">{t("linkedinConnect")}</p>
               </div>
             </Link>
 
@@ -70,7 +83,7 @@ export default function ContactPage() {
               </svg>
               <div>
                 <p className="text-sm font-medium text-[var(--color-text-base)]">GitHub</p>
-                <p className="text-xs text-[var(--color-text-faint)]">See public work</p>
+                <p className="text-xs text-[var(--color-text-faint)]">{t("githubSee")}</p>
               </div>
             </Link>
           </div>
@@ -78,15 +91,10 @@ export default function ContactPage() {
           {/* What I'm looking for */}
           <div>
             <h2 className="text-base font-semibold text-[var(--color-text-base)] mb-4">
-              What I&apos;m looking for
+              {t("lookingHeading")}
             </h2>
             <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
-              {[
-                "Python-first projects (backend, AI/LLM, automation)",
-                "Teams that value engineering quality and clear communication",
-                "Project-based or longer-term engagements (open to both)",
-                "Remote or hybrid, Europe timezone preferred",
-              ].map((item) => (
+              {lookingItems.map((item: string) => (
                 <li key={item} className="flex items-start gap-2">
                   <span className="mt-1.5 block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0" aria-hidden="true" />
                   {item}

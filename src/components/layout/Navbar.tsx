@@ -3,19 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
-
-const navLinks = [
-  { href: "/projects", label: "Projects" },
-  { href: "/blog", label: "Writing" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
 
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const t = useTranslations("nav");
+
+  const navLinks = [
+    { href: "/projects", label: t("projects") },
+    { href: "/blog", label: t("blog") },
+    { href: "/about", label: t("about") },
+    { href: "/contact", label: t("contact") },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-surface)]/90 backdrop-blur-sm">
@@ -37,7 +40,7 @@ export function Navbar() {
                 href={link.href}
                 className={cn(
                   "px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                  pathname.startsWith(link.href)
+                  pathname.includes(link.href)
                     ? "text-[var(--color-text-base)] bg-[var(--color-surface-muted)]"
                     : "text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)]",
                 )}
@@ -48,13 +51,14 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <ThemeToggle />
             {/* Mobile menu button */}
             <button
               className="md:hidden rounded-md p-2 text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)] transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
-              aria-label="Toggle menu"
+              aria-label={t("toggleMenu")}
             >
               {mobileOpen ? (
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -79,7 +83,7 @@ export function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className={cn(
                   "block px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
-                  pathname.startsWith(link.href)
+                  pathname.includes(link.href)
                     ? "text-[var(--color-text-base)] bg-[var(--color-surface-muted)]"
                     : "text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)]",
                 )}

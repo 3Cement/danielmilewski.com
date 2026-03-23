@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Tag } from "@/components/ui/Tag";
 import type { Project } from "@/types/project";
 import Link from "next/link";
@@ -9,6 +12,8 @@ interface CaseStudySectionProps {
 }
 
 export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseStudySectionProps) {
+  const t = useTranslations("caseStudy");
+
   return (
     <article className="py-16 px-4">
       <div className="mx-auto max-w-6xl">
@@ -32,7 +37,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
               {/* Outcome */}
               <div>
                 <h2 className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
-                  Outcome
+                  {t("outcome")}
                 </h2>
                 <p className="text-sm text-[var(--color-accent)] font-medium leading-relaxed">
                   {project.outcome}
@@ -42,7 +47,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
               {/* Stack */}
               <div>
                 <h2 className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
-                  Stack
+                  {t("stack")}
                 </h2>
                 <div className="flex flex-wrap gap-1.5">
                   {project.stack.map((tech) => (
@@ -55,7 +60,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
               {(project.repo || project.demo) && (
                 <div>
                   <h2 className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
-                    Links
+                    {t("links")}
                   </h2>
                   <div className="space-y-2">
                     {project.repo && (
@@ -65,7 +70,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm text-[var(--color-accent)] hover:underline"
                       >
-                        View repository
+                        {t("viewRepo")}
                       </Link>
                     )}
                     {project.demo && (
@@ -75,7 +80,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm text-[var(--color-accent)] hover:underline"
                       >
-                        Live demo
+                        {t("liveDemo")}
                       </Link>
                     )}
                   </div>
@@ -86,7 +91,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
               {relatedProjects && relatedProjects.length > 0 && (
                 <div>
                   <h2 className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
-                    Related
+                    {t("related")}
                   </h2>
                   <div className="space-y-2">
                     {relatedProjects.map((p) => (
@@ -121,7 +126,7 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
-            All projects
+            {t("allProjects")}
           </Link>
         </div>
       </div>
