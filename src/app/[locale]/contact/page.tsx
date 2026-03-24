@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { buildMetadata, type SiteLocale } from "@/lib/metadata";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/metadata";
+import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -33,9 +32,31 @@ export default async function ContactPage({ params }: Props) {
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text-base)] mb-4">
             {t("heading")}
           </h1>
-          <p className="text-lg text-[var(--color-text-muted)] leading-relaxed mb-10">
+          <p className="text-lg text-[var(--color-text-muted)] leading-relaxed mb-8">
             {t("sub")}
           </p>
+
+          <div className="mb-10">
+            <p className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
+              {t("cvHeading")}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={CV_URL_EN}
+                download
+                className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 transition-colors"
+              >
+                {t("cvEnglish")}
+              </a>
+              <a
+                href={CV_URL_PL}
+                download
+                className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 transition-colors"
+              >
+                {t("cvPolish")}
+              </a>
+            </div>
+          </div>
 
           {/* Primary CTA */}
           <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] mb-8">

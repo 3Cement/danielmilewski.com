@@ -3,7 +3,14 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Tag } from "@/components/ui/Tag";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { buildMetadata, PROFILE_IMAGE_PATH, SITE_NAME, type SiteLocale } from "@/lib/metadata";
+import {
+  buildMetadata,
+  CV_URL_EN,
+  CV_URL_PL,
+  PROFILE_IMAGE_PATH,
+  SITE_NAME,
+  type SiteLocale,
+} from "@/lib/metadata";
 import { Link } from "@/i18n/navigation";
 
 interface Props {
@@ -45,9 +52,9 @@ export default async function AboutPage({ params }: Props) {
                 <Image
                   src={PROFILE_IMAGE_PATH}
                   alt={SITE_NAME}
-                  width={128}
-                  height={128}
-                  className="w-24 h-24 rounded-full object-cover ring-2 ring-[var(--color-border)] mb-4"
+                  width={800}
+                  height={800}
+                  className="w-28 h-28 rounded-full object-cover ring-2 ring-[var(--color-border)] mb-4"
                   priority
                 />
                 <h1 className="text-2xl font-bold tracking-tight text-[var(--color-text-base)] mb-1">
@@ -76,6 +83,28 @@ export default async function AboutPage({ params }: Props) {
                   {t("location")}
                 </p>
                 <p className="text-sm text-[var(--color-text-muted)]">{t("locationText")}</p>
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
+                  {t("cvHeading")}
+                </p>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href={CV_URL_EN}
+                    download
+                    className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-subtle)] transition-colors"
+                  >
+                    {t("cvEnglish")}
+                  </a>
+                  <a
+                    href={CV_URL_PL}
+                    download
+                    className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-subtle)] transition-colors"
+                  >
+                    {t("cvPolish")}
+                  </a>
+                </div>
               </div>
 
               <Link
