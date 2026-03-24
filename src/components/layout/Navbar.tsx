@@ -7,12 +7,20 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 
+function isNavLinkActive(href: string, pathname: string): boolean {
+  if (href === "/main") {
+    return pathname === "/main" || pathname === "/" || pathname === "";
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const t = useTranslations("nav");
 
   const navLinks = [
+    { href: "/main", label: t("home") },
     { href: "/projects", label: t("projects") },
     { href: "/blog", label: t("blog") },
     { href: "/about", label: t("about") },
@@ -82,7 +90,7 @@ export function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className={cn(
                   "block px-3 py-2.5 rounded-md text-sm font-medium transition-colors",
-                  pathname.includes(link.href)
+                  isNavLinkActive(link.href, pathname)
                     ? "text-[var(--color-text-base)] bg-[var(--color-surface-muted)]"
                     : "text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)]",
                 )}

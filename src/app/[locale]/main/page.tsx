@@ -11,12 +11,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
   return buildMetadata({
+    title: t("mainPageTitle"),
     description: t("siteDescription"),
-    pathWithoutLocale: "/",
+    pathWithoutLocale: "/main",
     locale: locale as SiteLocale,
+    canonicalPathWithoutLocale: "/",
   });
 }
 
-export default function HomePage() {
+export default function MainPage() {
   return <HomePageContent />;
 }

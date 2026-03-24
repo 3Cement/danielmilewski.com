@@ -1,5 +1,6 @@
 {
   "nav": {
+    "home": "Strona główna",
     "projects": "Projekty",
     "blog": "Blog",
     "about": "O mnie",
@@ -163,6 +164,7 @@
     "errorRetry": "Spróbuj ponownie"
   },
   "metadata": {
+    "mainPageTitle": "Strona główna",
     "siteDescription": "Senior Python Developer — systemy backendowe, API i automatyzacja.",
     "aboutDescription": "Senior Python Developer z doświadczeniem w inżynierii backendowej, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
     "contactDescription": "Skontaktuj się z Danielem Milewskim. Dostępny dla projektów Python, backend, API i automatyzacja.",

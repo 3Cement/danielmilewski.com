@@ -8,6 +8,7 @@ export async function Footer() {
   const year = new Date().getFullYear();
 
   const footerLinks = [
+    { href: "/main", label: t("home") },
     { href: "/projects", label: t("projects") },
     { href: "/blog", label: t("blog") },
     { href: "/about", label: t("about") },

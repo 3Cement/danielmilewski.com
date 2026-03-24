@@ -12,6 +12,7 @@ function localePath(locale: string, path: string) {
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [
     { path: "/", changeFrequency: "monthly" as const, priority: 1.0 },
+    { path: "/main", changeFrequency: "monthly" as const, priority: 0.95 },
     { path: "/projects", changeFrequency: "monthly" as const, priority: 0.9 },
     { path: "/blog", changeFrequency: "weekly" as const, priority: 0.8 },
     { path: "/about", changeFrequency: "monthly" as const, priority: 0.7 },

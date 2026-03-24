@@ -36,6 +36,8 @@ export function buildMetadata({
   locale,
   image,
   type = "website",
+  /** When set, canonical and openGraph.url use this path (e.g. "/" for /main duplicate of home). */
+  canonicalPathWithoutLocale,
 }: {
   title?: string;
   description?: string;
@@ -43,10 +45,11 @@ export function buildMetadata({
   locale: SiteLocale;
   image?: string;
   type?: "website" | "article";
+  canonicalPathWithoutLocale?: string;
 }): Metadata {
   const metaTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Python Developer`;
   const metaDescription = description ?? SITE_DESCRIPTION;
-  const canonical = absoluteUrl(locale, pathWithoutLocale);
+  const canonical = absoluteUrl(locale, canonicalPathWithoutLocale ?? pathWithoutLocale);
   const ogImage = image ?? defaultOgImagePath;
 
   return {
