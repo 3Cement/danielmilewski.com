@@ -52,6 +52,8 @@
     "sub": "Projekty, pod którymi podpisuję się nazwiskiem.",
     "allProjects": "Wszystkie projekty",
     "readCaseStudy": "Czytaj case study",
+    "problemLabel": "Problem",
+    "solutionLabel": "Rozwiązanie",
     "pageHeading": "Projekty",
     "pageSub": "Rzeczy, które zbudowałem — od side projektów po systemy produkcyjne.",
     "comingSoon": "Więcej projektów wkrótce",
@@ -127,6 +129,7 @@
   "blog": {
     "heading": "Blog",
     "sub": "Notatki z budowania prawdziwych systemów, nie teorii.",
+    "tocHeading": "Na tej stronie",
     "allPosts": "Wszystkie wpisy",
     "minRead": "min czytania",
     "relatedPosts": "Powiązane wpisy",
@@ -151,6 +154,13 @@
     "viewProjects": "Zobacz projekty",
     "contactHeading": "Szukasz seniora Python do backendu, API lub automatyzacji?",
     "contactSub": "Jestem dostępny dla projektów krótko- i długoterminowych. Porozmawiajmy o tym, co budujesz."
+  },
+  "errors": {
+    "notFoundTitle": "Nie znaleziono strony",
+    "notFoundDescription": "Ta strona nie istnieje lub została przeniesiona.",
+    "notFoundHome": "Strona główna",
+    "errorTitle": "Coś poszło nie tak",
+    "errorRetry": "Spróbuj ponownie"
   },
   "metadata": {
     "siteDescription": "Senior Python Developer — systemy backendowe, API i automatyzacja.",

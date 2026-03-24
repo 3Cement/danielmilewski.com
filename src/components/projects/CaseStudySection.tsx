@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Tag } from "@/components/ui/Tag";
 import type { Project } from "@/types/project";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 interface CaseStudySectionProps {
   project: Project;

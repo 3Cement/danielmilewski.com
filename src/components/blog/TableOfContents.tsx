@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Heading } from "@/lib/headings";
 
 interface TableOfContentsProps {
@@ -8,6 +9,7 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ headings }: TableOfContentsProps) {
+  const t = useTranslations("blog");
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
   return (
     <nav aria-label="Table of contents" className="space-y-1">
       <p className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
-        On this page
+        {t("tocHeading")}
       </p>
       {headings.map((heading) => (
         <a

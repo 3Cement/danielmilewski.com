@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { getAllProjects } from "@/lib/content";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -14,7 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     title: locale === "pl" ? "Projekty" : "Projects",
     description: t("projectsDescription"),
-    path: locale === "pl" ? "/pl/projects" : "/projects",
+    pathWithoutLocale: "/projects",
+    locale: locale as SiteLocale,
   });
 }
 

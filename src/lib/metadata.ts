@@ -9,36 +9,59 @@ export const GITHUB_URL = "https://github.com/3Cement";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
 export const EMAIL = "hello@danielmilewski.dev";
 
+export type SiteLocale = "en" | "pl";
+
+export function absoluteUrl(locale: SiteLocale, pathWithoutLocale: string): string {
+  const path = pathWithoutLocale === "/" ? "" : pathWithoutLocale;
+  if (locale === "en") {
+    return `${SITE_URL}${path}`;
+  }
+  return `${SITE_URL}/pl${path}`;
+}
+
+const defaultOgImagePath = "/opengraph-image";
+
 export function buildMetadata({
   title,
   description,
-  path: urlPath = "",
+  pathWithoutLocale,
+  locale,
   image,
   type = "website",
 }: {
   title?: string;
   description?: string;
-  path?: string;
+  pathWithoutLocale: string;
+  locale: SiteLocale;
   image?: string;
   type?: "website" | "article";
 }): Metadata {
   const metaTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Python Developer`;
   const metaDescription = description ?? SITE_DESCRIPTION;
-  const url = `${SITE_URL}${urlPath}`;
-  const ogImage = image ?? `${SITE_URL}/og-default.png`;
+  const canonical = absoluteUrl(locale, pathWithoutLocale);
+  const ogImage = image ?? defaultOgImagePath;
 
   return {
     title: metaTitle,
     description: metaDescription,
     metadataBase: new URL(SITE_URL),
-    alternates: { canonical: url },
+    alternates: {
+      canonical,
+      languages: {
+        en: absoluteUrl("en", pathWithoutLocale),
+        pl: absoluteUrl("pl", pathWithoutLocale),
+        "x-default": absoluteUrl("en", pathWithoutLocale),
+      },
+    },
     openGraph: {
       title: metaTitle,
       description: metaDescription,
-      url,
+      url: canonical,
       siteName: SITE_NAME,
       images: [{ url: ogImage, width: 1200, height: 630, alt: metaTitle }],
       type,
+      locale,
+      alternateLocale: locale === "en" ? "pl" : "en",
     },
     twitter: {
       card: "summary_large_image",

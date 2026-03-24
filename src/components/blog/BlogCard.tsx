@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Tag } from "@/components/ui/Tag";
 import type { PostMeta } from "@/types/post";
 
@@ -7,8 +8,10 @@ interface BlogCardProps {
   compact?: boolean;
 }
 
-export function BlogCard({ post, compact = false }: BlogCardProps) {
-  const date = new Date(post.date).toLocaleDateString("en-GB", {
+export async function BlogCard({ post, compact = false }: BlogCardProps) {
+  const locale = await getLocale();
+  const dateLocale = locale === "pl" ? "pl-PL" : "en-GB";
+  const date = new Date(post.date).toLocaleDateString(dateLocale, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -29,8 +32,13 @@ export function BlogCard({ post, compact = false }: BlogCardProps) {
             </div>
             <svg
               className="shrink-0 mt-1 text-[var(--color-text-faint)] group-hover:text-[var(--color-accent)] transition-colors"
-              width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2" aria-hidden="true"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>

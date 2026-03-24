@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Tag } from "@/components/ui/Tag";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, type SiteLocale } from "@/lib/metadata";
+import { Link } from "@/i18n/navigation";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -15,7 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     title: locale === "pl" ? "O mnie" : "About",
     description: t("aboutDescription"),
-    path: locale === "pl" ? "/pl/about" : "/about",
+    pathWithoutLocale: "/about",
+    locale: locale as SiteLocale,
   });
 }
 

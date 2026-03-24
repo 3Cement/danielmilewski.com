@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { Hero } from "@/components/home/Hero";
 import { CredibilityStrip } from "@/components/home/CredibilityStrip";
 import { SelectedProjects } from "@/components/home/SelectedProjects";
@@ -16,7 +17,11 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
-  return { description: t("siteDescription") };
+  return buildMetadata({
+    description: t("siteDescription"),
+    pathWithoutLocale: "/",
+    locale: locale as SiteLocale,
+  });
 }
 
 export default function HomePage() {

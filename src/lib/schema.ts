@@ -1,10 +1,11 @@
 import {
-  SITE_URL,
   SITE_NAME,
   SITE_DESCRIPTION,
   GITHUB_URL,
   LINKEDIN_URL,
   EMAIL,
+  absoluteUrl,
+  type SiteLocale,
 } from "./metadata";
 
 export function personSchema() {
@@ -12,7 +13,7 @@ export function personSchema() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: SITE_NAME,
-    url: SITE_URL,
+    url: absoluteUrl("en", "/"),
     email: EMAIL,
     jobTitle: "Senior Python Developer",
     description: SITE_DESCRIPTION,
@@ -34,7 +35,7 @@ export function websiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE_NAME,
-    url: SITE_URL,
+    url: absoluteUrl("en", "/"),
     description: SITE_DESCRIPTION,
     author: { "@type": "Person", name: SITE_NAME },
   };
@@ -46,30 +47,33 @@ export function blogPostingSchema({
   date,
   slug,
   tags,
+  locale,
 }: {
   title: string;
   excerpt: string;
   date: string;
   slug: string;
   tags: string[];
+  locale: SiteLocale;
 }) {
+  const pageUrl = absoluteUrl(locale, `/blog/${slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: title,
     description: excerpt,
     datePublished: date,
-    url: `${SITE_URL}/blog/${slug}`,
+    url: pageUrl,
     author: {
       "@type": "Person",
       name: SITE_NAME,
-      url: SITE_URL,
+      url: absoluteUrl("en", "/"),
     },
     keywords: tags.join(", "),
     publisher: {
       "@type": "Person",
       name: SITE_NAME,
-      url: SITE_URL,
+      url: absoluteUrl("en", "/"),
     },
   };
 }
@@ -80,25 +84,27 @@ export function softwareSchema({
   stack,
   slug,
   repo,
+  locale,
 }: {
   title: string;
   description: string;
   stack: string[];
   slug: string;
   repo?: string;
+  locale: SiteLocale;
 }) {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     name: title,
     description,
-    url: `${SITE_URL}/projects/${slug}`,
+    url: absoluteUrl(locale, `/projects/${slug}`),
     codeRepository: repo,
     programmingLanguage: stack,
     author: {
       "@type": "Person",
       name: SITE_NAME,
-      url: SITE_URL,
+      url: absoluteUrl("en", "/"),
     },
   };
 }

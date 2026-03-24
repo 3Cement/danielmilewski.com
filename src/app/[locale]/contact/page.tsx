@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/metadata";
 
 interface Props {
@@ -15,7 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     title: locale === "pl" ? "Kontakt" : "Contact",
     description: t("contactDescription"),
-    path: locale === "pl" ? "/pl/contact" : "/contact",
+    pathWithoutLocale: "/contact",
+    locale: locale as SiteLocale,
   });
 }
 

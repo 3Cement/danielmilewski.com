@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { getAllPosts } from "@/lib/content";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -14,7 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     title: locale === "pl" ? "Blog" : "Writing",
     description: t("blogDescription"),
-    path: locale === "pl" ? "/pl/blog" : "/blog",
+    pathWithoutLocale: "/blog",
+    locale: locale as SiteLocale,
   });
 }
 

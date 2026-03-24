@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from "@/lib/content";
@@ -8,9 +7,11 @@ import { TableOfContents } from "@/components/blog/TableOfContents";
 import { extractHeadings } from "@/lib/headings";
 import { Tag } from "@/components/ui/Tag";
 import { BlogCard } from "@/components/blog/BlogCard";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { blogPostingSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
+import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -30,7 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildMetadata({
     title: post.title,
     description: post.excerpt,
-    path: `${locale === "pl" ? "/pl" : ""}/blog/${slug}`,
+    pathWithoutLocale: `/blog/${slug}`,
+    locale: locale as SiteLocale,
     type: "article",
   });
 }
@@ -53,6 +55,7 @@ export default async function BlogPostPage({ params }: Props) {
     date: post.date,
     slug: post.slug,
     tags: post.tags,
+    locale: locale as SiteLocale,
   });
 
   const date = new Date(post.date).toLocaleDateString(locale === "pl" ? "pl-PL" : "en-GB", {
@@ -61,8 +64,10 @@ export default async function BlogPostPage({ params }: Props) {
     day: "numeric",
   });
 
-  const mdxContent = await MDXRemote({ source: post.content });
-  const backHref = locale === "pl" ? "/pl/blog" : "/blog";
+  const mdxContent = await MDXRemote({
+    source: post.content,
+    components: mdxContentComponents,
+  });
 
   return (
     <>
@@ -119,7 +124,7 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Back link */}
               <div className="mt-12 pt-8 border-t border-[var(--color-border)]">
                 <Link
-                  href={backHref}
+                  href="/blog"
                   className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

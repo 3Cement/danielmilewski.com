@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import type { ProjectMeta } from "@/types/project";
 
