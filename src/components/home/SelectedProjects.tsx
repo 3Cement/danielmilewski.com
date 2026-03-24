@@ -33,7 +33,7 @@ export async function SelectedProjects({ projects }: SelectedProjectsProps) {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-8 w-full">
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}

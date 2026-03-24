@@ -10,19 +10,35 @@ interface ProjectCardProps {
 
 export async function ProjectCard({ project }: ProjectCardProps) {
   const t = await getTranslations("projects");
-  const cardPreviews = project.images?.slice(0, 2).filter(Boolean) ?? [];
-  const [firstSrc, secondSrc] = [cardPreviews[0], cardPreviews[1]];
-  const dualPreview = Boolean(firstSrc && secondSrc);
+  const previewSrc = project.images?.[0];
 
   return (
-    <article className="group flex flex-col lg:flex-row lg:items-stretch gap-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:border-[var(--color-accent)]/40 hover:shadow-lg transition-all duration-200">
-      <div className="flex min-w-0 flex-1 flex-col order-2 lg:order-1">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-all duration-200 hover:border-[var(--color-accent)]/40 hover:shadow-lg">
+      {previewSrc ? (
+        <Link
+          href={`/projects/${project.slug}`}
+          className="relative block aspect-[16/10] w-full shrink-0 overflow-hidden bg-[var(--color-surface-muted)] ring-1 ring-[var(--color-border)] ring-inset"
+          aria-label={`${t("readCaseStudy")}: ${project.title}`}
+        >
+          <Image
+            src={previewSrc}
+            alt=""
+            fill
+            className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, min(720px, 50vw)"
+          />
+        </Link>
+      ) : null}
+
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col p-6">
         <p className="text-xs font-medium text-[var(--color-accent)] uppercase tracking-wide mb-3">
           {project.role}
         </p>
 
         <h3 className="text-lg font-semibold text-[var(--color-text-base)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
-          {project.title}
+          <Link href={`/projects/${project.slug}`} className="focus-visible:outline-none">
+            {project.title}
+          </Link>
         </h3>
 
         <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-2">
@@ -58,47 +74,6 @@ export async function ProjectCard({ project }: ProjectCardProps) {
           </svg>
         </Link>
       </div>
-
-      {cardPreviews.length > 0 ? (
-        <div className="order-1 lg:order-2 shrink-0 flex flex-col sm:flex-row sm:flex-wrap items-stretch justify-center lg:justify-end gap-4 lg:gap-3 lg:pt-1 lg:max-w-[min(100%,560px)]">
-          {dualPreview && firstSrc ? (
-            <div className="rounded-lg bg-[var(--color-surface-muted)] p-1 ring-1 ring-[var(--color-border)] shadow-md w-full max-w-[min(100%,280px)] sm:flex-1 sm:min-w-[180px] sm:max-w-[280px]">
-              <Image
-                src={firstSrc}
-                alt={`${project.title} — screenshot`}
-                width={1440}
-                height={900}
-                className="rounded-md object-cover object-top w-full h-auto max-h-[200px] sm:max-h-[240px]"
-                sizes="(max-width: 640px) 100vw, 280px"
-              />
-            </div>
-          ) : null}
-          {dualPreview && secondSrc ? (
-            <div className="rounded-lg bg-[var(--color-surface-muted)] p-1 ring-1 ring-[var(--color-border)] shadow-md w-full max-w-[min(100%,280px)] sm:flex-1 sm:min-w-[180px] sm:max-w-[280px]">
-              <Image
-                src={secondSrc}
-                alt={`${project.title} — screenshot`}
-                width={1440}
-                height={900}
-                className="rounded-md object-cover object-top w-full h-auto max-h-[200px] sm:max-h-[240px]"
-                sizes="(max-width: 640px) 100vw, 280px"
-              />
-            </div>
-          ) : null}
-          {!dualPreview && firstSrc ? (
-            <div className="rounded-lg bg-[var(--color-surface-muted)] p-1 ring-1 ring-[var(--color-border)] shadow-md w-full max-w-[min(100%,400px)]">
-              <Image
-                src={firstSrc}
-                alt={`${project.title} — screenshot`}
-                width={1200}
-                height={750}
-                className="rounded-md object-cover object-top w-full h-auto max-h-[220px] sm:max-h-[260px]"
-                sizes="(max-width: 640px) 100vw, 400px"
-              />
-            </div>
-          ) : null}
-        </div>
-      ) : null}
     </article>
   );
 }
