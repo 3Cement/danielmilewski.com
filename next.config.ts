@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     formats: ["image/avif", "image/webp"],
+    // Required for Cloudflare Pages (@cloudflare/next-on-pages): no Next.js image optimizer API.
+    unoptimized: true,
   },
 };
 
