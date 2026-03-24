@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Tag } from "@/components/ui/Tag";
 import { SocialLinks } from "@/components/ui/SocialLinks";
-import { buildMetadata, type SiteLocale } from "@/lib/metadata";
+import { buildMetadata, PROFILE_IMAGE_PATH, SITE_NAME, type SiteLocale } from "@/lib/metadata";
 import { Link } from "@/i18n/navigation";
 
 interface Props {
@@ -41,10 +42,14 @@ export default async function AboutPage({ params }: Props) {
           <aside className="lg:col-span-1">
             <div className="sticky top-24 space-y-8">
               <div>
-                {/* Photo placeholder — replace with <Image> when photo is available */}
-                <div className="w-20 h-20 rounded-full bg-[var(--color-surface-subtle)] flex items-center justify-center mb-4">
-                  <span className="text-xl font-bold text-[var(--color-text-muted)]">DM</span>
-                </div>
+                <Image
+                  src={PROFILE_IMAGE_PATH}
+                  alt={SITE_NAME}
+                  width={128}
+                  height={128}
+                  className="w-24 h-24 rounded-full object-cover ring-2 ring-[var(--color-border)] mb-4"
+                  priority
+                />
                 <h1 className="text-2xl font-bold tracking-tight text-[var(--color-text-base)] mb-1">
                   Daniel Milewski
                 </h1>

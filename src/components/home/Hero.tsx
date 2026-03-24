@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import { PROFILE_IMAGE_PATH, SITE_NAME } from "@/lib/metadata";
 
 export async function Hero() {
   const t = await getTranslations("hero");
@@ -8,32 +10,44 @@ export async function Hero() {
   return (
     <section className="relative py-24 sm:py-32 px-4">
       <div className="mx-auto max-w-6xl">
-        <div className="max-w-3xl">
-          <p className="text-sm font-medium text-[var(--color-accent)] mb-4 tracking-wide uppercase">
-            {t("badge")}
-          </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--color-text-base)] leading-[1.1]">
-            {t("h1")}
-          </h1>
-          <p className="mt-6 text-lg sm:text-xl text-[var(--color-text-muted)] leading-relaxed max-w-2xl">
-            {t("sub")}
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <Link
-              href="/projects"
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-accent-muted)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-            >
-              {t("cta1")}
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-[var(--color-text-base)] ring-1 ring-inset ring-[var(--color-border)] hover:bg-[var(--color-surface-muted)] transition-colors"
-            >
-              {t("cta2")}
-            </Link>
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12 lg:gap-16">
+          <div className="max-w-3xl">
+            <p className="text-sm font-medium text-[var(--color-accent)] mb-4 tracking-wide uppercase">
+              {t("badge")}
+            </p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--color-text-base)] leading-[1.1]">
+              {t("h1")}
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl text-[var(--color-text-muted)] leading-relaxed max-w-2xl">
+              {t("sub")}
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <Link
+                href="/projects"
+                className="inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[var(--color-accent-muted)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+              >
+                {t("cta1")}
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-[var(--color-text-base)] ring-1 ring-inset ring-[var(--color-border)] hover:bg-[var(--color-surface-muted)] transition-colors"
+              >
+                {t("cta2")}
+              </Link>
+            </div>
+            <div className="mt-8">
+              <SocialLinks />
+            </div>
           </div>
-          <div className="mt-8">
-            <SocialLinks />
+          <div className="shrink-0 flex justify-center lg:justify-end lg:pt-2">
+            <Image
+              src={PROFILE_IMAGE_PATH}
+              alt={SITE_NAME}
+              width={220}
+              height={220}
+              priority
+              className="rounded-2xl object-cover ring-1 ring-[var(--color-border)] shadow-md max-w-[min(220px,70vw)] h-auto"
+            />
           </div>
         </div>
       </div>

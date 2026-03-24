@@ -5,6 +5,7 @@ import {
   LINKEDIN_URL,
   EMAIL,
   absoluteUrl,
+  profileImageAbsoluteUrl,
   type SiteLocale,
 } from "./metadata";
 
@@ -13,6 +14,7 @@ export function personSchema() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: SITE_NAME,
+    image: profileImageAbsoluteUrl(),
     url: absoluteUrl("en", "/"),
     email: EMAIL,
     jobTitle: "Senior Python Developer",

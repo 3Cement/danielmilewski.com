@@ -9,6 +9,14 @@ export const GITHUB_URL = "https://github.com/3Cement";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
 export const EMAIL = "hello@danielmilewski.dev";
 
+/** Local file in /public — synced from GitHub profile avatar (3Cement). */
+export const PROFILE_IMAGE_PATH = "/daniel-milewski.jpg";
+
+export function profileImageAbsoluteUrl(): string {
+  const base = SITE_URL.replace(/\/$/, "");
+  return `${base}${PROFILE_IMAGE_PATH}`;
+}
+
 export type SiteLocale = "en" | "pl";
 
 export function absoluteUrl(locale: SiteLocale, pathWithoutLocale: string): string {
