@@ -30,6 +30,9 @@
 # Cloudflare
 .wrangler/
 
+# Playwright MCP / local browser output
+.playwright-mcp/
+
 # IDE
 .idea/
 *.iml
