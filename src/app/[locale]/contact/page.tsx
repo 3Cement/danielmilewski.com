@@ -43,14 +43,16 @@ export default async function ContactPage({ params }: Props) {
             <div className="flex flex-wrap gap-3">
               <a
                 href={CV_URL_EN}
-                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 transition-colors"
               >
                 {t("cvEnglish")}
               </a>
               <a
                 href={CV_URL_PL}
-                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 transition-colors"
               >
                 {t("cvPolish")}

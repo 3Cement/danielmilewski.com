@@ -5,6 +5,7 @@ import { Tag } from "@/components/ui/Tag";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import {
   buildMetadata,
+  COMPANY_REGISTRY_URL,
   CV_URL_EN,
   CV_URL_PL,
   PROFILE_IMAGE_PATH,
@@ -36,6 +37,7 @@ export default async function AboutPage({ params }: Props) {
   const experience = t.raw("experience") as Array<{
     period: string;
     company: string;
+    companyUrl?: string;
     role: string;
     domain: string;
     note: string;
@@ -70,11 +72,14 @@ export default async function AboutPage({ params }: Props) {
                 <p className="text-xs font-semibold text-[var(--color-text-faint)] uppercase tracking-widest mb-3">
                   {t("availability")}
                 </p>
-                <div className="flex items-center gap-2">
-                  <span className="block w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
-                  <span className="text-sm text-[var(--color-text-muted)]">
-                    {t("availableText")}
-                  </span>
+                <div className="flex items-start gap-2">
+                  <span className="mt-1.5 block w-2 h-2 shrink-0 rounded-full bg-amber-500" aria-hidden="true" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-[var(--color-text-base)]">{t("availableText")}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] leading-relaxed mt-2">
+                      {t("availabilityNote")}
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -92,14 +97,16 @@ export default async function AboutPage({ params }: Props) {
                 <div className="flex flex-col gap-2">
                   <a
                     href={CV_URL_EN}
-                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-subtle)] transition-colors"
                   >
                     {t("cvEnglish")}
                   </a>
                   <a
                     href={CV_URL_PL}
-                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-subtle)] transition-colors"
                   >
                     {t("cvPolish")}
@@ -131,6 +138,23 @@ export default async function AboutPage({ params }: Props) {
               </div>
             </section>
 
+            <section>
+              <h2 className="text-xl font-bold tracking-tight text-[var(--color-text-base)] mb-5">
+                {t("companyHeading")}
+              </h2>
+              <p className="text-[var(--color-text-muted)] leading-relaxed whitespace-pre-line mb-4">
+                {t("companyBody")}
+              </p>
+              <a
+                href={COMPANY_REGISTRY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-[var(--color-accent)] hover:underline"
+              >
+                {t("companyRegistryLink")}
+              </a>
+            </section>
+
             {/* Experience */}
             <section>
               <h2 className="text-xl font-bold tracking-tight text-[var(--color-text-base)] mb-5">
@@ -139,12 +163,27 @@ export default async function AboutPage({ params }: Props) {
               <div className="space-y-6">
                 {experience.map((item) => (
                   <div
-                    key={item.company}
+                    key={`${item.period}-${item.company}`}
                     className="relative pl-5 border-l border-[var(--color-border)]"
                   >
                     <p className="text-xs text-[var(--color-text-faint)] mb-1">{item.period}</p>
                     <p className="text-base font-semibold text-[var(--color-text-base)]">
-                      {item.role} <span className="text-[var(--color-accent)]">@ {item.company}</span>
+                      {item.role}{" "}
+                      <span className="text-[var(--color-accent)]">
+                        @{" "}
+                        {item.companyUrl ? (
+                          <a
+                            href={item.companyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                          >
+                            {item.company}
+                          </a>
+                        ) : (
+                          item.company
+                        )}
+                      </span>
                     </p>
                     <p className="text-sm text-[var(--color-text-faint)] mb-1">{item.domain}</p>
                     <p className="text-sm text-[var(--color-text-muted)]">{item.note}</p>

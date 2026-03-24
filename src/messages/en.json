@@ -8,7 +8,7 @@
     "toggleMenu": "Toggle menu"
   },
   "hero": {
-    "badge": "Available for new projects",
+    "badge": "Limited availability — open to conversations",
     "h1": "Senior Python Developer — backend systems, APIs, and software that ships.",
     "sub": "I build backend systems and APIs in Python. I occasionally work on AI tools and frontend — when the project needs it.",
     "cta1": "View selected work",
@@ -64,12 +64,16 @@
     "heading": "About",
     "role": "Senior Python Developer",
     "availability": "Availability",
-    "availableText": "Available for new projects",
+    "availableText": "Not open to new full-time engagements at the moment",
     "location": "Location",
     "locationText": "Europe · Remote-friendly",
-    "cvHeading": "Résumé",
-    "cvEnglish": "Download CV (PDF, English)",
-    "cvPolish": "Download CV (PDF, Polish)",
+    "cvHeading": "CV (PDF)",
+    "cvEnglish": "CV — English",
+    "cvPolish": "CV — Polish",
+    "availabilityNote": "I'm fully committed to a current client project, so I'm not taking on new work at full capacity right now. I'm still happy to connect and discuss future opportunities, timelines, and whether we're a good fit down the line.",
+    "companyHeading": "Business",
+    "companyBody": "I operate as a registered sole proprietorship (CEIDG) in Poland for freelance and B2B contracts — programming and related IT services (PKD 62.10.B and associated codes). Registered address: ul. Obrońców Westerplatte 144A, 80-317 Gdańsk.\n\nNIP: 8442338935 · REGON: 522772081",
+    "companyRegistryLink": "Public company record (Monitor Firm / PB.pl)",
     "getInTouch": "Get in touch",
     "backgroundHeading": "Background",
     "bio1": "I'm a Python developer with a background in backend engineering, financial systems, and automation. I've worked in energy market intelligence, fintech, and IT services — mostly building the kind of software that handles real data and real edge cases.",
@@ -79,25 +83,28 @@
     "experienceHeading": "Experience",
     "experience": [
       {
-        "period": "[YYYY] — Present",
+        "period": "2023 — Present",
         "company": "JIT Team",
+        "companyUrl": "https://jit.team/",
         "role": "Senior Python Developer",
         "domain": "IT services & software development · Warsaw / remote",
-        "note": "[Description coming soon]"
+        "note": "Client projects in a software-house model — backend APIs, integrations, data processing, and shipping maintainable services for teams in Poland and abroad."
       },
       {
-        "period": "[YYYY] — [YYYY]",
+        "period": "2021 — 2023",
         "company": "Equiti",
+        "companyUrl": "https://www.equiti.com/",
         "role": "Python Developer",
         "domain": "Online brokerage & fintech (forex, CFD, multi-asset)",
-        "note": "[Description coming soon]"
+        "note": "Backend and platform work for a regulated online broker — trading workflows, integrations, and internal tooling in a high-availability environment."
       },
       {
-        "period": "[YYYY] — [YYYY]",
+        "period": "2019 — 2021",
         "company": "Energy Aspects",
+        "companyUrl": "https://www.energyaspects.com/",
         "role": "Python Developer",
         "domain": "Energy market intelligence & research analytics",
-        "note": "[Description coming soon]"
+        "note": "Research analytics — pipelines and internal tools turning market and commodity data into products for institutional subscribers."
       }
     ],
     "techHeading": "Tools & technologies",
@@ -117,12 +124,12 @@
   },
   "contact": {
     "heading": "Get in touch",
-    "sub": "I'm available for project-based and longer-term engagements. If you have a Python, backend, or automation project in mind — or just want to explore whether there's a fit — the best way is a short email.",
-    "cvHeading": "Résumé",
-    "cvEnglish": "Download CV (PDF, English)",
-    "cvPolish": "Download CV (PDF, Polish)",
+    "sub": "I'm focused on an ongoing project, so I'm not starting new engagements at full capacity — but I'm glad to hear what you're building and explore options for later. The best first step is a short email.",
+    "cvHeading": "CV (PDF)",
+    "cvEnglish": "CV — English",
+    "cvPolish": "CV — Polish",
     "emailHeading": "Send me an email",
-    "emailSub": "Tell me briefly what you're working on and what kind of help you're looking for. I reply within 1–2 business days.",
+    "emailSub": "Tell me briefly what you're working on. I read everything; replies may take a few business days when I'm deep in delivery.",
     "linkedinConnect": "Connect or message",
     "githubSee": "See public work",
     "lookingHeading": "What I'm looking for",
@@ -153,14 +160,22 @@
     "allProjects": "All projects"
   },
   "footer": {
-    "copyright": "© {year} Daniel Milewski"
+    "copyright": "© {year} Daniel Milewski",
+    "privacy": "Privacy policy",
+    "legalLine": "Sole proprietorship (CEIDG, Poland) · NIP {nip}"
+  },
+  "legal": {
+    "privacyTitle": "Privacy policy",
+    "privacyIntro": "This site is a personal portfolio. I don't run third-party advertising or marketing trackers on these pages. Hosting and deployment providers may process technical logs (e.g. IP, user agent) under their own privacy terms.",
+    "privacyContact": "Questions: contact me at the email shown on the Contact page.",
+    "privacyUpdates": "I may update this page occasionally; the \"last updated\" date reflects the latest revision."
   },
   "common": {
     "moreAbout": "More about me",
     "getInTouch": "Get in touch",
     "viewProjects": "View projects",
     "contactHeading": "Need a senior Python developer for backend, API, or automation work?",
-    "contactSub": "I'm available for project-based and long-term engagements. Let's talk about what you're building."
+    "contactSub": "Limited availability for new work — happy to talk about future collaboration."
   },
   "errors": {
     "notFoundTitle": "Page not found",
@@ -173,7 +188,8 @@
     "mainPageTitle": "Main",
     "siteDescription": "Senior Python Developer — backend systems, APIs, and automation.",
     "aboutDescription": "Senior Python Developer with a background in backend engineering, fintech, and energy market intelligence. Based in Europe, working remotely.",
-    "contactDescription": "Get in touch with Daniel Milewski. Available for senior Python development, backend systems, APIs, and automation projects.",
+    "contactDescription": "Contact Daniel Milewski — senior Python developer. Limited availability; open to conversations about backend, APIs, and automation.",
+    "privacyDescription": "Privacy policy for danielmilewski.com — data handling on this portfolio site.",
     "projectsDescription": "Projects built by Daniel Milewski — from personal tools to production systems.",
     "blogDescription": "Writing about Python, backend engineering, and software that ships."
   }

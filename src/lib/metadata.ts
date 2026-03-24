@@ -7,13 +7,20 @@ export const SITE_DESCRIPTION =
 export const TWITTER_HANDLE = "@danielmilewski";
 export const GITHUB_URL = "https://github.com/3Cement";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
-export const EMAIL = "hello@danielmilewski.dev";
+export const EMAIL = "danielmilewski123@gmail.com";
+
+/** Public business registry listing (CEIDG / Monitor Firm). */
+export const COMPANY_REGISTRY_URL =
+  "https://monitorfirm.pb.pl/firma/daniel-milewski-52277208100000/";
+
+export const COMPANY_NIP = "8442338935";
+export const COMPANY_REGON = "522772081";
 
 /** Local file in /public — professional headshot. */
 export const PROFILE_IMAGE_PATH = "/daniel-milewski.jpg";
 
-export const CV_URL_EN = "/cv/CV_DANIEL_MILEWSKI_ENG_25.pdf";
-export const CV_URL_PL = "/cv/CV_DANIEL_MILEWSKI_POL_25.pdf";
+export const CV_URL_EN = "/cv/cv-en.pdf";
+export const CV_URL_PL = "/cv/cv-pl.pdf";
 
 export function profileImageAbsoluteUrl(): string {
   const base = SITE_URL.replace(/\/$/, "");

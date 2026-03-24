@@ -8,7 +8,7 @@
     "toggleMenu": "Otwórz menu"
   },
   "hero": {
-    "badge": "Dostępny dla nowych projektów",
+    "badge": "Ograniczona dostępność — chętnie porozmawiam",
     "h1": "Senior Python Developer — systemy backendowe, API i oprogramowanie, które działa.",
     "sub": "Buduję systemy backendowe i API w Pythonie. Czasem pracuję z AI i frontendem, gdy projekt tego wymaga.",
     "cta1": "Zobacz projekty",
@@ -64,40 +64,47 @@
     "heading": "O mnie",
     "role": "Senior Python Developer",
     "availability": "Dostępność",
-    "availableText": "Dostępny dla nowych projektów",
+    "availableText": "Brak miejsca na nowe pełne projekty w tym momencie",
     "location": "Lokalizacja",
     "locationText": "Europa · Praca zdalna",
-    "cvHeading": "CV",
-    "cvEnglish": "Pobierz CV (PDF, angielski)",
-    "cvPolish": "Pobierz CV (PDF, polski)",
+    "cvHeading": "CV (PDF)",
+    "cvEnglish": "CV — angielski",
+    "cvPolish": "CV — polski",
+    "availabilityNote": "Realizuję teraz projekt u klienta na pełnym zaangażowaniu, więc nie przyjmuję nowych zleceń w pełnym wymiarze. Nadal chętnie odpiszę i umówię się na rozmowę o przyszłej współpracy, terminach i ewentualnym dopasowaniu.",
+    "companyHeading": "Działalność",
+    "companyBody": "Prowadzę jednoosobową działalność gospodarczą (CEIDG) w Polsce pod umowy B2B i freelance — programowanie i powiązane usługi IT (PKD 62.10.B i powiązane). Adres rejestrowy: ul. Obrońców Westerplatte 144A, 80-317 Gdańsk.\n\nNIP: 8442338935 · REGON: 522772081",
+    "companyRegistryLink": "Publiczny wpis firmy (Monitor Firm / PB.pl)",
     "getInTouch": "Napisz do mnie",
     "backgroundHeading": "O mnie",
     "bio1": "Jestem Python developerem z doświadczeniem w inżynierii backendowej, systemach finansowych i automatyzacji. Pracowałem w obszarze analityki rynku energii, fintech i usług IT — głównie budując oprogramowanie obsługujące prawdziwe dane i brzegowe przypadki.",
     "bio2": "Moim głównym narzędziem jest Python. Czasem pracuję z AI/ML i React, gdy projekt tego wymaga, ale systemy backendowe i API to moje główne pole działania.",
     "bio3": "Potrafię wziąć odpowiedzialność za projekt od początku do końca: od decyzji architektonicznych przez implementację po wdrożenie. Zależy mi na jakości kodu, przejrzystej architekturze i decyzjach, które następny inżynier będzie w stanie zrozumieć.",
-    "bio4": "Najlepiej pracuję z firmami, które mają jasno określony problem, szanują inżynierię i potrzebują kogoś, kto komunikuje się sprawnie zarówno z technicznymi, jak i niete­chnicznymi interesariuszami.",
+    "bio4": "Najlepiej pracuję z firmami, które mają jasno określony problem, szanują inżynierię i potrzebują kogoś, kto komunikuje się sprawnie zarówno z technicznymi, jak i nietechnicznymi interesariuszami.",
     "experienceHeading": "Doświadczenie",
     "experience": [
       {
-        "period": "[RRRR] — Obecnie",
+        "period": "2023 — obecnie",
         "company": "JIT Team",
+        "companyUrl": "https://jit.team/",
         "role": "Senior Python Developer",
         "domain": "Usługi IT i tworzenie oprogramowania · Warszawa / zdalnie",
-        "note": "[Opis wkrótce]"
+        "note": "Projekty dla klientów w modelu software house — API backendowe, integracje, przetwarzanie danych i utrzymywalne serwisy produkcyjne dla zespołów w Polsce i za granicą."
       },
       {
-        "period": "[RRRR] — [RRRR]",
+        "period": "2021 — 2023",
         "company": "Equiti",
+        "companyUrl": "https://www.equiti.com/",
         "role": "Python Developer",
         "domain": "Broker internetowy i fintech (forex, CFD, multi-asset)",
-        "note": "[Opis wkrótce]"
+        "note": "Backend i platforma dla regulowanego brokera online — przepływy tradingowe, integracje i narzędzia wewnętrzne w środowisku wysokiej dostępności."
       },
       {
-        "period": "[RRRR] — [RRRR]",
+        "period": "2019 — 2021",
         "company": "Energy Aspects",
+        "companyUrl": "https://www.energyaspects.com/",
         "role": "Python Developer",
         "domain": "Analityka rynku energii i wywiad badawczy",
-        "note": "[Opis wkrótce]"
+        "note": "Analityka dla rynku energii — potoki danych i narzędzia wewnętrzne zamieniające dane rynkowe w produkty dla instytucjonalnych odbiorców."
       }
     ],
     "techHeading": "Narzędzia i technologie",
@@ -117,12 +124,12 @@
   },
   "contact": {
     "heading": "Napisz do mnie",
-    "sub": "Jestem dostępny dla projektów krótko- i długoterminowych. Jeśli masz projekt Pythonowy, backendowy lub automatyzacyjny — albo chcesz sprawdzić, czy jest tu jakaś współpraca — najlepiej napisz krótki e-mail.",
-    "cvHeading": "CV",
-    "cvEnglish": "Pobierz CV (PDF, angielski)",
-    "cvPolish": "Pobierz CV (PDF, polski)",
+    "sub": "Skupiam się na trwającym projekcie, więc nie startuję nowych pełnych wdrożeń od ręki — ale chętnie przeczytam, czym się zajmujesz, i porozmawiamy o możliwościach na później. Najprościej napisać krótkiego maila.",
+    "cvHeading": "CV (PDF)",
+    "cvEnglish": "CV — angielski",
+    "cvPolish": "CV — polski",
     "emailHeading": "Wyślij e-mail",
-    "emailSub": "Opisz krótko, nad czym pracujesz i jakiej pomocy szukasz. Odpowiadam w ciągu 1–2 dni roboczych.",
+    "emailSub": "Opisz krótko, nad czym pracujesz. Czytam wszystkie wiadomości; odpowiedź może zająć kilka dni roboczych, gdy jestem w intensywnym wdrożeniu.",
     "linkedinConnect": "Połącz się lub napisz",
     "githubSee": "Zobacz publiczne projekty",
     "lookingHeading": "Czego szukam",
@@ -153,14 +160,22 @@
     "allProjects": "Wszystkie projekty"
   },
   "footer": {
-    "copyright": "© {year} Daniel Milewski"
+    "copyright": "© {year} Daniel Milewski",
+    "privacy": "Polityka prywatności",
+    "legalLine": "JDG (CEIDG) · NIP {nip}"
+  },
+  "legal": {
+    "privacyTitle": "Polityka prywatności",
+    "privacyIntro": "Ta strona to osobiste portfolio. Nie uruchamiam tu reklam ani trackerów marketingowych stron trzecich. Hosting i dostawca wdrożenia mogą przetwarzać podstawowe logi techniczne (np. adres IP, user agent) na zasadach własnych polityk prywatności.",
+    "privacyContact": "Pytania: napisz na adres e-mail z podstrony Kontakt.",
+    "privacyUpdates": "Tekst może być sporadycznie aktualizowany."
   },
   "common": {
     "moreAbout": "Więcej o mnie",
     "getInTouch": "Napisz do mnie",
     "viewProjects": "Zobacz projekty",
     "contactHeading": "Szukasz seniora Python do backendu, API lub automatyzacji?",
-    "contactSub": "Jestem dostępny dla projektów krótko- i długoterminowych. Porozmawiajmy o tym, co budujesz."
+    "contactSub": "Ograniczona dostępność na nowe projekty — chętnie o przyszłej współpracy."
   },
   "errors": {
     "notFoundTitle": "Nie znaleziono strony",
@@ -173,7 +188,8 @@
     "mainPageTitle": "Strona główna",
     "siteDescription": "Senior Python Developer — systemy backendowe, API i automatyzacja.",
     "aboutDescription": "Senior Python Developer z doświadczeniem w inżynierii backendowej, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
-    "contactDescription": "Skontaktuj się z Danielem Milewskim. Dostępny dla projektów Python, backend, API i automatyzacja.",
+    "contactDescription": "Kontakt z Danielem Milewskim — senior Python developer. Ograniczona dostępność; otwarty na rozmowy o backendzie, API i automatyzacji.",
+    "privacyDescription": "Polityka prywatności serwisu danielmilewski.com.",
     "projectsDescription": "Projekty Daniela Milewskiego — od narzędzi osobistych po systemy produkcyjne.",
     "blogDescription": "Notatki o Pythonie, inżynierii backendowej i oprogramowaniu, które działa."
   }

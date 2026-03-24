@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "node scripts/verify-messages.mjs",
     "pages:build": "npx @cloudflare/next-on-pages",
     "cf:preview": "npm run pages:build && wrangler pages dev",
     "cf:deploy": "npm run pages:build && wrangler pages deploy"
