@@ -1,30 +1,19 @@
-import fs from "fs";
-import path from "path";
 import { cache } from "react";
-import matter from "gray-matter";
-import readingTime from "reading-time";
+import contentData from "@/generated/content-data.json";
 import type { Project, ProjectMeta } from "@/types/project";
 import type { Post, PostMeta } from "@/types/post";
 
-const PROJECTS_DIR = path.join(process.cwd(), "src/content/projects");
-const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
+const { projectMetas, projectBySlug, postMetas, postBySlug } = contentData as {
+  projectMetas: ProjectMeta[];
+  projectBySlug: Record<string, Project>;
+  postMetas: PostMeta[];
+  postBySlug: Record<string, Post>;
+};
 
-// ─── Projects ────────────────────────────────────────────────────────────────
-
-const readAllProjectsFromDisk = cache((): ProjectMeta[] => {
-  const files = fs.readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".mdx"));
-  return files
-    .map((filename) => {
-      const slug = filename.replace(/\.mdx$/, "");
-      const raw = fs.readFileSync(path.join(PROJECTS_DIR, filename), "utf8");
-      const { data } = matter(raw);
-      return { slug, ...data } as ProjectMeta;
-    })
-    .sort((a, b) => (a.featured === b.featured ? 0 : a.featured ? -1 : 1));
-});
+const readAllProjectsFromCache = cache((): ProjectMeta[] => projectMetas);
 
 export function getAllProjects(): ProjectMeta[] {
-  return readAllProjectsFromDisk();
+  return readAllProjectsFromCache();
 }
 
 export function getFeaturedProjects(): ProjectMeta[] {
@@ -32,41 +21,18 @@ export function getFeaturedProjects(): ProjectMeta[] {
 }
 
 export const getProjectBySlug = cache((slug: string): Project | null => {
-  const filePath = path.join(PROJECTS_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(filePath)) return null;
-  const raw = fs.readFileSync(filePath, "utf8");
-  const { data, content } = matter(raw);
-  return { slug, ...data, content } as Project;
+  const p = projectBySlug[slug];
+  return p ?? null;
 });
 
 export function getAllProjectSlugs(): string[] {
-  return fs
-    .readdirSync(PROJECTS_DIR)
-    .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.replace(/\.mdx$/, ""));
+  return projectMetas.map((p) => p.slug);
 }
 
-// ─── Blog ─────────────────────────────────────────────────────────────────────
-
-const readAllPostsFromDisk = cache((): PostMeta[] => {
-  const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx"));
-  return files
-    .map((filename) => {
-      const slug = filename.replace(/\.mdx$/, "");
-      const raw = fs.readFileSync(path.join(BLOG_DIR, filename), "utf8");
-      const { data, content } = matter(raw);
-      const rt = readingTime(content);
-      return {
-        slug,
-        ...data,
-        readingTime: rt.text,
-      } as PostMeta;
-    })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-});
+const readAllPostsFromCache = cache((): PostMeta[] => postMetas);
 
 export function getAllPosts(): PostMeta[] {
-  return readAllPostsFromDisk();
+  return readAllPostsFromCache();
 }
 
 export function getLatestPosts(count = 3): PostMeta[] {
@@ -74,17 +40,10 @@ export function getLatestPosts(count = 3): PostMeta[] {
 }
 
 export const getPostBySlug = cache((slug: string): Post | null => {
-  const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
-  if (!fs.existsSync(filePath)) return null;
-  const raw = fs.readFileSync(filePath, "utf8");
-  const { data, content } = matter(raw);
-  const rt = readingTime(content);
-  return { slug, ...data, content, readingTime: rt.text } as Post;
+  const p = postBySlug[slug];
+  return p ?? null;
 });
 
 export function getAllPostSlugs(): string[] {
-  return fs
-    .readdirSync(BLOG_DIR)
-    .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.replace(/\.mdx$/, ""));
+  return postMetas.map((p) => p.slug);
 }
