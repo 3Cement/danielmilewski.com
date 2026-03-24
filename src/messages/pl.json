@@ -83,7 +83,15 @@
     "experienceHeading": "Doświadczenie",
     "experience": [
       {
-        "period": "2023 — obecnie",
+        "period": "2025 — obecnie",
+        "company": "Energy Aspects",
+        "companyUrl": "https://www.energyaspects.com/",
+        "role": "Python Developer",
+        "domain": "Analityka rynku energii i wywiad badawczy",
+        "note": "Analityka dla rynku energii — potoki danych i narzędzia wewnętrzne zamieniające dane rynkowe w produkty dla instytucjonalnych odbiorców."
+      },
+      {
+        "period": "2024 — obecnie",
         "company": "JIT Team",
         "companyUrl": "https://jit.team/",
         "role": "Senior Python Developer",
@@ -91,20 +99,12 @@
         "note": "Projekty dla klientów w modelu software house — API backendowe, integracje, przetwarzanie danych i utrzymywalne serwisy produkcyjne dla zespołów w Polsce i za granicą."
       },
       {
-        "period": "2021 — 2023",
+        "period": "2024 — 2025",
         "company": "Equiti",
         "companyUrl": "https://www.equiti.com/",
         "role": "Python Developer",
         "domain": "Broker internetowy i fintech (forex, CFD, multi-asset)",
         "note": "Backend i platforma dla regulowanego brokera online — przepływy tradingowe, integracje i narzędzia wewnętrzne w środowisku wysokiej dostępności."
-      },
-      {
-        "period": "2019 — 2021",
-        "company": "Energy Aspects",
-        "companyUrl": "https://www.energyaspects.com/",
-        "role": "Python Developer",
-        "domain": "Analityka rynku energii i wywiad badawczy",
-        "note": "Analityka dla rynku energii — potoki danych i narzędzia wewnętrzne zamieniające dane rynkowe w produkty dla instytucjonalnych odbiorców."
       }
     ],
     "techHeading": "Narzędzia i technologie",

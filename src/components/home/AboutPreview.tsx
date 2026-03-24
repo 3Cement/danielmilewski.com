@@ -1,9 +1,13 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-export async function AboutPreview() {
-  const t = await getTranslations("about");
-  const tCommon = await getTranslations("common");
+interface AboutPreviewProps {
+  locale: string;
+}
+
+export async function AboutPreview({ locale }: AboutPreviewProps) {
+  const t = await getTranslations({ locale, namespace: "about" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
     <section className="py-24 px-4">

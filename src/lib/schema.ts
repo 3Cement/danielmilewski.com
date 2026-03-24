@@ -9,13 +9,13 @@ import {
   type SiteLocale,
 } from "./metadata";
 
-export function personSchema() {
+export function personSchema(locale: SiteLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     name: SITE_NAME,
     image: profileImageAbsoluteUrl(),
-    url: absoluteUrl("en", "/"),
+    url: absoluteUrl(locale, "/"),
     email: EMAIL,
     jobTitle: "Senior Python Developer",
     description: SITE_DESCRIPTION,
@@ -32,12 +32,12 @@ export function personSchema() {
   };
 }
 
-export function websiteSchema() {
+export function websiteSchema(locale: SiteLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: SITE_NAME,
-    url: absoluteUrl("en", "/"),
+    url: absoluteUrl(locale, "/"),
     description: SITE_DESCRIPTION,
     author: { "@type": "Person", name: SITE_NAME },
   };
@@ -106,7 +106,7 @@ export function softwareSchema({
     author: {
       "@type": "Person",
       name: SITE_NAME,
-      url: absoluteUrl("en", "/"),
+      url: absoluteUrl(locale, "/"),
     },
   };
 }

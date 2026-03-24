@@ -1,9 +1,13 @@
 import { ContactCTA } from "@/components/ui/ContactCTA";
 
-export function FinalCTA() {
+interface FinalCTAProps {
+  locale: string;
+}
+
+export function FinalCTA({ locale }: FinalCTAProps) {
   return (
     <div className="bg-[var(--color-surface)]">
-      <ContactCTA />
+      <ContactCTA locale={locale} />
     </div>
   );
 }

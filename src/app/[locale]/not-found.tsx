@@ -1,8 +1,13 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 
 export default async function NotFound() {
-  const t = await getTranslations("errors");
+  const resolved = await getLocale();
+  const locale = routing.locales.includes(resolved as "en" | "pl")
+    ? resolved
+    : routing.defaultLocale;
+  const t = await getTranslations({ locale, namespace: "errors" });
 
   return (
     <div className="py-24 px-4">

@@ -4,6 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
 
+export const dynamic = "force-static";
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

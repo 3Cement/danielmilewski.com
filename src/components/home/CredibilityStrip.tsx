@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
 
-export async function CredibilityStrip() {
-  const t = await getTranslations("credibility");
+interface CredibilityStripProps {
+  locale: string;
+}
+
+export async function CredibilityStrip({ locale }: CredibilityStripProps) {
+  const t = await getTranslations({ locale, namespace: "credibility" });
   const tags = t.raw("tags") as string[];
 
   return (

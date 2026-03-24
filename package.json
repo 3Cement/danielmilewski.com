@@ -8,11 +8,14 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node scripts/verify-messages.mjs",
-    "pages:build": "npx @cloudflare/next-on-pages",
-    "cf:preview": "npm run pages:build && wrangler pages dev",
-    "cf:deploy": "npm run pages:build && wrangler pages deploy"
+    "optimize:images": "node scripts/optimize-investtracker-webp.mjs",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.17.3",
     "@tailwindcss/typography": "^0.5.19",
     "gray-matter": "^4.0.3",
     "next": "16.2.1",
@@ -29,6 +32,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5",
     "wrangler": "^4.76.0"

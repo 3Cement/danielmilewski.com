@@ -2,8 +2,12 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 
-export async function Hero() {
-  const t = await getTranslations("hero");
+interface HeroProps {
+  locale: string;
+}
+
+export async function Hero({ locale }: HeroProps) {
+  const t = await getTranslations({ locale, namespace: "hero" });
 
   return (
     <section className="relative py-24 sm:py-32 px-4">

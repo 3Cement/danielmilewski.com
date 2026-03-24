@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { cache } from "react";
 import matter from "gray-matter";
 import readingTime from "reading-time";
 import type { Project, ProjectMeta } from "@/types/project";
@@ -10,7 +11,7 @@ const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
 // ─── Projects ────────────────────────────────────────────────────────────────
 
-export function getAllProjects(): ProjectMeta[] {
+const readAllProjectsFromDisk = cache((): ProjectMeta[] => {
   const files = fs.readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".mdx"));
   return files
     .map((filename) => {
@@ -20,19 +21,23 @@ export function getAllProjects(): ProjectMeta[] {
       return { slug, ...data } as ProjectMeta;
     })
     .sort((a, b) => (a.featured === b.featured ? 0 : a.featured ? -1 : 1));
+});
+
+export function getAllProjects(): ProjectMeta[] {
+  return readAllProjectsFromDisk();
 }
 
 export function getFeaturedProjects(): ProjectMeta[] {
   return getAllProjects().filter((p) => p.featured);
 }
 
-export function getProjectBySlug(slug: string): Project | null {
+export const getProjectBySlug = cache((slug: string): Project | null => {
   const filePath = path.join(PROJECTS_DIR, `${slug}.mdx`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
   return { slug, ...data, content } as Project;
-}
+});
 
 export function getAllProjectSlugs(): string[] {
   return fs
@@ -43,7 +48,7 @@ export function getAllProjectSlugs(): string[] {
 
 // ─── Blog ─────────────────────────────────────────────────────────────────────
 
-export function getAllPosts(): PostMeta[] {
+const readAllPostsFromDisk = cache((): PostMeta[] => {
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx"));
   return files
     .map((filename) => {
@@ -58,20 +63,24 @@ export function getAllPosts(): PostMeta[] {
       } as PostMeta;
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+});
+
+export function getAllPosts(): PostMeta[] {
+  return readAllPostsFromDisk();
 }
 
 export function getLatestPosts(count = 3): PostMeta[] {
   return getAllPosts().slice(0, count);
 }
 
-export function getPostBySlug(slug: string): Post | null {
+export const getPostBySlug = cache((slug: string): Post | null => {
   const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
   const rt = readingTime(content);
   return { slug, ...data, content, readingTime: rt.text } as Post;
-}
+});
 
 export function getAllPostSlugs(): string[] {
   return fs

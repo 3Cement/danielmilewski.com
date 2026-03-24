@@ -8,6 +8,8 @@ import { softwareSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
 import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
 
+export const dynamic = "force-static";
+
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }

@@ -6,8 +6,12 @@ interface ExpertiseItem {
   description: string;
 }
 
-export async function ExpertiseGrid() {
-  const t = await getTranslations("expertise");
+interface ExpertiseGridProps {
+  locale: string;
+}
+
+export async function ExpertiseGrid({ locale }: ExpertiseGridProps) {
+  const t = await getTranslations({ locale, namespace: "expertise" });
   const items = t.raw("items") as ExpertiseItem[];
 
   return (

@@ -1,11 +1,13 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { COMPANY_NIP, SITE_NAME } from "@/lib/metadata";
 
-export async function Footer() {
-  const tNav = await getTranslations("nav");
-  const tFoot = await getTranslations("footer");
+export function Footer() {
+  const tNav = useTranslations("nav");
+  const tFoot = useTranslations("footer");
   const year = new Date().getFullYear();
 
   const footerLinks = [
@@ -34,6 +36,7 @@ export async function Footer() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    prefetch
                     className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] transition-colors"
                   >
                     {link.label}

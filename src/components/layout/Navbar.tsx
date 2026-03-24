@@ -34,6 +34,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
+            prefetch
             className="text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
           >
             Daniel Milewski
@@ -45,6 +46,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch
                 className={cn(
                   "px-3 py-2 rounded-md text-sm font-medium transition-colors",
                   pathname.includes(link.href)
@@ -87,6 +89,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch
                 onClick={() => setMobileOpen(false)}
                 className={cn(
                   "block px-3 py-2.5 rounded-md text-sm font-medium transition-colors",

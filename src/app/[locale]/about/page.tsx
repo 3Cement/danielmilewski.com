@@ -14,6 +14,8 @@ import {
 } from "@/lib/metadata";
 import { Link } from "@/i18n/navigation";
 
+export const dynamic = "force-static";
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -30,14 +30,19 @@ export default async function LocaleLayout({ children, params }: Props) {
     notFound();
   }
 
-  const messages = await getMessages();
+  setRequestLocale(locale);
+  const messages = await getMessages({ locale });
+  const siteLocale = locale as "en" | "pl";
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([personSchema(), websiteSchema()]),
+          __html: JSON.stringify([
+            personSchema(siteLocale),
+            websiteSchema(siteLocale),
+          ]),
         }}
       />
       <Navbar />

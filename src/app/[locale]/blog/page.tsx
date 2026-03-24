@@ -4,6 +4,8 @@ import { getAllPosts } from "@/lib/content";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 
+export const dynamic = "force-static";
+
 interface Props {
   params: Promise<{ locale: string }>;
 }
@@ -38,7 +40,7 @@ export default async function BlogPage({ params }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
+            <BlogCard key={post.slug} post={post} locale={locale} />
           ))}
         </div>
       </div>

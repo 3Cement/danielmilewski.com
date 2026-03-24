@@ -1,15 +1,14 @@
-import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Tag } from "@/components/ui/Tag";
 import type { PostMeta } from "@/types/post";
 
 interface BlogCardProps {
   post: PostMeta;
+  locale: string;
   compact?: boolean;
 }
 
-export async function BlogCard({ post, compact = false }: BlogCardProps) {
-  const locale = await getLocale();
+export async function BlogCard({ post, locale, compact = false }: BlogCardProps) {
   const dateLocale = locale === "pl" ? "pl-PL" : "en-GB";
   const date = new Date(post.date).toLocaleDateString(dateLocale, {
     year: "numeric",

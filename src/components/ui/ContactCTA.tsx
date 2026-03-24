@@ -1,8 +1,12 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 
-export async function ContactCTA() {
-  const t = await getTranslations("common");
+interface ContactCTAProps {
+  locale: string;
+}
+
+export async function ContactCTA({ locale }: ContactCTAProps) {
+  const t = await getTranslations({ locale, namespace: "common" });
 
   return (
     <section className="py-24 px-4">

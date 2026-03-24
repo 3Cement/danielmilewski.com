@@ -7,19 +7,23 @@ import { WritingPreview } from "@/components/home/WritingPreview";
 import { FinalCTA } from "@/components/home/FinalCTA";
 import { getFeaturedProjects, getLatestPosts } from "@/lib/content";
 
-export async function HomePageContent() {
+interface HomePageContentProps {
+  locale: string;
+}
+
+export async function HomePageContent({ locale }: HomePageContentProps) {
   const projects = getFeaturedProjects();
   const posts = getLatestPosts(3);
 
   return (
     <>
-      <Hero />
-      <CredibilityStrip />
-      <SelectedProjects projects={projects} />
-      <ExpertiseGrid />
-      <AboutPreview />
-      <WritingPreview posts={posts} />
-      <FinalCTA />
+      <Hero locale={locale} />
+      <CredibilityStrip locale={locale} />
+      <SelectedProjects projects={projects} locale={locale} />
+      <ExpertiseGrid locale={locale} />
+      <AboutPreview locale={locale} />
+      <WritingPreview posts={posts} locale={locale} />
+      <FinalCTA locale={locale} />
     </>
   );
 }

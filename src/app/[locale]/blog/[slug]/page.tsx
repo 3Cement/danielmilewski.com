@@ -13,6 +13,8 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
 
+export const dynamic = "force-static";
+
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
@@ -115,7 +117,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {related.map((p) => (
-                      <BlogCard key={p.slug} post={p} />
+                      <BlogCard key={p.slug} post={p} locale={locale} />
                     ))}
                   </div>
                 </div>

@@ -5,10 +5,11 @@ import type { PostMeta } from "@/types/post";
 
 interface WritingPreviewProps {
   posts: PostMeta[];
+  locale: string;
 }
 
-export async function WritingPreview({ posts }: WritingPreviewProps) {
-  const t = await getTranslations("blog");
+export async function WritingPreview({ posts, locale }: WritingPreviewProps) {
+  const t = await getTranslations({ locale, namespace: "blog" });
 
   return (
     <section className="py-24 px-4 bg-[var(--color-surface-muted)]">
@@ -35,7 +36,7 @@ export async function WritingPreview({ posts }: WritingPreviewProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
+            <BlogCard key={post.slug} post={post} locale={locale} />
           ))}
         </div>
       </div>

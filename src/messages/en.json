@@ -83,7 +83,15 @@
     "experienceHeading": "Experience",
     "experience": [
       {
-        "period": "2023 — Present",
+        "period": "2025 — Present",
+        "company": "Energy Aspects",
+        "companyUrl": "https://www.energyaspects.com/",
+        "role": "Python Developer",
+        "domain": "Energy market intelligence & research analytics",
+        "note": "Research analytics — pipelines and internal tools turning market and commodity data into products for institutional subscribers."
+      },
+      {
+        "period": "2024 — Present",
         "company": "JIT Team",
         "companyUrl": "https://jit.team/",
         "role": "Senior Python Developer",
@@ -91,20 +99,12 @@
         "note": "Client projects in a software-house model — backend APIs, integrations, data processing, and shipping maintainable services for teams in Poland and abroad."
       },
       {
-        "period": "2021 — 2023",
+        "period": "2024 — 2025",
         "company": "Equiti",
         "companyUrl": "https://www.equiti.com/",
         "role": "Python Developer",
         "domain": "Online brokerage & fintech (forex, CFD, multi-asset)",
         "note": "Backend and platform work for a regulated online broker — trading workflows, integrations, and internal tooling in a high-availability environment."
-      },
-      {
-        "period": "2019 — 2021",
-        "company": "Energy Aspects",
-        "companyUrl": "https://www.energyaspects.com/",
-        "role": "Python Developer",
-        "domain": "Energy market intelligence & research analytics",
-        "note": "Research analytics — pipelines and internal tools turning market and commodity data into products for institutional subscribers."
       }
     ],
     "techHeading": "Tools & technologies",

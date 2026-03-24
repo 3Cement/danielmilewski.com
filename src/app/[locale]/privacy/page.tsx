@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 
+export const dynamic = "force-static";
+
 interface Props {
   params: Promise<{ locale: string }>;
 }

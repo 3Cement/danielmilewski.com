@@ -5,10 +5,16 @@ import type { ProjectMeta } from "@/types/project";
 
 interface SelectedProjectsProps {
   projects: ProjectMeta[];
+  locale: string;
 }
 
-export async function SelectedProjects({ projects }: SelectedProjectsProps) {
-  const t = await getTranslations("projects");
+export async function SelectedProjects({ projects, locale }: SelectedProjectsProps) {
+  const t = await getTranslations({ locale, namespace: "projects" });
+  const cardLabels = {
+    problemLabel: t("problemLabel"),
+    solutionLabel: t("solutionLabel"),
+    readCaseStudy: t("readCaseStudy"),
+  };
 
   return (
     <section className="py-24 px-4" id="projects">
@@ -24,6 +30,7 @@ export async function SelectedProjects({ projects }: SelectedProjectsProps) {
           </div>
           <Link
             href="/projects"
+            prefetch
             className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
           >
             {t("allProjects")}
@@ -35,13 +42,14 @@ export async function SelectedProjects({ projects }: SelectedProjectsProps) {
 
         <div className="grid grid-cols-1 gap-8 w-full">
           {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+            <ProjectCard key={project.slug} project={project} labels={cardLabels} />
           ))}
         </div>
 
         <div className="mt-8 sm:hidden">
           <Link
             href="/projects"
+            prefetch
             className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
           >
             {t("allProjects")}
