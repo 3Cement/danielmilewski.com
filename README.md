@@ -1,167 +1,212 @@
 # Daniel Milewski — Portfolio
 
-Personal portfolio website for a Senior Python Developer specializing in AI/LLM applications, backend engineering, and automation.
+Personal portfolio site: Senior Python Developer (AI/LLM, backend, automation). Bilingual **English** (`/en`) and **Polish** (`/pl`).
 
-**Tech stack:** Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · MDX · Vercel
+## Tech stack
 
----
+| Layer | Choice |
+|--------|--------|
+| Framework | **Next.js 16** (App Router, React 19) |
+| Styling | **Tailwind CSS v4** |
+| i18n | **next-intl** (middleware + `src/messages/*.json`) |
+| Content | **MDX** (`next-mdx-remote`) + frontmatter (`gray-matter`) |
+| Production host | **Cloudflare Workers** via **OpenNext** (`@opennextjs/cloudflare`) |
+| Deploy CLI | **Wrangler** (`wrangler.jsonc`) |
 
-## Getting started
-
-```bash
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-```bash
-npm run build   # production build
-npm run lint    # lint check
-```
+Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare Workers do not ship your repo’s `src/content/` tree**, so MDX is compiled into a JSON bundle at build time (see [Content on Cloudflare](#content-on-cloudflare-workers) below).
 
 ---
 
-## Project structure
+## Requirements
+
+- **Node.js 20+** (matches typical Next 16 setups)
+- npm (or compatible client)
+- For deploy: Cloudflare account and `npx wrangler login`
+
+---
+
+## Scripts
+
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Runs `predev` → regenerates `src/generated/content-data.json` → Next dev server (port 3000). |
+| `npm run build` | Runs `prebuild` → regenerates JSON → `next build`. |
+| `npm run start` | Production Next server after `npm run build`. |
+| `npm run lint` | ESLint. |
+| `npm run test` | `scripts/verify-messages.mjs` — checks EN/PL message key parity. |
+| `npm run preview` | `opennextjs-cloudflare build` + local Worker preview (Wrangler). |
+| `npm run deploy` | OpenNext build + `opennextjs-cloudflare deploy` to Cloudflare. |
+| `node scripts/generate-content-data.mjs` | Regenerate `content-data.json` only (used by `predev` / `prebuild`). |
+
+---
+
+## How routing and i18n work
+
+- All user-facing pages live under **`src/app/[locale]/`** (`en`, `pl`).
+- **`src/middleware.ts`** uses `next-intl/middleware` and `src/i18n/routing.ts` (locales, default `en`, locale detection).
+- Visiting `/` redirects to a locale (e.g. `/en`).
+- Copy lives in **`src/messages/en.json`** and **`src/messages/pl.json`**. Navigation uses **`src/i18n/navigation.ts`** (`Link`, `redirect`, etc.).
+- Root **`src/app/layout.tsx`**: fonts, global metadata base, wraps children. Locale layout **`src/app/[locale]/layout.tsx`**: `NextIntlClientProvider`, navbar, footer, JSON-LD.
+
+---
+
+## Content on Cloudflare Workers
+
+`src/lib/content.ts` **does not read the filesystem at runtime** on Workers (that caused `ENOENT` on paths like `/bundle/src/content/...`).
+
+Instead:
+
+1. **`scripts/generate-content-data.mjs`** scans `src/content/projects/*.mdx` and `src/content/blog/*.mdx`, parses frontmatter, computes reading time for posts, and writes **`src/generated/content-data.json`**.
+2. **`predev`** and **`prebuild`** run that script automatically.
+3. **`content.ts`** imports the JSON and exposes `getAllProjects`, `getPostBySlug`, etc.
+
+**Workflow when you edit MDX**
+
+- Use `npm run dev` or `npm run build` so the JSON stays in sync.
+- Commit both the **`.mdx` files** and the updated **`content-data.json`** so CI and other machines match production.
+
+---
+
+## Project structure (overview)
 
 ```
 src/
-├── app/                  Pages (App Router)
-│   ├── page.tsx          Home
-│   ├── projects/         Projects index + [slug] case studies
-│   ├── blog/             Blog index + [slug] posts
-│   ├── about/            About page
-│   ├── contact/          Contact page
-│   ├── sitemap.ts        Auto-generated sitemap
-│   └── robots.ts         robots.txt
-├── components/
-│   ├── layout/           Navbar, Footer
-│   ├── home/             Home page sections
-│   ├── projects/         ProjectCard, ProjectGrid, CaseStudySection
-│   ├── blog/             BlogCard, TableOfContents
-│   └── ui/               Tag, SocialLinks, ContactCTA, ThemeToggle
+├── app/
+│   ├── layout.tsx              # Root: fonts, metadata base
+│   ├── globals.css
+│   ├── robots.ts
+│   ├── sitemap.ts
+│   ├── icon.tsx, apple-icon.tsx, opengraph-image.tsx
+│   └── [locale]/               # All localized routes
+│       ├── layout.tsx          # next-intl provider, nav, footer
+│       ├── page.tsx            # Home
+│       ├── about/, blog/, contact/, main/, privacy/, projects/
+│       └── ...
+├── components/                 # layout/, home/, blog/, projects/, ui/, mdx/
 ├── content/
-│   ├── projects/         *.mdx — project case studies
-│   └── blog/             *.mdx — blog posts
+│   ├── projects/*.mdx
+│   └── blog/*.mdx
+├── generated/
+│   └── content-data.json       # Built by generate-content-data.mjs (commit this)
+├── i18n/
+│   ├── navigation.ts
+│   ├── request.ts              # next-intl request config
+│   └── routing.ts
 ├── lib/
-│   ├── content.ts        MDX content loading helpers
-│   ├── metadata.ts       SEO helpers + site constants
-│   ├── schema.ts         JSON-LD schema builders
-│   ├── headings.ts       Blog ToC heading extractor
-│   └── utils.ts          cn() helper
+│   ├── content.ts              # Data from generated JSON
+│   ├── metadata.ts             # SITE_URL, SEO helpers (uses NEXT_PUBLIC_SITE_URL)
+│   ├── schema.ts               # JSON-LD
+│   └── ...
+├── messages/
+│   ├── en.json
+│   └── pl.json
+├── middleware.ts
 └── types/
-    ├── project.ts
-    └── post.ts
+
+open-next.config.ts             # OpenNext Cloudflare config
+wrangler.jsonc                  # Worker name, routes, vars, assets, bindings
+public/                         # Static files (CVs, images, _headers)
+scripts/
+├── generate-content-data.mjs
+└── verify-messages.mjs
 ```
 
 ---
 
-## Where to customize
+## Configuration files
 
-### Personal info, social links, SEO defaults
+| File | Role |
+|------|------|
+| `next.config.ts` | Next config + `next-intl` plugin; `initOpenNextCloudflareForDev()` when `NODE_ENV === 'development'`. |
+| `open-next.config.ts` | `defineCloudflareConfig({})` — optional R2 cache, etc. ([OpenNext Cloudflare docs](https://opennext.js.org/cloudflare)). |
+| `wrangler.jsonc` | Worker entry (`.open-next/worker.js`), **assets**, **vars**, **routes** (custom domains), **IMAGES**, **WORKER_SELF_REFERENCE**. |
+| `.dev.vars` | Local secrets / vars for Wrangler (not committed). Example: `NEXTJS_ENV=development`. |
 
-Edit `src/lib/metadata.ts`:
+---
 
-```ts
-export const SITE_URL = "https://danielmilewski.dev";   // your domain
-export const SITE_NAME = "Daniel Milewski";
-export const GITHUB_URL = "https://github.com/3Cement";
-export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
-export const EMAIL = "hello@danielmilewski.dev";
+## Environment variables
+
+| Variable | Where | Notes |
+|----------|--------|--------|
+| `NEXT_PUBLIC_SITE_URL` | `wrangler.jsonc` → `vars`, and/or Cloudflare dashboard | **Must include the scheme**, e.g. `https://danielmilewski.com`. Used in `src/lib/metadata.ts` for `metadataBase`, canonical URLs, and absolute links. A value like `danielmilewski.com` (no `https://`) breaks `new URL(SITE_URL)`. |
+| `NEXTJS_ENV` | Optional in `.dev.vars` for local preview | Local only; do not set `development` on production Workers unless you intend to. |
+
+**Wrangler vs dashboard:** `wrangler deploy` treats **`wrangler.jsonc` as source of truth**. If you add routes or vars only in the dashboard, the next CLI deploy can overwrite them. This repo keeps **`routes`** (apex + `www`) and **`vars`** in `wrangler.jsonc` so deploys stay consistent.
+
+---
+
+## Deploy to Cloudflare Workers
+
+1. `npx wrangler login`
+2. From the repo root: **`npm run deploy`**  
+   (runs OpenNext build — including `npm run build` with `prebuild` — then uploads the Worker and assets.)
+3. Custom domains are defined in **`wrangler.jsonc`** under `routes` with `custom_domain: true` and `zone_name` (DNS zone on Cloudflare).
+4. If Wrangler prints a diff warning, align dashboard settings with `wrangler.jsonc` or rely on the file after deploy.
+
+**Useful links**
+
+- Worker: `https://<worker-name>.<subdomain>.workers.dev` (see Wrangler output).
+- [OpenNext Cloudflare](https://opennext.js.org/cloudflare)
+
+---
+
+## Local OpenNext / Worker preview
+
+```bash
+npm run preview
 ```
 
-### Projects
-
-Add or edit files in `src/content/projects/`. Each file is an MDX document with frontmatter:
-
-```yaml
----
-title: "Project Title"
-slug: "project-slug"           # must match the filename
-featured: true                 # shown on home page if true
-shortProblem: "..."
-shortSolution: "..."
-stack: ["Python", "FastAPI"]
-role: "Backend Engineer"
-outcome: "..."
-overview: "..."
-repo: "https://github.com/..."   # optional
-demo: "https://..."              # optional
-relatedSlugs: ["other-slug"]     # optional
----
-
-Your MDX content here...
-```
-
-### Blog posts
-
-Add or edit files in `src/content/blog/`. Frontmatter:
-
-```yaml
----
-title: "Post Title"
-slug: "post-slug"              # must match the filename
-date: "2024-11-15"             # ISO format, used for sorting
-excerpt: "Short description shown in cards and meta."
-tags: ["Python", "FastAPI"]
----
-
-Your MDX content here...
-```
-
-Reading time is computed automatically from the content.
-
-### Colors and fonts
-
-Colors are defined as CSS custom properties in `src/app/globals.css` inside `@theme inline { ... }`. Dark mode values are in `.dark { ... }`. Change `--color-accent` to update the brand color throughout the site.
-
-Fonts are loaded via `next/font` in `src/app/layout.tsx`. Swap `Geist` for any Google Font by changing the import.
-
-### Navigation links
-
-Edit the `navLinks` array in `src/components/layout/Navbar.tsx` and the `footerLinks` array in `src/components/layout/Footer.tsx`.
-
-### Hero copy and expertise grid
-
-- Hero text: `src/components/home/Hero.tsx`
-- Capability strip: `src/components/home/CredibilityStrip.tsx`
-- Expertise blocks: `src/components/home/ExpertiseGrid.tsx`
-- About preview: `src/components/home/AboutPreview.tsx`
-
-### About page
-
-Edit `src/app/about/page.tsx` — inline content (bio, timeline, tech stack). No MDX needed here.
+Serves the built Worker locally (Wrangler). Use this to verify behavior close to production without deploying.
 
 ---
 
-## Deploy to Vercel
+## Customize the site
 
-1. Push to GitHub.
-2. Import the repository at [vercel.com/new](https://vercel.com/new).
-3. No build configuration needed — Vercel detects Next.js automatically.
-4. Set `NEXT_PUBLIC_SITE_URL` in Vercel environment variables to your production domain.
+### Site URL, name, social links
 
-### Environment variables
+`src/lib/metadata.ts` — defaults and helpers. Production URL should match **`NEXT_PUBLIC_SITE_URL`** (full `https://` URL).
 
-| Variable | Required | Description |
-|---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Yes (prod) | Your production URL, e.g. `https://danielmilewski.dev` |
+### Projects (MDX)
+
+`src/content/projects/<slug>.mdx` — frontmatter fields match `src/types/project.ts` (`title`, `featured`, `shortProblem`, `stack`, `content`, etc.). Filename should match `slug`.
+
+### Blog (MDX)
+
+`src/content/blog/<slug>.mdx` — frontmatter per `src/types/post.ts` (`title`, `date`, `excerpt`, `tags`, …). Reading time is generated in `content-data.json`.
+
+### Translations (UI strings)
+
+`src/messages/en.json` and `src/messages/pl.json`. Run **`npm run test`** after edits to keep keys aligned.
+
+### Theme / fonts
+
+- Tokens: `src/app/globals.css` (`@theme`, `.dark`).
+- Fonts: `src/app/layout.tsx` (`next/font`).
+
+### Navigation
+
+`src/components/layout/Navbar.tsx`, `Footer.tsx`, and message keys under navigation-related namespaces in `messages/*.json`.
 
 ---
 
 ## SEO
 
-- Each route exports `generateMetadata()` with title, description, canonical, Open Graph, and Twitter Card tags.
-- `layout.tsx` injects `Person` and `WebSite` JSON-LD on every page.
-- Blog posts inject `BlogPosting` schema; project pages inject `SoftwareSourceCode` schema.
-- `/sitemap.xml` and `/robots.txt` are auto-generated from content.
-- Update `SITE_URL` in `src/lib/metadata.ts` before deploying.
+- Per-route `generateMetadata` where defined; shared helpers in `src/lib/metadata.ts`.
+- JSON-LD: `src/lib/schema.ts` (Person, WebSite, BlogPosting, etc.).
+- `sitemap.ts` and `robots.ts` at app root.
 
 ---
 
-## Content workflow
+## Troubleshooting
 
-1. Write a new project case study → add `src/content/projects/my-project.mdx`
-2. Write a new blog post → add `src/content/blog/my-post.mdx`
-3. Run `npm run build` to verify everything compiles cleanly.
-4. Deploy via `git push` — Vercel builds automatically.
+| Symptom | Likely cause |
+|---------|----------------|
+| **500** on Worker for `/en` or `/pl` | Stale or missing `content-data.json` for the deployed commit, or old Worker bundle before MDX JSON fix. Run `npm run build` locally, redeploy, ensure MDX changes committed with regenerated JSON. |
+| Wrong canonical / OG URLs | `NEXT_PUBLIC_SITE_URL` missing `https://` or out of sync with real domain. |
+| Wrangler “differs from dashboard” warning | Deploy updates remote to match `wrangler.jsonc`; keep vars/routes in the file (as in this repo) or re-apply dashboard settings after each deploy if you manage only from UI. |
+
+---
+
+## Optional: deploy on Vercel
+
+Next.js runs on Vercel without OpenNext. You would still need **`prebuild`** to run so `content-data.json` exists (Vercel runs `npm run build` by default, which triggers `prebuild`). Set **`NEXT_PUBLIC_SITE_URL`** in the Vercel project environment. This repo’s primary documented path is **Cloudflare Workers + OpenNext**.

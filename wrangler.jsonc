@@ -2,6 +2,21 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": ".open-next/worker.js",
 	"name": "danielmilewskicom",
+	"vars": {
+		"NEXT_PUBLIC_SITE_URL": "https://danielmilewski.com"
+	},
+	"routes": [
+		{
+			"pattern": "danielmilewski.com",
+			"zone_name": "danielmilewski.com",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.danielmilewski.com",
+			"zone_name": "danielmilewski.com",
+			"custom_domain": true
+		}
+	],
 	"compatibility_date": "2026-03-17",
 	"compatibility_flags": [
 		"nodejs_compat",
