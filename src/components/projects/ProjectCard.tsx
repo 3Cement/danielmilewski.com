@@ -10,11 +10,13 @@ interface ProjectCardProps {
 
 export async function ProjectCard({ project }: ProjectCardProps) {
   const t = await getTranslations("projects");
-  const previewSrc = project.images?.[0];
+  const cardPreviews = project.images?.slice(0, 2).filter(Boolean) ?? [];
+  const [firstSrc, secondSrc] = [cardPreviews[0], cardPreviews[1]];
+  const dualPreview = Boolean(firstSrc && secondSrc);
 
   return (
-    <article className="group flex flex-col md:flex-row md:items-stretch gap-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:border-[var(--color-accent)]/40 hover:shadow-lg transition-all duration-200">
-      <div className="flex min-w-0 flex-1 flex-col order-2 md:order-1">
+    <article className="group flex flex-col lg:flex-row lg:items-stretch gap-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 hover:border-[var(--color-accent)]/40 hover:shadow-lg transition-all duration-200">
+      <div className="flex min-w-0 flex-1 flex-col order-2 lg:order-1">
         <p className="text-xs font-medium text-[var(--color-accent)] uppercase tracking-wide mb-3">
           {project.role}
         </p>
@@ -57,18 +59,44 @@ export async function ProjectCard({ project }: ProjectCardProps) {
         </Link>
       </div>
 
-      {previewSrc ? (
-        <div className="order-1 md:order-2 shrink-0 flex justify-center md:justify-end md:pt-1">
-          <div className="relative w-[min(220px,72vw)] md:w-[200px] rounded-[1.25rem] bg-[var(--color-surface-muted)] p-1.5 ring-1 ring-[var(--color-border)] shadow-md">
-            <Image
-              src={previewSrc}
-              alt={`${project.title} — mobile app screenshot`}
-              width={1170}
-              height={2532}
-              className="rounded-[1rem] object-cover object-top w-full h-auto max-h-[min(320px,55vh)] md:max-h-[280px]"
-              sizes="(max-width: 768px) 72vw, 200px"
-            />
-          </div>
+      {cardPreviews.length > 0 ? (
+        <div className="order-1 lg:order-2 shrink-0 flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-end gap-4 lg:gap-3 lg:pt-1 lg:max-w-[min(100%,520px)]">
+          {dualPreview && firstSrc ? (
+            <div className="rounded-[1.25rem] bg-[var(--color-surface-muted)] p-1.5 ring-1 ring-[var(--color-border)] shadow-md w-[min(150px,42vw)] sm:w-[140px] shrink-0">
+              <Image
+                src={firstSrc}
+                alt={`${project.title} — mobile`}
+                width={1170}
+                height={2532}
+                className="rounded-[1rem] object-cover object-top w-full h-auto max-h-[220px] sm:max-h-[240px]"
+                sizes="150px"
+              />
+            </div>
+          ) : null}
+          {dualPreview && secondSrc ? (
+            <div className="rounded-lg bg-[var(--color-surface-muted)] p-1 ring-1 ring-[var(--color-border)] shadow-md w-full max-w-[min(100%,340px)] sm:flex-1 sm:min-w-[200px] sm:max-w-[360px]">
+              <Image
+                src={secondSrc}
+                alt={`${project.title} — desktop`}
+                width={1440}
+                height={900}
+                className="rounded-md object-cover object-top w-full h-auto max-h-[200px] sm:max-h-[240px]"
+                sizes="(max-width: 640px) 100vw, 360px"
+              />
+            </div>
+          ) : null}
+          {!dualPreview && firstSrc ? (
+            <div className="rounded-lg bg-[var(--color-surface-muted)] p-1 ring-1 ring-[var(--color-border)] shadow-md w-full max-w-[min(100%,400px)]">
+              <Image
+                src={firstSrc}
+                alt={`${project.title} — screenshot`}
+                width={1200}
+                height={750}
+                className="rounded-md object-cover object-top w-full h-auto max-h-[220px] sm:max-h-[260px]"
+                sizes="(max-width: 640px) 100vw, 400px"
+              />
+            </div>
+          ) : null}
         </div>
       ) : null}
     </article>
