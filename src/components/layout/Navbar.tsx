@@ -49,7 +49,7 @@ export function Navbar() {
                 prefetch
                 className={cn(
                   "px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                  pathname.includes(link.href)
+                  isNavLinkActive(link.href, pathname)
                     ? "text-[var(--color-text-base)] bg-[var(--color-surface-muted)]"
                     : "text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)]",
                 )}

@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { Tag } from "@/components/ui/Tag";
 import type { PostMeta } from "@/types/post";
+import { getTranslations } from "next-intl/server";
 
 interface BlogCardProps {
   post: PostMeta;
@@ -9,6 +10,7 @@ interface BlogCardProps {
 }
 
 export async function BlogCard({ post, locale, compact = false }: BlogCardProps) {
+  const t = await getTranslations({ locale, namespace: "blog" });
   const dateLocale = locale === "pl" ? "pl-PL" : "en-GB";
   const date = new Date(post.date).toLocaleDateString(dateLocale, {
     year: "numeric",
@@ -26,7 +28,7 @@ export async function BlogCard({ post, locale, compact = false }: BlogCardProps)
                 {post.title}
               </h3>
               <p className="mt-1 text-sm text-[var(--color-text-faint)]">
-                {date} · {post.readingTime}
+                {date} · {post.readingTime} {t("minRead")}
               </p>
             </div>
             <svg
@@ -63,7 +65,7 @@ export async function BlogCard({ post, locale, compact = false }: BlogCardProps)
         {post.excerpt}
       </p>
       <p className="text-xs text-[var(--color-text-faint)]">
-        {date} · {post.readingTime}
+        {date} · {post.readingTime} {t("minRead")}
       </p>
     </article>
   );

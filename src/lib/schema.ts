@@ -69,13 +69,13 @@ export function blogPostingSchema({
     author: {
       "@type": "Person",
       name: SITE_NAME,
-      url: absoluteUrl("en", "/"),
+      url: absoluteUrl(locale, "/"),
     },
     keywords: tags.join(", "),
     publisher: {
       "@type": "Person",
       name: SITE_NAME,
-      url: absoluteUrl("en", "/"),
+      url: absoluteUrl(locale, "/"),
     },
   };
 }

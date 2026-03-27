@@ -100,7 +100,7 @@ export default async function BlogPostPage({ params }: Props) {
                   {post.title}
                 </h1>
                 <p className="text-sm text-[var(--color-text-faint)]">
-                  {date} · {post.readingTime}
+                  {date} · {post.readingTime} {t("minRead")}
                 </p>
               </header>
 
