@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
+import Script from "next/script";
 import "./globals.css";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
+
+const plausibleDomain = new URL(SITE_URL).hostname;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,7 +62,17 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        {children}
+        {process.env.NODE_ENV === "production" && (
+          <Script
+            defer
+            data-domain={plausibleDomain}
+            src="https://plausible.io/js/script.js"
+            strategy="afterInteractive"
+          />
+        )}
+      </body>
     </html>
   );
 }
