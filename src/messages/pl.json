@@ -130,6 +130,7 @@
     "cvPolish": "CV — polski",
     "emailHeading": "Wyślij e-mail",
     "emailSub": "Opisz krótko, nad czym pracujesz. Czytam wszystkie wiadomości; odpowiedź może zająć kilka dni roboczych, gdy jestem w intensywnym wdrożeniu.",
+    "emailFallback": "Lub napisz bezpośrednio:",
     "linkedinConnect": "Połącz się lub napisz",
     "githubSee": "Zobacz publiczne projekty",
     "lookingHeading": "Czego szukam",
@@ -138,7 +139,20 @@
       "Zespoły, które cenią jakość inżynierską i jasną komunikację",
       "Projekty krótko- lub długoterminowe (obie opcje są OK)",
       "Praca zdalna lub hybrydowa, strefa czasowa Europa"
-    ]
+    ],
+    "form": {
+      "nameLabel": "Imię i nazwisko",
+      "namePlaceholder": "Twoje imię",
+      "emailLabel": "Email",
+      "emailPlaceholder": "ty@domena.pl",
+      "messageLabel": "Wiadomość",
+      "messagePlaceholder": "Napisz krótko, czym się zajmujesz...",
+      "submit": "Wyślij wiadomość",
+      "sending": "Wysyłanie…",
+      "success": "Wiadomość wysłana — odpiszę w ciągu kilku dni roboczych.",
+      "error": "Coś poszło nie tak. Napisz bezpośrednio na adres e-mail.",
+      "validationError": "Proszę wypełnić wszystkie pola poprawnie."
+    }
   },
   "blog": {
     "heading": "Blog",
@@ -148,7 +162,9 @@
     "minRead": "min czytania",
     "relatedPosts": "Powiązane wpisy",
     "pageHeading": "Blog",
-    "pageSub": "Notatki o Pythonie, systemach i lekcjach nauczonych na własnych błędach."
+    "pageSub": "Notatki o Pythonie, systemach i lekcjach nauczonych na własnych błędach.",
+    "filterAll": "Wszystkie",
+    "noResults": "Brak wpisów dla tego tagu."
   },
   "caseStudy": {
     "outcome": "Wynik",

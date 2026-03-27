@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
+import Script from "next/script";
 import "./globals.css";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
+
+const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +34,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    types: {
+      "application/rss+xml": `${SITE_URL}/feed.xml`,
+    },
+  },
 };
 
 export default async function RootLayout({
@@ -54,7 +62,17 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        {children}
+        {cfAnalyticsToken && (
+          <Script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({ token: cfAnalyticsToken })}
+            strategy="afterInteractive"
+          />
+        )}
+      </body>
     </html>
   );
 }

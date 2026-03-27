@@ -38,7 +38,7 @@ function readPosts() {
       slug,
       ...data,
       content,
-      readingTime: rt.text,
+      readingTime: String(Math.ceil(rt.minutes)),
     };
   });
   full.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

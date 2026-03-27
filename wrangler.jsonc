@@ -3,7 +3,8 @@
 	"main": ".open-next/worker.js",
 	"name": "danielmilewskicom",
 	"vars": {
-		"NEXT_PUBLIC_SITE_URL": "https://danielmilewski.com"
+		"NEXT_PUBLIC_SITE_URL": "https://danielmilewski.com",
+		"NEXT_PUBLIC_CF_ANALYTICS_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
 	},
 	"routes": [
 		{
