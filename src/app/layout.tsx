@@ -5,7 +5,7 @@ import Script from "next/script";
 import "./globals.css";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
-const plausibleDomain = new URL(SITE_URL).hostname;
+const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -64,11 +64,11 @@ export default async function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         {children}
-        {process.env.NODE_ENV === "production" && (
+        {cfAnalyticsToken && (
           <Script
             defer
-            data-domain={plausibleDomain}
-            src="https://plausible.io/js/script.js"
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({ token: cfAnalyticsToken })}
             strategy="afterInteractive"
           />
         )}
