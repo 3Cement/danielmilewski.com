@@ -130,6 +130,7 @@
     "cvPolish": "CV — Polish",
     "emailHeading": "Send me an email",
     "emailSub": "Tell me briefly what you're working on. I read everything; replies may take a few business days when I'm deep in delivery.",
+    "emailFallback": "Or email directly:",
     "linkedinConnect": "Connect or message",
     "githubSee": "See public work",
     "lookingHeading": "What I'm looking for",
@@ -138,7 +139,20 @@
       "Teams that value engineering quality and clear communication",
       "Project-based or longer-term engagements (open to both)",
       "Remote or hybrid, Europe timezone preferred"
-    ]
+    ],
+    "form": {
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tell me briefly what you're working on...",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "success": "Message sent — I'll get back to you within a few business days.",
+      "error": "Something went wrong. Please try emailing me directly.",
+      "validationError": "Please fill in all fields correctly."
+    }
   },
   "blog": {
     "heading": "Writing",
