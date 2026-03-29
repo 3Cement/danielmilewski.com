@@ -46,7 +46,7 @@ Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare W
 - All user-facing pages live under **`src/app/[locale]/`** (`en`, `pl`).
 - `src/i18n/routing.ts` defines locales and default locale, while `src/i18n/request.ts` loads the right message bundle for the active `[locale]` segment.
 - Visiting `/` or `/main` redirects on the server to a locale homepage, preferring the `NEXT_LOCALE` cookie and then the browser's `Accept-Language` header.
-- Legacy URLs like `/en/main` and `/pl/main` redirect to the locale homepage from route handlers in `src/app/`.
+- Legacy URLs like `/en/main` and `/pl/main` are handled as permanent redirects in `next.config.ts`, which keeps them edge-friendly on Cloudflare.
 - Copy lives in **`src/messages/en.json`** and **`src/messages/pl.json`**. Navigation uses **`src/i18n/navigation.ts`** (`Link`, `redirect`, etc.).
 - Root **`src/app/layout.tsx`**: local fonts, global metadata base, wraps children. Locale layout **`src/app/[locale]/layout.tsx`**: `NextIntlClientProvider`, navbar, footer, JSON-LD.
 
@@ -89,7 +89,6 @@ src/
 │   └── [locale]/               # All localized routes
 │       ├── layout.tsx          # next-intl provider, nav, footer
 │       ├── page.tsx            # Home
-│       ├── main/page.tsx       # Redirects /{locale}/main -> /{locale}
 │       ├── about/, blog/, contact/, privacy/, projects/
 │       └── ...
 ├── components/                 # layout/, home/, blog/, projects/, contact/, ui/, mdx/
