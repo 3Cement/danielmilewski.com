@@ -17,7 +17,7 @@ export const COMPANY_NIP = "8442338935";
 export const COMPANY_REGON = "522772081";
 
 /** Local file in /public — professional headshot. */
-export const PROFILE_IMAGE_PATH = "/daniel-milewski.jpg";
+export const PROFILE_IMAGE_PATH = "/daniel-milewski.webp";
 
 export const CV_URL_EN = "/cv/cv-en.pdf";
 export const CV_URL_PL = "/cv/cv-pl.pdf";

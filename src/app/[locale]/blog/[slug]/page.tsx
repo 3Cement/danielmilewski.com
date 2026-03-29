@@ -12,6 +12,7 @@ import { blogPostingSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
+import { ContactCTA } from "@/components/ui/ContactCTA";
 
 export const dynamic = "force-static";
 
@@ -100,7 +101,7 @@ export default async function BlogPostPage({ params }: Props) {
                   {post.title}
                 </h1>
                 <p className="text-sm text-[var(--color-text-faint)]">
-                  {date} · {post.readingTime}
+                  {date} · {post.readingTime} {t("minRead")}
                 </p>
               </header>
 
@@ -123,8 +124,13 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
               )}
 
+              {/* CTA */}
+              <div className="mt-12 border-t border-[var(--color-border)]">
+                <ContactCTA locale={locale} />
+              </div>
+
               {/* Back link */}
-              <div className="mt-12 pt-8 border-t border-[var(--color-border)]">
+              <div className="pt-2 border-t border-[var(--color-border)]">
                 <Link
                   href="/blog"
                   className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"

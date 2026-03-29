@@ -5,8 +5,6 @@ import { SocialLinks } from "@/components/ui/SocialLinks";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
 
-export const dynamic = "force-static";
-
 interface Props {
   params: Promise<{ locale: string }>;
 }
@@ -65,7 +63,6 @@ export default async function ContactPage({ params }: Props) {
 
           <ContactForm />
 
-          {/* Primary CTA */}
           <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] mb-8">
             <p className="text-sm font-semibold text-[var(--color-text-base)] mb-2">
               {t("emailHeading")}
@@ -84,7 +81,6 @@ export default async function ContactPage({ params }: Props) {
             </Link>
           </div>
 
-          {/* Secondary channels */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
             <Link
               href={LINKEDIN_URL}
@@ -117,7 +113,6 @@ export default async function ContactPage({ params }: Props) {
             </Link>
           </div>
 
-          {/* What I'm looking for */}
           <div>
             <h2 className="text-base font-semibold text-[var(--color-text-base)] mb-4">
               {t("lookingHeading")}

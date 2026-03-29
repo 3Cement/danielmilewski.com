@@ -47,3 +47,13 @@ export const getPostBySlug = cache((slug: string): Post | null => {
 export function getAllPostSlugs(): string[] {
   return postMetas.map((p) => p.slug);
 }
+
+export function getAllTags(): string[] {
+  const tags = new Set<string>();
+  for (const post of postMetas) {
+    for (const tag of post.tags) {
+      tags.add(tag);
+    }
+  }
+  return Array.from(tags).sort();
+}

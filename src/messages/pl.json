@@ -177,7 +177,9 @@
     "minRead": "min czytania",
     "relatedPosts": "Powiązane wpisy",
     "pageHeading": "Blog",
-    "pageSub": "Notatki o Pythonie, systemach i lekcjach nauczonych na własnych błędach."
+    "pageSub": "Notatki o Pythonie, systemach i lekcjach nauczonych na własnych błędach.",
+    "filterAll": "Wszystkie",
+    "noResults": "Brak wpisów dla tego tagu."
   },
   "caseStudy": {
     "outcome": "Wynik",

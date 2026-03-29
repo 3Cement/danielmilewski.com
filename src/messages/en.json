@@ -177,7 +177,9 @@
     "minRead": "min read",
     "relatedPosts": "Related posts",
     "pageHeading": "Writing",
-    "pageSub": "Notes on Python, systems, and the occasional lesson learned the hard way."
+    "pageSub": "Notes on Python, systems, and the occasional lesson learned the hard way.",
+    "filterAll": "All",
+    "noResults": "No posts found for this tag."
   },
   "caseStudy": {
     "outcome": "Outcome",
