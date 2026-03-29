@@ -8,7 +8,7 @@ Personal portfolio site: Senior Python Developer (AI/LLM, backend, automation). 
 |--------|--------|
 | Framework | **Next.js 16** (App Router, React 19) |
 | Styling | **Tailwind CSS v4** |
-| i18n | **next-intl** (middleware + `src/messages/*.json`) |
+| i18n | **next-intl** (`src/proxy.ts` + `src/messages/*.json`) |
 | Content | **MDX** (`next-mdx-remote`) + frontmatter (`gray-matter`) |
 | Production host | **Cloudflare Workers** via **OpenNext** (`@opennextjs/cloudflare`) |
 | Deploy CLI | **Wrangler** (`wrangler.jsonc`) |
@@ -37,16 +37,18 @@ Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare W
 | `npm run preview` | `opennextjs-cloudflare build` + local Worker preview (Wrangler). |
 | `npm run deploy` | OpenNext build + `opennextjs-cloudflare deploy` to Cloudflare. |
 | `node scripts/generate-content-data.mjs` | Regenerate `content-data.json` only (used by `predev` / `prebuild`). |
+| `npm run generate:favicon` | Regenerate `src/app/favicon.ico` from the current SVG-based favicon source. |
 
 ---
 
 ## How routing and i18n work
 
 - All user-facing pages live under **`src/app/[locale]/`** (`en`, `pl`).
-- **`src/middleware.ts`** uses `next-intl/middleware` and `src/i18n/routing.ts` (locales, default `en`, locale detection).
+- **`src/proxy.ts`** uses `next-intl/middleware` and `src/i18n/routing.ts` (locales, default `en`, locale detection).
 - Visiting `/` redirects to a locale (e.g. `/en`).
+- Legacy URLs like `/main`, `/en/main`, and `/pl/main` are permanently redirected to the locale homepage in **`src/proxy.ts`**.
 - Copy lives in **`src/messages/en.json`** and **`src/messages/pl.json`**. Navigation uses **`src/i18n/navigation.ts`** (`Link`, `redirect`, etc.).
-- Root **`src/app/layout.tsx`**: fonts, global metadata base, wraps children. Locale layout **`src/app/[locale]/layout.tsx`**: `NextIntlClientProvider`, navbar, footer, JSON-LD.
+- Root **`src/app/layout.tsx`**: local fonts, global metadata base, wraps children. Locale layout **`src/app/[locale]/layout.tsx`**: `NextIntlClientProvider`, navbar, footer, JSON-LD.
 
 ---
 
@@ -72,17 +74,22 @@ Instead:
 ```
 src/
 ├── app/
-│   ├── layout.tsx              # Root: fonts, metadata base
+│   ├── layout.tsx              # Root: local fonts, metadata base
 │   ├── globals.css
 │   ├── robots.ts
 │   ├── sitemap.ts
 │   ├── icon.tsx, apple-icon.tsx, opengraph-image.tsx
+│   ├── favicon.ico
+│   ├── actions/
+│   │   └── sendContactMessage.ts
+│   ├── fonts/
+│   │   └── geist-*.woff2
 │   └── [locale]/               # All localized routes
 │       ├── layout.tsx          # next-intl provider, nav, footer
 │       ├── page.tsx            # Home
-│       ├── about/, blog/, contact/, main/, privacy/, projects/
+│       ├── about/, blog/, contact/, privacy/, projects/
 │       └── ...
-├── components/                 # layout/, home/, blog/, projects/, ui/, mdx/
+├── components/                 # layout/, home/, blog/, projects/, contact/, ui/, mdx/
 ├── content/
 │   ├── projects/*.mdx
 │   └── blog/*.mdx
@@ -100,13 +107,14 @@ src/
 ├── messages/
 │   ├── en.json
 │   └── pl.json
-├── middleware.ts
+├── proxy.ts
 └── types/
 
 open-next.config.ts             # OpenNext Cloudflare config
 wrangler.jsonc                  # Worker name, routes, vars, assets, bindings
 public/                         # Static files (CVs, images, _headers)
 scripts/
+├── generate-favicon.mjs
 ├── generate-content-data.mjs
 └── verify-messages.mjs
 ```
@@ -130,8 +138,30 @@ scripts/
 |----------|--------|--------|
 | `NEXT_PUBLIC_SITE_URL` | `wrangler.jsonc` → `vars`, and/or Cloudflare dashboard | **Must include the scheme**, e.g. `https://danielmilewski.com`. Used in `src/lib/metadata.ts` for `metadataBase`, canonical URLs, and absolute links. A value like `danielmilewski.com` (no `https://`) breaks `new URL(SITE_URL)`. |
 | `NEXTJS_ENV` | Optional in `.dev.vars` for local preview | Local only; do not set `development` on production Workers unless you intend to. |
+| `RESEND_API_KEY` | Local `.dev.vars`; production secret via `wrangler secret put RESEND_API_KEY` | Required for the contact form. Secret value from Resend dashboard. |
+| `RESEND_FROM_EMAIL` | Local `.dev.vars`; production via Wrangler env or dashboard | Sender address for the contact form, e.g. `Daniel Milewski <hello@danielmilewski.com>`. In production this should use a verified Resend domain. |
+| `CONTACT_FORM_TO_EMAIL` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Inbox that receives form submissions. Defaults to the personal email configured in `src/lib/metadata.ts` if omitted. |
 
 **Wrangler vs dashboard:** `wrangler deploy` treats **`wrangler.jsonc` as source of truth**. If you add routes or vars only in the dashboard, the next CLI deploy can overwrite them. This repo keeps **`routes`** (apex + `www`) and **`vars`** in `wrangler.jsonc` so deploys stay consistent.
+
+### Contact form / Resend setup
+
+The contact page now includes a form powered by **Resend** via a Next.js Server Action.
+
+For local development, add these values to `.dev.vars`:
+
+```env
+RESEND_API_KEY=re_xxxxxxxxx
+RESEND_FROM_EMAIL="Daniel Milewski <onboarding@resend.dev>"
+CONTACT_FORM_TO_EMAIL=danielmilewski123@gmail.com
+```
+
+For production on Cloudflare Workers:
+
+1. Set the API key as a secret:
+   `wrangler secret put RESEND_API_KEY`
+2. Set `RESEND_FROM_EMAIL` and optionally `CONTACT_FORM_TO_EMAIL` in your deployment environment.
+3. Verify your sending domain in Resend before using a custom `from` address. The default onboarding sender is useful for testing, not for a polished production setup.
 
 ---
 
@@ -181,11 +211,17 @@ Serves the built Worker locally (Wrangler). Use this to verify behavior close to
 ### Theme / fonts
 
 - Tokens: `src/app/globals.css` (`@theme`, `.dark`).
-- Fonts: `src/app/layout.tsx` (`next/font`).
+- Fonts: `src/app/layout.tsx` (`next/font/local`, committed WOFF2 files under `src/app/fonts/`).
 
 ### Navigation
 
 `src/components/layout/Navbar.tsx`, `Footer.tsx`, and message keys under navigation-related namespaces in `messages/*.json`.
+
+### Contact form
+
+- UI: `src/components/contact/ContactForm.tsx`
+- Action: `src/app/actions/sendContactMessage.ts`
+- Provider: Resend (`RESEND_API_KEY`, `RESEND_FROM_EMAIL`, optional `CONTACT_FORM_TO_EMAIL`)
 
 ---
 

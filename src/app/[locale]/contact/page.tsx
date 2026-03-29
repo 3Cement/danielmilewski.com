@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import { ContactForm } from "@/components/contact/ContactForm";
 import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
 
 export const dynamic = "force-static";
@@ -61,6 +62,8 @@ export default async function ContactPage({ params }: Props) {
               </a>
             </div>
           </div>
+
+          <ContactForm />
 
           {/* Primary CTA */}
           <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] mb-8">

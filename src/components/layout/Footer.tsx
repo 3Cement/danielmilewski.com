@@ -11,7 +11,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   const footerLinks = [
-    { href: "/main", label: tNav("home") },
+    { href: "/", label: tNav("home") },
     { href: "/projects", label: tNav("projects") },
     { href: "/blog", label: tNav("blog") },
     { href: "/about", label: tNav("about") },

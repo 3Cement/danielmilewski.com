@@ -3,8 +3,6 @@ import { ImageResponse } from "next/og";
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-const SYMBOL = "</>";
-
 export default function AppleIcon() {
   return new ImageResponse(
     (
@@ -13,26 +11,39 @@ export default function AppleIcon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0d1117",
+          background: "linear-gradient(135deg, #0f172a 0%, #111827 55%, #0b1220 100%)",
           borderRadius: 36,
-          border: "2px solid #30363d",
+          border: "3px solid #1f2937",
         }}
       >
-        <span
+        <div
           style={{
-            fontSize: 80,
-            fontWeight: 700,
-            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-            color: "#4493f8",
-            letterSpacing: -3,
-            lineHeight: 1,
+            width: 128,
+            height: 128,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 28,
+            background: "#111827",
+            border: "3px solid #334155",
+            boxShadow: "inset 0 2px 0 rgba(255,255,255,0.06)",
           }}
         >
-          {SYMBOL}
-        </span>
+          <span
+            style={{
+              fontSize: 72,
+              fontWeight: 800,
+              fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+              color: "#38bdf8",
+              letterSpacing: -4,
+              lineHeight: 1,
+            }}
+          >
+            {">_"}
+          </span>
+        </div>
       </div>
     ),
     { ...size },

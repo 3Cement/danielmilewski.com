@@ -11,6 +11,12 @@ const BLOG_DIR = path.join(root, "src/content/blog");
 const OUT_DIR = path.join(root, "src/generated");
 const OUT_FILE = path.join(OUT_DIR, "content-data.json");
 
+function stripContent(entry) {
+  const { content, ...meta } = entry;
+  void content;
+  return meta;
+}
+
 function readProjects() {
   const files = fs.readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".mdx"));
   const metas = files.map((filename) => {
@@ -23,7 +29,7 @@ function readProjects() {
     a.featured === b.featured ? 0 : a.featured ? -1 : 1,
   );
   const projectBySlug = Object.fromEntries(metas.map((p) => [p.slug, p]));
-  const projectMetas = metas.map(({ content: _c, ...meta }) => meta);
+  const projectMetas = metas.map(stripContent);
   return { projectMetas, projectBySlug };
 }
 
@@ -43,7 +49,7 @@ function readPosts() {
   });
   full.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const postBySlug = Object.fromEntries(full.map((p) => [p.slug, p]));
-  const postMetas = full.map(({ content: _c, ...meta }) => meta);
+  const postMetas = full.map(stripContent);
   return { postMetas, postBySlug };
 }
 

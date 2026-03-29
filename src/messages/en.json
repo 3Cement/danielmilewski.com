@@ -1,6 +1,6 @@
 {
   "nav": {
-    "home": "Main",
+    "home": "Home",
     "projects": "Projects",
     "blog": "Writing",
     "about": "About",
@@ -124,12 +124,12 @@
   },
   "contact": {
     "heading": "Get in touch",
-    "sub": "I'm focused on an ongoing project, so I'm not starting new engagements at full capacity — but I'm glad to hear what you're building and explore options for later. The best first step is a short email.",
+    "sub": "I'm focused on an ongoing project, so I'm not starting new engagements at full capacity — but I'm glad to hear what you're building and explore options for later. You can use the form below or email me directly.",
     "cvHeading": "CV (PDF)",
     "cvEnglish": "CV — English",
     "cvPolish": "CV — Polish",
-    "emailHeading": "Send me an email",
-    "emailSub": "Tell me briefly what you're working on. I read everything; replies may take a few business days when I'm deep in delivery.",
+    "emailHeading": "Prefer direct email?",
+    "emailSub": "If you'd rather write from your own inbox, use the address below. I read everything; replies may take a few business days when I'm deep in delivery.",
     "linkedinConnect": "Connect or message",
     "githubSee": "See public work",
     "lookingHeading": "What I'm looking for",
@@ -139,6 +139,35 @@
       "Project-based or longer-term engagements (open to both)",
       "Remote or hybrid, Europe timezone preferred"
     ]
+  },
+  "contactForm": {
+    "heading": "Project inquiry form",
+    "sub": "Share the basics and I'll get back to you by email. Short, concrete messages are best.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@company.com",
+    "companyLabel": "Company",
+    "companyPlaceholder": "Optional",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "What do you need help with?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "A few sentences about the project, scope, timing, or the problem you need solved.",
+    "submit": "Send inquiry",
+    "submitPending": "Sending...",
+    "privacyNote": "This form sends an email to me via Resend. Don't include secrets or sensitive credentials.",
+    "websiteLabel": "Website",
+    "messages": {
+      "success": "Message sent. I'll reply by email when I can.",
+      "configError": "The contact form is not configured correctly yet. Please email me directly instead.",
+      "sendError": "Something went wrong while sending your message. Please try again or email me directly."
+    },
+    "errors": {
+      "required": "This field is required.",
+      "invalidEmail": "Enter a valid email address.",
+      "tooShort": "This value is too short.",
+      "tooLong": "This value is too long."
+    }
   },
   "blog": {
     "heading": "Writing",
@@ -185,7 +214,6 @@
     "errorRetry": "Try again"
   },
   "metadata": {
-    "mainPageTitle": "Main",
     "siteDescription": "Senior Python Developer — backend systems, APIs, and automation.",
     "aboutDescription": "Senior Python Developer with a background in backend engineering, fintech, and energy market intelligence. Based in Europe, working remotely.",
     "contactDescription": "Contact Daniel Milewski — senior Python developer. Limited availability; open to conversations about backend, APIs, and automation.",

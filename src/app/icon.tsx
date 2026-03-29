@@ -3,8 +3,6 @@ import { ImageResponse } from "next/og";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-const SYMBOL = "</>";
-
 export default function Icon() {
   return new ImageResponse(
     (
@@ -15,23 +13,38 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0d1117",
-          borderRadius: 6,
-          border: "1px solid #30363d",
+          background: "linear-gradient(135deg, #0f172a 0%, #111827 55%, #0b1220 100%)",
+          borderRadius: 8,
+          border: "1px solid #1f2937",
+          position: "relative",
         }}
       >
-        <span
+        <div
           style={{
-            fontSize: 15,
-            fontWeight: 700,
-            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-            color: "#4493f8",
-            letterSpacing: -0.5,
-            lineHeight: 1,
+            width: 24,
+            height: 24,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 6,
+            background: "#111827",
+            border: "1px solid #334155",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
           }}
         >
-          {SYMBOL}
-        </span>
+          <span
+            style={{
+              fontSize: 14,
+              fontWeight: 800,
+              fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+              color: "#38bdf8",
+              letterSpacing: -1,
+              lineHeight: 1,
+            }}
+          >
+            {">_"}
+          </span>
+        </div>
       </div>
     ),
     { ...size },
