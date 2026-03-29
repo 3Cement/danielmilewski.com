@@ -26,6 +26,7 @@
 
 # Claude Code
 .claude/
+.maister/
 
 # Cloudflare
 .wrangler/

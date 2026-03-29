@@ -11,6 +11,7 @@
     "lint": "eslint",
     "test": "node scripts/verify-messages.mjs",
     "optimize:images": "node scripts/optimize-investtracker-webp.mjs",
+    "generate:favicon": "node scripts/generate-favicon.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
@@ -25,7 +26,8 @@
     "next-mdx-remote": "^6.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "reading-time": "^1.5.0"
+    "reading-time": "^1.5.0",
+    "resend": "^6.9.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

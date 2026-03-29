@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -8,8 +9,8 @@ import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 
 function isNavLinkActive(href: string, pathname: string): boolean {
-  if (href === "/main") {
-    return pathname === "/main" || pathname === "/" || pathname === "";
+  if (href === "/") {
+    return pathname === "/" || pathname === "";
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -20,7 +21,7 @@ export function Navbar() {
   const t = useTranslations("nav");
 
   const navLinks = [
-    { href: "/main", label: t("home") },
+    { href: "/", label: t("home") },
     { href: "/projects", label: t("projects") },
     { href: "/blog", label: t("blog") },
     { href: "/about", label: t("about") },
@@ -35,8 +36,17 @@ export function Navbar() {
           <Link
             href="/"
             prefetch
-            className="text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
+            className="group inline-flex items-center gap-2.5 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
           >
+            <Image
+              src="/favicon.ico"
+              alt=""
+              width={20}
+              height={20}
+              unoptimized
+              aria-hidden="true"
+              className="h-5 w-5 shrink-0 rounded-[4px]"
+            />
             Daniel Milewski
           </Link>
 

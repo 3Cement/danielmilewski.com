@@ -124,13 +124,12 @@
   },
   "contact": {
     "heading": "Napisz do mnie",
-    "sub": "Skupiam się na trwającym projekcie, więc nie startuję nowych pełnych wdrożeń od ręki — ale chętnie przeczytam, czym się zajmujesz, i porozmawiamy o możliwościach na później. Najprościej napisać krótkiego maila.",
+    "sub": "Skupiam się na trwającym projekcie, więc nie startuję nowych pełnych wdrożeń od ręki — ale chętnie przeczytam, czym się zajmujesz, i porozmawiamy o możliwościach na później. Możesz użyć formularza poniżej albo napisać bezpośrednio na maila.",
     "cvHeading": "CV (PDF)",
     "cvEnglish": "CV — angielski",
     "cvPolish": "CV — polski",
-    "emailHeading": "Wyślij e-mail",
-    "emailSub": "Opisz krótko, nad czym pracujesz. Czytam wszystkie wiadomości; odpowiedź może zająć kilka dni roboczych, gdy jestem w intensywnym wdrożeniu.",
-    "emailFallback": "Lub napisz bezpośrednio:",
+    "emailHeading": "Wolisz zwykły e-mail?",
+    "emailSub": "Jeśli wolisz napisać ze swojej skrzynki, użyj adresu poniżej. Czytam wszystkie wiadomości; odpowiedź może zająć kilka dni roboczych, gdy jestem w intensywnym wdrożeniu.",
     "linkedinConnect": "Połącz się lub napisz",
     "githubSee": "Zobacz publiczne projekty",
     "lookingHeading": "Czego szukam",
@@ -139,19 +138,35 @@
       "Zespoły, które cenią jakość inżynierską i jasną komunikację",
       "Projekty krótko- lub długoterminowe (obie opcje są OK)",
       "Praca zdalna lub hybrydowa, strefa czasowa Europa"
-    ],
-    "form": {
-      "nameLabel": "Imię i nazwisko",
-      "namePlaceholder": "Twoje imię",
-      "emailLabel": "Email",
-      "emailPlaceholder": "ty@domena.pl",
-      "messageLabel": "Wiadomość",
-      "messagePlaceholder": "Napisz krótko, czym się zajmujesz...",
-      "submit": "Wyślij wiadomość",
-      "sending": "Wysyłanie…",
-      "success": "Wiadomość wysłana — odpiszę w ciągu kilku dni roboczych.",
-      "error": "Coś poszło nie tak. Napisz bezpośrednio na adres e-mail.",
-      "validationError": "Proszę wypełnić wszystkie pola poprawnie."
+    ]
+  },
+  "contactForm": {
+    "heading": "Formularz kontaktowy",
+    "sub": "Opisz krótko temat, a odezwę się mailowo. Najlepiej działają krótkie i konkretne wiadomości.",
+    "nameLabel": "Imię i nazwisko",
+    "namePlaceholder": "Jak się nazywasz?",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "ty@firma.com",
+    "companyLabel": "Firma",
+    "companyPlaceholder": "Opcjonalnie",
+    "subjectLabel": "Temat",
+    "subjectPlaceholder": "W czym mogę pomóc?",
+    "messageLabel": "Wiadomość",
+    "messagePlaceholder": "Kilka zdań o projekcie, zakresie, terminie albo problemie, który trzeba rozwiązać.",
+    "submit": "Wyślij wiadomość",
+    "submitPending": "Wysyłanie...",
+    "privacyNote": "Ten formularz wysyła wiadomość do mnie przez Resend. Nie wpisuj tu sekretów ani wrażliwych danych dostępowych.",
+    "websiteLabel": "Strona WWW",
+    "messages": {
+      "success": "Wiadomość wysłana. Odpowiem mailowo, gdy tylko będę mógł.",
+      "configError": "Formularz nie jest jeszcze poprawnie skonfigurowany. Napisz proszę bezpośrednio na maila.",
+      "sendError": "Coś poszło nie tak przy wysyłce. Spróbuj ponownie albo napisz bezpośrednio na maila."
+    },
+    "errors": {
+      "required": "To pole jest wymagane.",
+      "invalidEmail": "Podaj poprawny adres e-mail.",
+      "tooShort": "Ta wartość jest za krótka.",
+      "tooLong": "Ta wartość jest za długa."
     }
   },
   "blog": {
@@ -201,7 +216,6 @@
     "errorRetry": "Spróbuj ponownie"
   },
   "metadata": {
-    "mainPageTitle": "Strona główna",
     "siteDescription": "Senior Python Developer — systemy backendowe, API i automatyzacja.",
     "aboutDescription": "Senior Python Developer z doświadczeniem w inżynierii backendowej, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
     "contactDescription": "Kontakt z Danielem Milewskim — senior Python developer. Ograniczona dostępność; otwarty na rozmowy o backendzie, API i automatyzacji.",

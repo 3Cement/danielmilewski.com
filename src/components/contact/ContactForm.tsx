@@ -1,154 +1,252 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
-import { submitContactForm } from "@/app/actions/contact";
+import { useActionState, useEffect, useRef } from "react";
+import { useFormStatus } from "react-dom";
+import { useLocale, useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { sendContactMessage } from "@/app/actions/sendContactMessage";
+import { initialContactFormState } from "@/components/contact/contactFormState";
 
-type FormStatus = "idle" | "success" | "error" | "validation";
-
-export function ContactForm() {
-  const t = useTranslations("contact.form");
-  const [isPending, startTransition] = useTransition();
-  const [status, setStatus] = useState<FormStatus>("idle");
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const honeypot = (form.elements.namedItem("website") as HTMLInputElement)
-      .value;
-
-    // Silently succeed if honeypot field is filled (bot submission)
-    if (honeypot) {
-      setStatus("success");
-      return;
-    }
-
-    const name = (
-      form.elements.namedItem("name") as HTMLInputElement
-    ).value.trim();
-    const email = (
-      form.elements.namedItem("email") as HTMLInputElement
-    ).value.trim();
-    const message = (
-      form.elements.namedItem("message") as HTMLTextAreaElement
-    ).value.trim();
-
-    startTransition(async () => {
-      const result = await submitContactForm({ name, email, message });
-      setStatus(
-        result.success
-          ? "success"
-          : result.error === "validation"
-            ? "validation"
-            : "error",
-      );
-    });
-  }
-
-  if (status === "success") {
-    return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-5 dark:border-green-900 dark:bg-green-950/20">
-        <p className="text-sm text-green-800 dark:text-green-400">
-          {t("success")}
-        </p>
-      </div>
-    );
-  }
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  const t = useTranslations("contactForm");
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-4">
-      {/* Honeypot — hidden from real users, filled by bots */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        aria-hidden="true"
-        className="hidden"
-        autoComplete="off"
-      />
+    <button
+      type="submit"
+      disabled={pending}
+      className="inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-accent-muted)] disabled:cursor-not-allowed disabled:opacity-70"
+    >
+      {pending ? t("submitPending") : t("submit")}
+    </button>
+  );
+}
 
-      <div>
-        <label
-          htmlFor="contact-name"
-          className="mb-1.5 block text-sm font-medium text-[var(--color-text-base)]"
-        >
-          {t("nameLabel")}
-        </label>
-        <input
-          id="contact-name"
-          name="name"
-          type="text"
-          required
-          placeholder={t("namePlaceholder")}
-          className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text-base)] placeholder:text-[var(--color-text-faint)] transition-colors focus:border-[var(--color-accent)]/60 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
-        />
-      </div>
+export function ContactForm() {
+  const locale = useLocale();
+  const t = useTranslations("contactForm");
+  const [state, formAction] = useActionState(
+    sendContactMessage,
+    initialContactFormState,
+  );
+  const formRef = useRef<HTMLFormElement>(null);
 
-      <div>
-        <label
-          htmlFor="contact-email"
-          className="mb-1.5 block text-sm font-medium text-[var(--color-text-base)]"
-        >
-          {t("emailLabel")}
-        </label>
-        <input
-          id="contact-email"
-          name="email"
-          type="email"
-          required
-          placeholder={t("emailPlaceholder")}
-          className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text-base)] placeholder:text-[var(--color-text-faint)] transition-colors focus:border-[var(--color-accent)]/60 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
-        />
-      </div>
+  useEffect(() => {
+    if (state.status === "success") {
+      formRef.current?.reset();
+    }
+  }, [state.status]);
 
-      <div>
-        <label
-          htmlFor="contact-message"
-          className="mb-1.5 block text-sm font-medium text-[var(--color-text-base)]"
-        >
-          {t("messageLabel")}
-        </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          required
-          rows={5}
-          placeholder={t("messagePlaceholder")}
-          className="w-full resize-y rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-text-base)] placeholder:text-[var(--color-text-faint)] transition-colors focus:border-[var(--color-accent)]/60 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
-        />
-      </div>
+  const fieldError = (field: "name" | "email" | "company" | "subject" | "message") => {
+    const code = state.fieldErrors?.[field];
+    return code ? t(`errors.${code}`) : null;
+  };
 
-      {(status === "error" || status === "validation") && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-          {t(status === "validation" ? "validationError" : "error")}
+  const statusMessage = state.messageCode
+    ? t(`messages.${state.messageCode}`)
+    : null;
+
+  return (
+    <section className="mb-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold tracking-tight text-[var(--color-text-base)]">
+          {t("heading")}
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+          {t("sub")}
         </p>
-      )}
+      </div>
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="inline-flex items-center gap-2 rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-accent-muted)] disabled:opacity-60"
-      >
-        {isPending ? (
-          <>
-            <svg
-              className="animate-spin"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-            </svg>
-            {t("sending")}
-          </>
-        ) : (
-          t("submit")
+      <form ref={formRef} action={formAction} className="space-y-5">
+        <input type="hidden" name="locale" value={locale} />
+
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="website">{t("websiteLabel")}</label>
+          <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <FormField
+            label={t("nameLabel")}
+            name="name"
+            type="text"
+            autoComplete="name"
+            placeholder={t("namePlaceholder")}
+            error={fieldError("name")}
+            required
+            minLength={2}
+            maxLength={80}
+          />
+          <FormField
+            label={t("emailLabel")}
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder={t("emailPlaceholder")}
+            error={fieldError("email")}
+            required
+            maxLength={200}
+          />
+        </div>
+
+        <FormField
+          label={t("companyLabel")}
+          name="company"
+          type="text"
+          autoComplete="organization"
+          placeholder={t("companyPlaceholder")}
+          error={fieldError("company")}
+          maxLength={120}
+        />
+
+        <FormField
+          label={t("subjectLabel")}
+          name="subject"
+          type="text"
+          placeholder={t("subjectPlaceholder")}
+          error={fieldError("subject")}
+          required
+          minLength={3}
+          maxLength={120}
+        />
+
+        <FormTextArea
+          label={t("messageLabel")}
+          name="message"
+          placeholder={t("messagePlaceholder")}
+          error={fieldError("message")}
+          required
+          minLength={20}
+          maxLength={4000}
+          rows={8}
+        />
+
+        {statusMessage ? (
+          <p
+            role={state.status === "error" ? "alert" : "status"}
+            className={cn(
+              "rounded-lg border px-4 py-3 text-sm",
+              state.status === "success"
+                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                : "border-red-200 bg-red-50 text-red-800",
+            )}
+          >
+            {statusMessage}
+          </p>
+        ) : null}
+
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs leading-relaxed text-[var(--color-text-faint)]">
+            {t("privacyNote")}
+          </p>
+          <SubmitButton />
+        </div>
+      </form>
+    </section>
+  );
+}
+
+interface BaseFieldProps {
+  label: string;
+  name: string;
+  error: string | null;
+}
+
+interface InputFieldProps extends BaseFieldProps {
+  type: string;
+  autoComplete?: string;
+  placeholder: string;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+}
+
+function FormField({
+  label,
+  name,
+  error,
+  type,
+  autoComplete,
+  placeholder,
+  required,
+  minLength,
+  maxLength,
+}: InputFieldProps) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-medium text-[var(--color-text-base)]">
+        {label}
+      </span>
+      <input
+        name={name}
+        type={type}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        required={required}
+        minLength={minLength}
+        maxLength={maxLength}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${name}-error` : undefined}
+        className={cn(
+          "w-full rounded-xl border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text-base)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]",
+          error
+            ? "border-red-400 focus:border-red-500"
+            : "border-[var(--color-border)] focus:border-[var(--color-accent)]",
         )}
-      </button>
-    </form>
+      />
+      {error ? (
+        <span id={`${name}-error`} className="mt-2 block text-xs text-red-600">
+          {error}
+        </span>
+      ) : null}
+    </label>
+  );
+}
+
+interface TextAreaProps extends BaseFieldProps {
+  placeholder: string;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  rows?: number;
+}
+
+function FormTextArea({
+  label,
+  name,
+  error,
+  placeholder,
+  required,
+  minLength,
+  maxLength,
+  rows = 6,
+}: TextAreaProps) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-medium text-[var(--color-text-base)]">
+        {label}
+      </span>
+      <textarea
+        name={name}
+        placeholder={placeholder}
+        required={required}
+        minLength={minLength}
+        maxLength={maxLength}
+        rows={rows}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? `${name}-error` : undefined}
+        className={cn(
+          "w-full rounded-xl border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text-base)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]",
+          error
+            ? "border-red-400 focus:border-red-500"
+            : "border-[var(--color-border)] focus:border-[var(--color-accent)]",
+        )}
+      />
+      {error ? (
+        <span id={`${name}-error`} className="mt-2 block text-xs text-red-600">
+          {error}
+        </span>
+      ) : null}
+    </label>
   );
 }

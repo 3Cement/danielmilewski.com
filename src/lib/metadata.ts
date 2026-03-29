@@ -46,7 +46,7 @@ export function buildMetadata({
   locale,
   image,
   type = "website",
-  /** When set, canonical and openGraph.url use this path (e.g. "/" for /main duplicate of home). */
+  /** When set, canonical and openGraph.url use this path instead of the current route. */
   canonicalPathWithoutLocale,
 }: {
   title?: string;
@@ -57,13 +57,13 @@ export function buildMetadata({
   type?: "website" | "article";
   canonicalPathWithoutLocale?: string;
 }): Metadata {
-  const metaTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Python Developer`;
+  const socialTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Python Developer`;
   const metaDescription = description ?? SITE_DESCRIPTION;
   const canonical = absoluteUrl(locale, canonicalPathWithoutLocale ?? pathWithoutLocale);
   const ogImage = image ?? defaultOgImagePath;
 
   return {
-    title: metaTitle,
+    title,
     description: metaDescription,
     metadataBase: new URL(SITE_URL),
     alternates: {
@@ -75,18 +75,18 @@ export function buildMetadata({
       },
     },
     openGraph: {
-      title: metaTitle,
+      title: socialTitle,
       description: metaDescription,
       url: canonical,
       siteName: SITE_NAME,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: metaTitle }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: socialTitle }],
       type,
       locale,
       alternateLocale: locale === "en" ? "pl" : "en",
     },
     twitter: {
       card: "summary_large_image",
-      title: metaTitle,
+      title: socialTitle,
       description: metaDescription,
       images: [ogImage],
       creator: TWITTER_HANDLE,

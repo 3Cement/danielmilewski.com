@@ -61,27 +61,26 @@ export default async function ContactPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Primary CTA — contact form */}
-          <div className="mb-8">
+          <ContactForm />
+
+          <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] mb-8">
             <p className="text-sm font-semibold text-[var(--color-text-base)] mb-2">
               {t("emailHeading")}
             </p>
             <p className="text-sm text-[var(--color-text-muted)] mb-4">
               {t("emailSub")}
             </p>
-            <ContactForm />
-            <p className="mt-4 text-xs text-[var(--color-text-faint)]">
-              {t("emailFallback")}{" "}
-              <Link
-                href={`mailto:${EMAIL}`}
-                className="text-[var(--color-accent)] hover:underline"
-              >
-                {EMAIL}
-              </Link>
-            </p>
+            <Link
+              href={`mailto:${EMAIL}`}
+              className="inline-flex items-center gap-2 text-[var(--color-accent)] font-medium hover:underline"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+              </svg>
+              {EMAIL}
+            </Link>
           </div>
 
-          {/* Secondary channels */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
             <Link
               href={LINKEDIN_URL}
@@ -114,7 +113,6 @@ export default async function ContactPage({ params }: Props) {
             </Link>
           </div>
 
-          {/* What I'm looking for */}
           <div>
             <h2 className="text-base font-semibold text-[var(--color-text-base)] mb-4">
               {t("lookingHeading")}
