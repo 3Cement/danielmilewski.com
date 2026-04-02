@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { GITHUB_URL, LINKEDIN_URL, EMAIL } from "@/lib/metadata";
 
 interface SocialLinksProps {
@@ -9,7 +8,7 @@ interface SocialLinksProps {
 export function SocialLinks({ className, showEmail = false }: SocialLinksProps) {
   return (
     <div className={`flex items-center gap-4 ${className ?? ""}`}>
-      <Link
+      <a
         href={GITHUB_URL}
         target="_blank"
         rel="noopener noreferrer"
@@ -17,8 +16,8 @@ export function SocialLinks({ className, showEmail = false }: SocialLinksProps) 
         className="text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] transition-colors"
       >
         <GitHubIcon />
-      </Link>
-      <Link
+      </a>
+      <a
         href={LINKEDIN_URL}
         target="_blank"
         rel="noopener noreferrer"
@@ -26,15 +25,15 @@ export function SocialLinks({ className, showEmail = false }: SocialLinksProps) 
         className="text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] transition-colors"
       >
         <LinkedInIcon />
-      </Link>
+      </a>
       {showEmail && (
-        <Link
+        <a
           href={`mailto:${EMAIL}`}
           aria-label="Email"
           className="text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] transition-colors"
         >
           <EmailIcon />
-        </Link>
+        </a>
       )}
     </div>
   );

@@ -64,24 +64,24 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
                   </h2>
                   <div className="space-y-2">
                     {project.repo && (
-                      <Link
+                      <a
                         href={project.repo}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm text-[var(--color-accent)] hover:underline"
                       >
                         {t("viewRepo")}
-                      </Link>
+                      </a>
                     )}
                     {project.demo && (
-                      <Link
+                      <a
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm text-[var(--color-accent)] hover:underline"
                       >
                         {t("liveDemo")}
-                      </Link>
+                      </a>
                     )}
                   </div>
                 </div>

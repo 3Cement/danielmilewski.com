@@ -7,6 +7,10 @@ import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
+const hasCfAnalyticsToken =
+  cfAnalyticsToken != null &&
+  cfAnalyticsToken !== "" &&
+  cfAnalyticsToken !== "REPLACE_WITH_YOUR_TOKEN";
 
 const geistSans = localFont({
   src: [
@@ -69,7 +73,7 @@ export default async function RootLayout({
       <body className="min-h-screen flex flex-col">
         <ThemeInitializer />
         {children}
-        {cfAnalyticsToken && (
+        {hasCfAnalyticsToken && (
           <Script
             defer
             src="https://static.cloudflareinsights.com/beacon.min.js"

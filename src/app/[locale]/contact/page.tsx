@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SocialLinks, EmailIcon, GitHubIcon, LinkedInIcon } from "@/components/ui/SocialLinks";
 import { ContactForm } from "@/components/contact/ContactForm";
@@ -70,17 +69,17 @@ export default async function ContactPage({ params }: Props) {
             <p className="text-sm text-[var(--color-text-muted)] mb-4">
               {t("emailSub")}
             </p>
-            <Link
+            <a
               href={`mailto:${EMAIL}`}
               className="inline-flex items-center gap-2 text-[var(--color-accent)] font-medium hover:underline"
             >
               <EmailIcon size={16} />
               {EMAIL}
-            </Link>
+            </a>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-            <Link
+            <a
               href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -91,9 +90,9 @@ export default async function ContactPage({ params }: Props) {
                 <p className="text-sm font-medium text-[var(--color-text-base)]">LinkedIn</p>
                 <p className="text-xs text-[var(--color-text-faint)]">{t("linkedinConnect")}</p>
               </div>
-            </Link>
+            </a>
 
-            <Link
+            <a
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -104,7 +103,7 @@ export default async function ContactPage({ params }: Props) {
                 <p className="text-sm font-medium text-[var(--color-text-base)]">GitHub</p>
                 <p className="text-xs text-[var(--color-text-faint)]">{t("githubSee")}</p>
               </div>
-            </Link>
+            </a>
           </div>
 
           <div>
