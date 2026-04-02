@@ -4,7 +4,6 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { getProjectBySlug, getAllProjectSlugs } from "@/lib/content";
 import { CaseStudySection } from "@/components/projects/CaseStudySection";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
-import { softwareSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
 import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
 
@@ -35,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const { slug, locale } = await params;
+  const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
@@ -49,21 +48,8 @@ export default async function ProjectPage({ params }: Props) {
     components: mdxContentComponents,
   });
 
-  const schema = softwareSchema({
-    title: project.title,
-    description: project.shortProblem,
-    stack: project.stack,
-    slug: project.slug,
-    repo: project.repo,
-    locale: locale as SiteLocale,
-  });
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <CaseStudySection
         project={project}
         mdxContent={mdxContent}

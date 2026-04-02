@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { getLocale } from "next-intl/server";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
+import { getRequestLocale } from "@/i18n/requestLocale";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
@@ -61,7 +61,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getLocale();
+  const locale = await getRequestLocale();
 
   return (
     <html

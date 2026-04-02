@@ -8,7 +8,6 @@ import { extractHeadings } from "@/lib/headings";
 import { Tag } from "@/components/ui/Tag";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
-import { blogPostingSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
@@ -52,15 +51,6 @@ export default async function BlogPostPage({ params }: Props) {
     .filter((p) => p.slug !== slug && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 2);
 
-  const schema = blogPostingSchema({
-    title: post.title,
-    excerpt: post.excerpt,
-    date: post.date,
-    slug: post.slug,
-    tags: post.tags,
-    locale: locale as SiteLocale,
-  });
-
   const date = new Date(post.date).toLocaleDateString(locale === "pl" ? "pl-PL" : "en-GB", {
     year: "numeric",
     month: "long",
@@ -74,10 +64,6 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
       <div className="py-16 px-4">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
