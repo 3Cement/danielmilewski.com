@@ -3,6 +3,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { LocaleSync } from "@/components/ui/LocaleSync";
 import { personSchema, websiteSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
 
@@ -40,6 +41,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <>
+      <LocaleSync locale={siteLocale} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

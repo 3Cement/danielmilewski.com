@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
-import { getRequestLocale } from "@/i18n/requestLocale";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
@@ -56,16 +55,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const locale = await getRequestLocale();
-
   return (
     <html
-      lang={locale}
+      lang="en"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
