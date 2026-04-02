@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import { EMAIL, SITE_NAME, SITE_URL } from "@/lib/metadata";
+import { logger } from "@/lib/logger";
 import type {
   ContactField,
   ContactFormState,
@@ -80,7 +81,10 @@ export async function sendContactMessage(
     };
   }
 
-  const locale = readField(formData, "locale") || "en";
+  const rawLocale = readField(formData, "locale");
+  const locale = (["en", "pl"] as const).includes(rawLocale as "en" | "pl")
+    ? (rawLocale as "en" | "pl")
+    : "en";
   const data = {
     name: readField(formData, "name"),
     email: readField(formData, "email"),
@@ -113,7 +117,7 @@ export async function sendContactMessage(
   const safeCompany = data.company || "—";
   const emailSubject = `[${SITE_NAME}] ${data.subject}`;
 
-  const { error } = await resend.emails.send({
+  const emailPayload = {
     from,
     to,
     replyTo: data.email,
@@ -150,18 +154,34 @@ export async function sendContactMessage(
       { name: "source", value: "portfolio-contact-form" },
       { name: "locale", value: locale },
     ],
-  });
+  };
 
-  if (error) {
-    console.error("Contact form email failed", error);
-    return {
-      status: "error",
-      messageCode: "sendError",
+  const backoff = [1000, 2000, 4000];
+  let lastError: { statusCode: number | null; message: string } | null = null;
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    if (attempt > 1) {
+      await new Promise<void>((resolve) => setTimeout(resolve, backoff[attempt - 2]));
+    }
+    logger.info("contact_form_email_attempt", { attempt });
+    const { error } = await resend.emails.send(emailPayload);
+    if (!error) {
+      return { status: "success", messageCode: "success" };
+    }
+    lastError = {
+      statusCode: error.statusCode,
+      message: error.message,
     };
+    logger.warn("contact_form_email_attempt_failed", {
+      attempt,
+      statusCode: error.statusCode,
+      message: error.message,
+    });
   }
 
-  return {
-    status: "success",
-    messageCode: "success",
-  };
+  logger.error("contact_form_email_failed", {
+    statusCode: lastError?.statusCode,
+    message: lastError?.message,
+  });
+  return { status: "error", messageCode: "sendError" };
 }

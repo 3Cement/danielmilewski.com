@@ -10,6 +10,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node scripts/verify-messages.mjs",
+    "test:unit": "vitest run",
     "optimize:images": "node scripts/optimize-investtracker-webp.mjs",
     "generate:favicon": "node scripts/generate-favicon.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
@@ -39,6 +40,7 @@
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "vitest": "^4.1.2",
     "wrangler": "^4.76.0"
   }
 }
