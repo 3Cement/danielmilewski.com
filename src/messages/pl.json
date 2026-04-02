@@ -221,6 +221,11 @@
     "contactDescription": "Kontakt z Danielem Milewskim — senior Python developer. Ograniczona dostępność; otwarty na rozmowy o backendzie, API i automatyzacji.",
     "privacyDescription": "Polityka prywatności serwisu danielmilewski.com.",
     "projectsDescription": "Projekty Daniela Milewskiego — od narzędzi osobistych po systemy produkcyjne.",
-    "blogDescription": "Notatki o Pythonie, inżynierii backendowej i oprogramowaniu, które działa."
+    "blogDescription": "Notatki o Pythonie, inżynierii backendowej i oprogramowaniu, które działa.",
+    "aboutTitle": "O mnie",
+    "blogTitle": "Blog",
+    "contactTitle": "Kontakt",
+    "projectsTitle": "Projekty",
+    "privacyTitle": "Polityka prywatności"
   }
 }

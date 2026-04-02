@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
   return buildMetadata({
-    title: locale === "pl" ? "O mnie" : "About",
+    title: t("aboutTitle"),
     description: t("aboutDescription"),
     pathWithoutLocale: "/about",
     locale: locale as SiteLocale,
@@ -35,15 +35,25 @@ export default async function AboutPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about" });
 
-  const techStack = t.raw("techStack") as Record<string, string[]>;
-  const experience = t.raw("experience") as Array<{
-    period: string;
-    company: string;
-    companyUrl?: string;
-    role: string;
-    domain: string;
-    note: string;
-  }>;
+  const rawTechStack = t.raw("techStack");
+  const techStack =
+    rawTechStack != null &&
+    typeof rawTechStack === "object" &&
+    !Array.isArray(rawTechStack)
+      ? (rawTechStack as Record<string, string[]>)
+      : ({} as Record<string, string[]>);
+
+  const rawExperience = t.raw("experience");
+  const experience = Array.isArray(rawExperience)
+    ? (rawExperience as Array<{
+        period: string;
+        company: string;
+        companyUrl?: string;
+        role: string;
+        domain: string;
+        note: string;
+      }>)
+    : [];
 
   return (
     <div className="py-16 px-4">

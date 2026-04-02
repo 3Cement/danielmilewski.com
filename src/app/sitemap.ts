@@ -1,13 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllProjectSlugs, getAllPostSlugs } from "@/lib/content";
-import { SITE_URL } from "@/lib/metadata";
+import { absoluteUrl, type SiteLocale } from "@/lib/metadata";
 
-const locales = ["en", "pl"] as const;
-
-function localePath(locale: string, path: string) {
-  const base = locale === "en" ? SITE_URL : `${SITE_URL}/pl`;
-  return path === "/" ? base : `${base}${path}`;
-}
+const locales = ["en", "pl"] as const satisfies readonly SiteLocale[];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = [
@@ -21,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes = locales.flatMap((locale) =>
     staticPaths.map(({ path, changeFrequency, priority }) => ({
-      url: localePath(locale, path),
+      url: absoluteUrl(locale, path),
       changeFrequency,
       priority,
     }))
@@ -29,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const projectRoutes = locales.flatMap((locale) =>
     getAllProjectSlugs().map((slug) => ({
-      url: localePath(locale, `/projects/${slug}`),
+      url: absoluteUrl(locale, `/projects/${slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.8,
     }))
@@ -37,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const blogRoutes = locales.flatMap((locale) =>
     getAllPostSlugs().map((slug) => ({
-      url: localePath(locale, `/blog/${slug}`),
+      url: absoluteUrl(locale, `/blog/${slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     }))

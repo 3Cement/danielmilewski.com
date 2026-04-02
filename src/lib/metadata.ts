@@ -30,11 +30,11 @@ export function profileImageAbsoluteUrl(): string {
 export type SiteLocale = "en" | "pl";
 
 export function absoluteUrl(locale: SiteLocale, pathWithoutLocale: string): string {
+  const base = SITE_URL.replace(/\/$/, "");
   const path = pathWithoutLocale === "/" ? "" : pathWithoutLocale;
-  if (locale === "en") {
-    return `${SITE_URL}${path}`;
-  }
-  return `${SITE_URL}/pl${path}`;
+  const localePrefix = locale === "en" ? "/en" : "/pl";
+
+  return `${base}${localePrefix}${path}`;
 }
 
 const defaultOgImagePath = "/opengraph-image";

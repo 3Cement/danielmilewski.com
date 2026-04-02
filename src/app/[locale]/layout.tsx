@@ -42,7 +42,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           __html: JSON.stringify([
             personSchema(siteLocale),
             websiteSchema(siteLocale),
-          ]),
+          ]).replace(/<\/script>/gi, "<\\/script>"),
         }}
       />
       <Navbar />

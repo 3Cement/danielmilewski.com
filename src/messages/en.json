@@ -221,6 +221,11 @@
     "contactDescription": "Contact Daniel Milewski — senior Python developer. Limited availability; open to conversations about backend, APIs, and automation.",
     "privacyDescription": "Privacy policy for danielmilewski.com — data handling on this portfolio site.",
     "projectsDescription": "Projects built by Daniel Milewski — from personal tools to production systems.",
-    "blogDescription": "Writing about Python, backend engineering, and software that ships."
+    "blogDescription": "Writing about Python, backend engineering, and software that ships.",
+    "aboutTitle": "About",
+    "blogTitle": "Writing",
+    "contactTitle": "Contact",
+    "projectsTitle": "Projects",
+    "privacyTitle": "Privacy policy"
   }
 }

@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
   return buildMetadata({
-    title: locale === "pl" ? "Polityka prywatności" : "Privacy policy",
+    title: t("privacyTitle"),
     description: t("privacyDescription"),
     pathWithoutLocale: "/privacy",
     locale: locale as SiteLocale,

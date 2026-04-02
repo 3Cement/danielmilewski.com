@@ -1,5 +1,6 @@
 import { getAllPosts } from "@/lib/content";
 import {
+  absoluteUrl,
   EMAIL,
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -16,8 +17,8 @@ export function GET() {
       (post) => `
     <item>
       <title><![CDATA[${post.title}]]></title>
-      <link>${SITE_URL}/blog/${post.slug}</link>
-      <guid isPermaLink="true">${SITE_URL}/blog/${post.slug}</guid>
+      <link>${absoluteUrl("en", `/blog/${post.slug}`)}</link>
+      <guid isPermaLink="true">${absoluteUrl("en", `/blog/${post.slug}`)}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <description><![CDATA[${post.excerpt}]]></description>
       ${post.tags.map((tag) => `<category>${tag}</category>`).join("\n      ")}
@@ -29,7 +30,7 @@ export function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${SITE_NAME}</title>
-    <link>${SITE_URL}</link>
+    <link>${absoluteUrl("en", "/blog")}</link>
     <description>${SITE_DESCRIPTION}</description>
     <language>en</language>
     <managingEditor>${EMAIL} (${SITE_NAME})</managingEditor>

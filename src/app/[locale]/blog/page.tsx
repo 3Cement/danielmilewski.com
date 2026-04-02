@@ -15,13 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
   return buildMetadata({
-    title: locale === "pl" ? "Blog" : "Writing",
+    title: t("blogTitle"),
     description: t("blogDescription"),
     pathWithoutLocale: "/blog",
     locale: locale as SiteLocale,
   });
 }
 
+// searchParams intentionally opts this page out of static rendering — tag filtering
+// is data-driven and the tag set is not known at build time.
 export default async function BlogPage({ params, searchParams }: Props) {
   const { locale } = await params;
   const { tag } = await searchParams;
