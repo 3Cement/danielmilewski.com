@@ -1,4 +1,5 @@
 import fs from "fs";
+import fsPromises from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import matter from "gray-matter";
@@ -17,14 +18,16 @@ function stripContent(entry) {
   return meta;
 }
 
-function readProjects() {
+async function readProjects() {
   const files = fs.readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".mdx"));
-  const metas = files.map((filename) => {
-    const slug = filename.replace(/\.mdx$/, "");
-    const raw = fs.readFileSync(path.join(PROJECTS_DIR, filename), "utf8");
-    const { data, content } = matter(raw);
-    return { slug, ...data, content };
-  });
+  const metas = await Promise.all(
+    files.map(async (filename) => {
+      const slug = filename.replace(/\.mdx$/, "");
+      const raw = await fsPromises.readFile(path.join(PROJECTS_DIR, filename), "utf8");
+      const { data, content } = matter(raw);
+      return { slug, ...data, content };
+    }),
+  );
   metas.sort((a, b) =>
     a.featured === b.featured ? 0 : a.featured ? -1 : 1,
   );
@@ -33,28 +36,29 @@ function readProjects() {
   return { projectMetas, projectBySlug };
 }
 
-function readPosts() {
+async function readPosts() {
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx"));
-  const full = files.map((filename) => {
-    const slug = filename.replace(/\.mdx$/, "");
-    const raw = fs.readFileSync(path.join(BLOG_DIR, filename), "utf8");
-    const { data, content } = matter(raw);
-    const rt = readingTime(content);
-    return {
-      slug,
-      ...data,
-      content,
-      readingTime: String(Math.ceil(rt.minutes)),
-    };
-  });
+  const full = await Promise.all(
+    files.map(async (filename) => {
+      const slug = filename.replace(/\.mdx$/, "");
+      const raw = await fsPromises.readFile(path.join(BLOG_DIR, filename), "utf8");
+      const { data, content } = matter(raw);
+      const rt = readingTime(content);
+      return {
+        slug,
+        ...data,
+        content,
+        readingTime: String(Math.ceil(rt.minutes)),
+      };
+    }),
+  );
   full.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const postBySlug = Object.fromEntries(full.map((p) => [p.slug, p]));
   const postMetas = full.map(stripContent);
   return { postMetas, postBySlug };
 }
 
-const projects = readProjects();
-const posts = readPosts();
+const [projects, posts] = await Promise.all([readProjects(), readPosts()]);
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.writeFileSync(
