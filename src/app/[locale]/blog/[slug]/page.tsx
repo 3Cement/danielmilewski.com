@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from "@/lib/content";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { extractHeadings } from "@/lib/headings";
@@ -10,7 +9,6 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
-import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
 import { ContactCTA } from "@/components/ui/ContactCTA";
 
 export const dynamic = "force-static";
@@ -57,11 +55,6 @@ export default async function BlogPostPage({ params }: Props) {
     day: "numeric",
   });
 
-  const mdxContent = await MDXRemote({
-    source: post.content,
-    components: mdxContentComponents,
-  });
-
   return (
     <>
       <div className="py-16 px-4">
@@ -92,9 +85,10 @@ export default async function BlogPostPage({ params }: Props) {
               </header>
 
               {/* Body */}
-              <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-blockquote:border-[var(--color-accent)]">
-                {mdxContent}
-              </div>
+              <div
+                className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-blockquote:border-[var(--color-accent)]"
+                dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+              />
 
               {/* Related posts */}
               {related.length > 0 && (

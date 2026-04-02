@@ -13,6 +13,7 @@ export interface Project {
   images?: string[];
   relatedSlugs?: string[];
   content: string;
+  contentHtml: string;
 }
 
 export type ProjectMeta = Omit<Project, "content">;

@@ -6,6 +6,7 @@ export interface Post {
   tags: string[];
   readingTime: string;
   content: string;
+  contentHtml: string;
 }
 
 export type PostMeta = Omit<Post, "content">;

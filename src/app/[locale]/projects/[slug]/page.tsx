@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
 import { getProjectBySlug, getAllProjectSlugs } from "@/lib/content";
 import { CaseStudySection } from "@/components/projects/CaseStudySection";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
-import { mdxContentComponents } from "@/components/mdx/mdxContentComponents";
 
 export const dynamic = "force-static";
 
@@ -43,16 +41,11 @@ export default async function ProjectPage({ params }: Props) {
     .filter(Boolean)
     .map((p) => ({ slug: p!.slug, title: p!.title }));
 
-  const mdxContent = await MDXRemote({
-    source: project.content,
-    components: mdxContentComponents,
-  });
-
   return (
     <>
       <CaseStudySection
         project={project}
-        mdxContent={mdxContent}
+        mdxContent={project.contentHtml}
         relatedProjects={relatedProjects}
       />
     </>

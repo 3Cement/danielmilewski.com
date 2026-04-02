@@ -2,7 +2,11 @@ import fs from "fs";
 import fsPromises from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import { evaluate } from "@mdx-js/mdx";
 import matter from "gray-matter";
+import { createElement, isValidElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import * as runtime from "react/jsx-runtime";
 import readingTime from "reading-time";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -18,6 +22,50 @@ function stripContent(entry) {
   return meta;
 }
 
+function plainTextFromChildren(node) {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(plainTextFromChildren).join("");
+  if (isValidElement(node)) {
+    const { children } = node.props ?? {};
+    if (children != null) {
+      return plainTextFromChildren(children);
+    }
+  }
+  return "";
+}
+
+function slugifyHeading(text) {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+const mdxBuildComponents = {
+  h2: ({ children, id, ...rest }) => {
+    void id;
+    return createElement("h2", { ...rest, id: slugifyHeading(plainTextFromChildren(children)) }, children);
+  },
+  h3: ({ children, id, ...rest }) => {
+    void id;
+    return createElement("h3", { ...rest, id: slugifyHeading(plainTextFromChildren(children)) }, children);
+  },
+};
+
+async function renderMdxToHtml(content, pathLabel) {
+  const { default: MDXContent } = await evaluate(
+    { path: pathLabel, value: content },
+    { ...runtime, baseUrl: import.meta.url },
+  );
+
+  return renderToStaticMarkup(MDXContent({ components: mdxBuildComponents }))
+    .replace(/<link rel="preload" as="image" href="[^"]+"\/>/g, "");
+}
+
 async function readProjects() {
   const files = fs.readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".mdx"));
   const metas = await Promise.all(
@@ -25,7 +73,8 @@ async function readProjects() {
       const slug = filename.replace(/\.mdx$/, "");
       const raw = await fsPromises.readFile(path.join(PROJECTS_DIR, filename), "utf8");
       const { data, content } = matter(raw);
-      return { slug, ...data, content };
+      const contentHtml = await renderMdxToHtml(content, path.join(PROJECTS_DIR, filename));
+      return { slug, ...data, content, contentHtml };
     }),
   );
   metas.sort((a, b) =>
@@ -44,10 +93,12 @@ async function readPosts() {
       const raw = await fsPromises.readFile(path.join(BLOG_DIR, filename), "utf8");
       const { data, content } = matter(raw);
       const rt = readingTime(content);
+      const contentHtml = await renderMdxToHtml(content, path.join(BLOG_DIR, filename));
       return {
         slug,
         ...data,
         content,
+        contentHtml,
         readingTime: String(Math.ceil(rt.minutes)),
       };
     }),
