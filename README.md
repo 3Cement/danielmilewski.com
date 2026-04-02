@@ -155,6 +155,27 @@ scripts/
 
 **Wrangler vs dashboard:** `wrangler deploy` treats **`wrangler.jsonc` as source of truth**. If you add routes or vars only in the dashboard, the next CLI deploy can overwrite them. This repo keeps **`routes`** (apex + `www`) and **`vars`** in `wrangler.jsonc` so deploys stay consistent.
 
+**Recommended split of config:**
+
+- Local development: `.dev.vars`
+- Production non-secrets: `wrangler.jsonc` → `vars`
+- Production secrets: `npx wrangler secret put ...`
+
+For this project, the intended split is:
+
+- `.dev.vars`
+  - `NEXTJS_ENV=development`
+  - `RESEND_API_KEY`
+  - `RESEND_FROM_EMAIL`
+  - `CONTACT_FORM_TO_EMAIL`
+- `wrangler.jsonc`
+  - `NEXT_PUBLIC_SITE_URL`
+  - `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`
+  - `RESEND_FROM_EMAIL`
+  - `CONTACT_FORM_TO_EMAIL`
+- Wrangler secret
+  - `RESEND_API_KEY`
+
 ### Contact form / Resend setup
 
 The contact page now includes a form powered by **Resend** via a Next.js Server Action.
@@ -170,9 +191,35 @@ CONTACT_FORM_TO_EMAIL=danielmilewski123@gmail.com
 For production on Cloudflare Workers:
 
 1. Set the API key as a secret:
-   `wrangler secret put RESEND_API_KEY`
-2. Set `RESEND_FROM_EMAIL` and optionally `CONTACT_FORM_TO_EMAIL` in your deployment environment.
-3. Verify your sending domain in Resend before using a custom `from` address. The default onboarding sender is useful for testing, not for a polished production setup.
+   `npx wrangler secret put RESEND_API_KEY`
+2. Set `RESEND_FROM_EMAIL` and optionally `CONTACT_FORM_TO_EMAIL` in `wrangler.jsonc`.
+3. Verify your sending domain in Resend before using a custom `from` address such as `contact@danielmilewski.com`.
+
+### Testing the contact form
+
+1. Local Next.js dev with `.dev.vars`:
+   `npm run dev`
+2. Local Worker-like preview with `wrangler.jsonc` + production secrets:
+   `npm run preview`
+3. Production deploy:
+   `npm run deploy`
+
+**Important:** In `next dev`, this project can read Resend env vars from both `process.env` and the Cloudflare dev context. This allows the same contact form action to work correctly with local `.dev.vars` and with Worker-style preview/deploy environments.
+
+**Recommended verification flow:**
+
+1. Test locally with `.dev.vars` via `npm run dev`
+2. Test Worker preview via `npm run preview`
+3. Deploy with `npm run deploy`
+4. Submit a real production test from `/pl/contact` or `/en/contact`
+
+**If port 3000 gets stuck during local dev:**
+
+```bash
+fuser -k 3000/tcp
+```
+
+If Next moved to another port, replace `3000` with the port shown in the terminal.
 
 ---
 

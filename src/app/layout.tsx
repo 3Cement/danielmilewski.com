@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { getLocale } from "next-intl/server";
 import Script from "next/script";
 import "./globals.css";
+import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
@@ -64,14 +65,9 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem('theme');var p=window.matchMedia('(prefers-color-scheme: dark)').matches;var d=s?s==='dark':p;document.documentElement.classList.toggle('dark',d);}catch(e){}})();`,
-          }}
-        />
-      </head>
+      <head />
       <body className="min-h-screen flex flex-col">
+        <ThemeInitializer />
         {children}
         {cfAnalyticsToken && (
           <Script

@@ -4,7 +4,9 @@
 	"name": "danielmilewskicom",
 	"vars": {
 		"NEXT_PUBLIC_SITE_URL": "https://danielmilewski.com",
-		"NEXT_PUBLIC_CF_ANALYTICS_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
+		"NEXT_PUBLIC_CF_ANALYTICS_TOKEN": "REPLACE_WITH_YOUR_TOKEN",
+		"RESEND_FROM_EMAIL": "Daniel Milewski <contact@danielmilewski.com>",
+		"CONTACT_FORM_TO_EMAIL": "danielmilewski123@gmail.com"
 	},
 	"routes": [
 		{

@@ -1,34 +1,26 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
-
-function getInitialDark(): boolean {
-  if (typeof window === "undefined") return true;
-  const stored = localStorage.getItem("theme");
-  if (stored) return stored === "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState<boolean>(getInitialDark);
-
-  useLayoutEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-  }, [isDark]);
-
   function toggle() {
-    const next = !isDark;
-    setIsDark(next);
+    const root = document.documentElement;
+    const next = !root.classList.contains("dark");
+    root.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
   }
 
   return (
     <button
       onClick={toggle}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="rounded-md p-2 text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)] transition-colors"
+      type="button"
+      aria-label="Toggle color theme"
+      className="cursor-pointer rounded-md p-2 text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)] transition-colors"
     >
-      {isDark ? <SunIcon /> : <MoonIcon />}
+      <span className="block dark:hidden">
+        <MoonIcon />
+      </span>
+      <span className="hidden dark:block">
+        <SunIcon />
+      </span>
     </button>
   );
 }

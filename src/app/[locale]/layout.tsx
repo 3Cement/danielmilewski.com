@@ -33,21 +33,24 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
   const messages = await getMessages({ locale });
   const siteLocale = locale as "en" | "pl";
+  const structuredData = JSON.stringify([
+    personSchema(siteLocale),
+    websiteSchema(siteLocale),
+  ]).replace(/<\/script>/gi, "<\\/script>");
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            personSchema(siteLocale),
-            websiteSchema(siteLocale),
-          ]).replace(/<\/script>/gi, "<\\/script>"),
+          __html: structuredData,
         }}
       />
-      <Navbar />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </NextIntlClientProvider>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </NextIntlClientProvider>
+    </>
   );
 }

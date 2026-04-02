@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
+  allowedDevOrigins: ["127.0.0.1", "192.168.0.115"],
   images: {
     formats: ["image/avif", "image/webp"],
     unoptimized: true,

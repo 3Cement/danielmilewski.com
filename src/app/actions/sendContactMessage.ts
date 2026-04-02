@@ -1,5 +1,6 @@
 "use server";
 
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 import { EMAIL, SITE_NAME, SITE_URL } from "@/lib/metadata";
 import { logger } from "@/lib/logger";
@@ -69,6 +70,23 @@ function validateContactForm(data: Record<ContactField, string>) {
   return fieldErrors;
 }
 
+type ServerEnvName = "RESEND_API_KEY" | "RESEND_FROM_EMAIL" | "CONTACT_FORM_TO_EMAIL";
+
+async function readServerEnv(name: ServerEnvName): Promise<string | undefined> {
+  const directValue = process.env[name];
+  if (directValue) {
+    return directValue;
+  }
+
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const value = (env as Record<string, unknown>)[name];
+    return typeof value === "string" && value ? value : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export async function sendContactMessage(
   _prevState: ContactFormState,
   formData: FormData,
@@ -101,9 +119,9 @@ export async function sendContactMessage(
     };
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL ?? `Portfolio Contact <onboarding@resend.dev>`;
-  const to = process.env.CONTACT_FORM_TO_EMAIL ?? EMAIL;
+  const apiKey = await readServerEnv("RESEND_API_KEY");
+  const from = (await readServerEnv("RESEND_FROM_EMAIL")) ?? `Portfolio Contact <onboarding@resend.dev>`;
+  const to = (await readServerEnv("CONTACT_FORM_TO_EMAIL")) ?? EMAIL;
 
   if (!apiKey || !from || !to) {
     return {
