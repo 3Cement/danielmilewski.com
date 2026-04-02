@@ -41,6 +41,16 @@ Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare W
 
 ---
 
+## CI policy
+
+- GitHub Actions are intentionally disabled in this repo for now.
+- Reason: this project is kept lean and I do not want to pay for GitHub Actions at this stage.
+- Validation happens locally before push/deploy via `npm run test`, `npm run lint`, `npm run build`, and when needed `npm run test:unit`.
+- If GitHub still shows old failed checks on historical PRs, treat them as legacy noise rather than an active repo problem.
+- Future CI alternatives are tracked in `TODO.md`.
+
+---
+
 ## How routing and i18n work
 
 - All user-facing pages live under **`src/app/[locale]/`** (`en`, `pl`).
@@ -241,6 +251,7 @@ Serves the built Worker locally (Wrangler). Use this to verify behavior close to
 | **500** on Worker for `/en` or `/pl` | Stale or missing `content-data.json` for the deployed commit, or old Worker bundle before MDX JSON fix. Run `npm run build` locally, redeploy, ensure MDX changes committed with regenerated JSON. |
 | Wrong canonical / OG URLs | `NEXT_PUBLIC_SITE_URL` missing `https://` or out of sync with real domain. |
 | Wrangler “differs from dashboard” warning | Deploy updates remote to match `wrangler.jsonc`; keep vars/routes in the file (as in this repo) or re-apply dashboard settings after each deploy if you manage only from UI. |
+| Old PR shows failed `ci` check on GitHub | Historical GitHub Actions run. Actions are intentionally disabled in this repo now; ignore old failures unless CI is reintroduced later. |
 
 ---
 
