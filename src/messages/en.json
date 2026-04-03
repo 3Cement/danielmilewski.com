@@ -155,7 +155,7 @@
     "messagePlaceholder": "A few sentences about the project, scope, timing, or the problem you need solved.",
     "submit": "Send inquiry",
     "submitPending": "Sending...",
-    "privacyNote": "This form sends an email to me via Resend. Don't include secrets or sensitive credentials.",
+    "privacyNote": "This form sends your message to me via Resend and may send a confirmation email back to you. Don't include secrets or sensitive credentials.",
     "websiteLabel": "Website",
     "messages": {
       "success": "Message sent. I'll reply by email when I can.",
@@ -197,7 +197,17 @@
   },
   "legal": {
     "privacyTitle": "Privacy policy",
-    "privacyIntro": "This site is a personal portfolio. I don't run third-party advertising or marketing trackers on these pages. Hosting and deployment providers may process technical logs (e.g. IP, user agent) under their own privacy terms.",
+    "privacyIntro": "This site is a personal portfolio. I don't use advertising trackers or marketing cookies on these pages, but I do use basic analytics and contact-form infrastructure described below.",
+    "privacyControllerTitle": "Who controls the data",
+    "privacyControllerBody": "The controller of the data processed through this site is Daniel Milewski, sole proprietorship registered in Poland. If you contact me through the site, I use the submitted data only to review your inquiry and reply.",
+    "privacyFormTitle": "Contact form and email delivery",
+    "privacyFormBody": "When you send a message through the contact form, the submitted details (name, email address, optional company, subject and message) are processed to deliver your inquiry to my inbox. Delivery is handled through Resend. The form may also send a short confirmation email back to you after successful submission.",
+    "privacyAnalyticsTitle": "Basic website analytics",
+    "privacyAnalyticsBody": "This site uses Cloudflare Web Analytics to measure visits, referrers, countries and basic performance metrics. The goal is to understand site usage and monitor reliability, not to build advertising profiles.",
+    "privacyCookiesTitle": "Cookies and similar storage",
+    "privacyCookiesBody": "The site uses a functional NEXT_LOCALE cookie to remember your language choice. Cloudflare Web Analytics is configured in a privacy-first way and is not used here for advertising or cross-site tracking.",
+    "privacyRetentionTitle": "Retention",
+    "privacyRetentionBody": "Messages sent through the contact form may remain in my email inbox for as long as reasonably necessary to handle the conversation, keep business correspondence, or follow up on future collaboration. Analytics data retention is governed by the relevant provider's settings and policies.",
     "privacyContact": "Questions: contact me at the email shown on the Contact page.",
     "privacyUpdates": "I may update this page occasionally; the \"last updated\" date reflects the latest revision."
   },

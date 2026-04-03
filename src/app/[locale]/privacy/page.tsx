@@ -23,6 +23,28 @@ export default async function PrivacyPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "legal" });
   const year = new Date().getFullYear();
+  const sections = [
+    {
+      title: t("privacyControllerTitle"),
+      body: t("privacyControllerBody"),
+    },
+    {
+      title: t("privacyFormTitle"),
+      body: t("privacyFormBody"),
+    },
+    {
+      title: t("privacyAnalyticsTitle"),
+      body: t("privacyAnalyticsBody"),
+    },
+    {
+      title: t("privacyCookiesTitle"),
+      body: t("privacyCookiesBody"),
+    },
+    {
+      title: t("privacyRetentionTitle"),
+      body: t("privacyRetentionBody"),
+    },
+  ];
 
   return (
     <div className="py-16 px-4">
@@ -33,8 +55,16 @@ export default async function PrivacyPage({ params }: Props) {
         <p className="text-sm text-[var(--color-text-faint)] mb-10">
           {year} — {t("privacyUpdates")}
         </p>
-        <div className="space-y-6 text-[var(--color-text-muted)] leading-relaxed">
+        <div className="space-y-8 text-[var(--color-text-muted)] leading-relaxed">
           <p>{t("privacyIntro")}</p>
+          {sections.map((section) => (
+            <section key={section.title} className="space-y-2">
+              <h2 className="text-lg font-semibold text-[var(--color-text-base)]">
+                {section.title}
+              </h2>
+              <p>{section.body}</p>
+            </section>
+          ))}
           <p>{t("privacyContact")}</p>
         </div>
       </div>

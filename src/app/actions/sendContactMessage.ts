@@ -2,30 +2,23 @@
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
-import { EMAIL, SITE_NAME, SITE_URL } from "@/lib/metadata";
+import { EMAIL } from "@/lib/metadata";
 import { logger } from "@/lib/logger";
 import type {
   ContactField,
   ContactFormState,
   FieldErrorCode,
 } from "@/components/contact/contactFormState";
+import {
+  buildAutoReplyEmail,
+  buildOwnerNotificationEmail,
+  type ContactEmailPayload,
+  type ContactLocale,
+} from "@/lib/contactEmail";
 
 function readField(formData: FormData, name: string): string {
   const value = formData.get(name);
   return typeof value === "string" ? value.trim() : "";
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function formatMultilineHtml(value: string): string {
-  return escapeHtml(value).replaceAll("\n", "<br />");
 }
 
 function validateContactForm(data: Record<ContactField, string>) {
@@ -87,6 +80,47 @@ async function readServerEnv(name: ServerEnvName): Promise<string | undefined> {
   }
 }
 
+async function sendEmailWithRetry({
+  resend,
+  payload,
+  logPrefix,
+}: {
+  resend: Resend;
+  payload: ContactEmailPayload;
+  logPrefix: string;
+}): Promise<boolean> {
+  const backoff = [1000, 2000, 4000];
+  let lastError: { statusCode: number | null; message: string } | null = null;
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    if (attempt > 1) {
+      await new Promise<void>((resolve) => setTimeout(resolve, backoff[attempt - 2]));
+    }
+
+    logger.info(`${logPrefix}_attempt`, { attempt });
+    const { error } = await resend.emails.send(payload);
+    if (!error) {
+      return true;
+    }
+
+    lastError = {
+      statusCode: error.statusCode,
+      message: error.message,
+    };
+    logger.warn(`${logPrefix}_attempt_failed`, {
+      attempt,
+      statusCode: error.statusCode,
+      message: error.message,
+    });
+  }
+
+  logger.error(`${logPrefix}_failed`, {
+    statusCode: lastError?.statusCode,
+    message: lastError?.message,
+  });
+  return false;
+}
+
 export async function sendContactMessage(
   _prevState: ContactFormState,
   formData: FormData,
@@ -101,7 +135,7 @@ export async function sendContactMessage(
 
   const rawLocale = readField(formData, "locale");
   const locale = (["en", "pl"] as const).includes(rawLocale as "en" | "pl")
-    ? (rawLocale as "en" | "pl")
+    ? (rawLocale as ContactLocale)
     : "en";
   const data = {
     name: readField(formData, "name"),
@@ -132,74 +166,33 @@ export async function sendContactMessage(
 
   const resend = new Resend(apiKey);
   const submittedAt = new Date().toISOString();
-  const safeCompany = data.company || "—";
-  const emailSubject = `[${SITE_NAME}] ${data.subject}`;
-
-  const emailPayload = {
+  const ownerNotificationEmail = buildOwnerNotificationEmail({
     from,
     to,
-    replyTo: data.email,
-    subject: emailSubject,
-    text:
-      `New portfolio contact form submission\n\n` +
-      `Name: ${data.name}\n` +
-      `Email: ${data.email}\n` +
-      `Company: ${safeCompany}\n` +
-      `Locale: ${locale}\n` +
-      `Submitted at: ${submittedAt}\n` +
-      `Source: ${SITE_URL}/${locale}/contact\n\n` +
-      `Message:\n${data.message}`,
-    html: `
-      <div style="font-family: Arial, sans-serif; color: #111827; line-height: 1.6;">
-        <h1 style="font-size: 20px; margin: 0 0 16px;">New portfolio contact form submission</h1>
-        <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
-          <tbody>
-            <tr><td style="padding: 6px 0; font-weight: 600;">Name</td><td style="padding: 6px 0;">${escapeHtml(data.name)}</td></tr>
-            <tr><td style="padding: 6px 0; font-weight: 600;">Email</td><td style="padding: 6px 0;">${escapeHtml(data.email)}</td></tr>
-            <tr><td style="padding: 6px 0; font-weight: 600;">Company</td><td style="padding: 6px 0;">${escapeHtml(safeCompany)}</td></tr>
-            <tr><td style="padding: 6px 0; font-weight: 600;">Locale</td><td style="padding: 6px 0;">${escapeHtml(locale)}</td></tr>
-            <tr><td style="padding: 6px 0; font-weight: 600;">Submitted at</td><td style="padding: 6px 0;">${escapeHtml(submittedAt)}</td></tr>
-            <tr><td style="padding: 6px 0; font-weight: 600;">Source</td><td style="padding: 6px 0;">${escapeHtml(`${SITE_URL}/${locale}/contact`)}</td></tr>
-          </tbody>
-        </table>
-        <h2 style="font-size: 16px; margin: 0 0 8px;">Subject</h2>
-        <p style="margin: 0 0 16px;">${escapeHtml(data.subject)}</p>
-        <h2 style="font-size: 16px; margin: 0 0 8px;">Message</h2>
-        <p style="margin: 0;">${formatMultilineHtml(data.message)}</p>
-      </div>
-    `,
-    tags: [
-      { name: "source", value: "portfolio-contact-form" },
-      { name: "locale", value: locale },
-    ],
-  };
-
-  const backoff = [1000, 2000, 4000];
-  let lastError: { statusCode: number | null; message: string } | null = null;
-
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    if (attempt > 1) {
-      await new Promise<void>((resolve) => setTimeout(resolve, backoff[attempt - 2]));
-    }
-    logger.info("contact_form_email_attempt", { attempt });
-    const { error } = await resend.emails.send(emailPayload);
-    if (!error) {
-      return { status: "success", messageCode: "success" };
-    }
-    lastError = {
-      statusCode: error.statusCode,
-      message: error.message,
-    };
-    logger.warn("contact_form_email_attempt_failed", {
-      attempt,
-      statusCode: error.statusCode,
-      message: error.message,
-    });
+    locale,
+    data,
+    submittedAt,
+  });
+  const ownerEmailSent = await sendEmailWithRetry({
+    resend,
+    payload: ownerNotificationEmail,
+    logPrefix: "contact_form_email",
+  });
+  if (!ownerEmailSent) {
+    return { status: "error", messageCode: "sendError" };
   }
 
-  logger.error("contact_form_email_failed", {
-    statusCode: lastError?.statusCode,
-    message: lastError?.message,
+  const autoReplyEmail = buildAutoReplyEmail({
+    from,
+    to: data.email,
+    locale,
+    name: data.name,
   });
-  return { status: "error", messageCode: "sendError" };
+  await sendEmailWithRetry({
+    resend,
+    payload: autoReplyEmail,
+    logPrefix: "contact_form_autoreply_email",
+  });
+
+  return { status: "success", messageCode: "success" };
 }

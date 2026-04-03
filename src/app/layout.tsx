@@ -3,13 +3,11 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
+import { hasRealAnalyticsToken } from "@/lib/analytics";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
-const hasCfAnalyticsToken =
-  cfAnalyticsToken != null &&
-  cfAnalyticsToken !== "" &&
-  cfAnalyticsToken !== "REPLACE_WITH_YOUR_TOKEN";
+const hasCfAnalyticsToken = hasRealAnalyticsToken(cfAnalyticsToken);
 
 const geistSans = localFont({
   src: [

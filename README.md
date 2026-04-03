@@ -176,6 +176,8 @@ For this project, the intended split is:
 - Wrangler secret
   - `RESEND_API_KEY`
 
+`NEXT_PUBLIC_CF_ANALYTICS_TOKEN` is optional. If it is missing or left as the placeholder value, the Cloudflare Web Analytics beacon is not rendered.
+
 ### Contact form / Resend setup
 
 The contact page now includes a form powered by **Resend** via a Next.js Server Action.
@@ -194,6 +196,32 @@ For production on Cloudflare Workers:
    `npx wrangler secret put RESEND_API_KEY`
 2. Set `RESEND_FROM_EMAIL` and optionally `CONTACT_FORM_TO_EMAIL` in `wrangler.jsonc`.
 3. Verify your sending domain in Resend before using a custom `from` address such as `contact@danielmilewski.com`.
+
+On successful submission, the form:
+
+1. sends the inquiry to `CONTACT_FORM_TO_EMAIL`
+2. sends a short confirmation email back to the sender
+
+The autoresponse is localized (`en` / `pl`) and is intentionally simple: it only confirms receipt and says that a reply should follow within a few business days.
+
+### Cloudflare Web Analytics
+
+This project supports **Cloudflare Web Analytics** via `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`.
+
+- The beacon is only rendered when the token is real.
+- The placeholder value `REPLACE_WITH_YOUR_TOKEN` is treated as disabled.
+- This keeps local development and production-safe defaults simple: no token, no analytics script.
+
+### Privacy / data handling
+
+Current site behavior that must stay reflected in the privacy page:
+
+- Contact form submissions are delivered via **Resend**
+- A confirmation email may be sent back to the sender
+- The site may use **Cloudflare Web Analytics** for pageviews and basic performance data
+- The site uses a functional `NEXT_LOCALE` cookie to remember the selected language
+
+If you later add heavier analytics, event tracking, marketing pixels, or session replay, revisit the privacy copy and consent requirements instead of quietly extending the current setup.
 
 ### Testing the contact form
 
