@@ -1,9 +1,11 @@
 "use server";
 
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { headers } from "next/headers";
 import { Resend } from "resend";
 import { EMAIL } from "@/lib/metadata";
 import { logger } from "@/lib/logger";
+import { isTurnstileConfigured, verifyTurnstileToken } from "@/lib/turnstile";
 import type {
   ContactField,
   ContactFormState,
@@ -63,7 +65,11 @@ function validateContactForm(data: Record<ContactField, string>) {
   return fieldErrors;
 }
 
-type ServerEnvName = "RESEND_API_KEY" | "RESEND_FROM_EMAIL" | "CONTACT_FORM_TO_EMAIL";
+type ServerEnvName =
+  | "RESEND_API_KEY"
+  | "RESEND_FROM_EMAIL"
+  | "CONTACT_FORM_TO_EMAIL"
+  | "TURNSTILE_SECRET_KEY";
 
 async function readServerEnv(name: ServerEnvName): Promise<string | undefined> {
   const directValue = process.env[name];
@@ -151,6 +157,43 @@ export async function sendContactMessage(
       status: "error",
       fieldErrors,
     };
+  }
+
+  if (process.env.PLAYWRIGHT_TEST_MODE === "1") {
+    logger.info("contact_form_test_mode_skip_delivery", { locale });
+    return { status: "success", messageCode: "success" };
+  }
+
+  const turnstileToken = readField(formData, "cf-turnstile-response");
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileSecret = await readServerEnv("TURNSTILE_SECRET_KEY");
+  const shouldVerifyTurnstile = isTurnstileConfigured(
+    turnstileSiteKey,
+    turnstileSecret,
+  );
+
+  if (shouldVerifyTurnstile) {
+    const requestHeaders = await headers();
+    const forwardedFor = requestHeaders.get("x-forwarded-for");
+    const remoteIp =
+      requestHeaders.get("cf-connecting-ip") ??
+      forwardedFor?.split(",")[0]?.trim();
+
+    const turnstilePassed =
+      turnstileToken !== "" &&
+      (await verifyTurnstileToken({
+        token: turnstileToken,
+        secretKey: turnstileSecret!,
+        remoteIp,
+      }));
+
+    if (!turnstilePassed) {
+      logger.warn("contact_form_turnstile_failed", {
+        locale,
+        remoteIp,
+      });
+      return { status: "error", messageCode: "captchaError" };
+    }
   }
 
   const apiKey = await readServerEnv("RESEND_API_KEY");

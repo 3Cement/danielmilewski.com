@@ -11,6 +11,7 @@
     "lint": "eslint",
     "test": "node scripts/verify-messages.mjs",
     "test:unit": "vitest run",
+    "test:e2e": "npm run build && playwright test",
     "optimize:images": "node scripts/optimize-investtracker-webp.mjs",
     "generate:favicon": "node scripts/generate-favicon.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
@@ -31,6 +32,7 @@
     "resend": "^6.9.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -3,7 +3,8 @@ export type FieldErrorCode = "required" | "invalidEmail" | "tooShort" | "tooLong
 export type ContactMessageCode =
   | "success"
   | "configError"
-  | "sendError";
+  | "sendError"
+  | "captchaError";
 
 export interface ContactFormState {
   status: "idle" | "success" | "error";

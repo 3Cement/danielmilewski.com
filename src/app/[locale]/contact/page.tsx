@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { SocialLinks, EmailIcon, GitHubIcon, LinkedInIcon } from "@/components/ui/SocialLinks";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { ContactExpectations } from "@/components/contact/ContactExpectations";
 import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
 
 interface Props {
@@ -61,6 +62,7 @@ export default async function ContactPage({ params }: Props) {
           </div>
 
           <ContactForm />
+          <ContactExpectations />
 
           <div className="p-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] mb-8">
             <p className="text-sm font-semibold text-[var(--color-text-base)] mb-2">

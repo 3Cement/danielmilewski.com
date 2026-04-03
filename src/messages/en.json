@@ -17,6 +17,46 @@
   "credibility": {
     "tags": ["Python", "Backend Systems", "REST APIs", "FastAPI", "PostgreSQL", "Automation", "AI / ML"]
   },
+  "trust": {
+    "eyebrow": "Working context",
+    "heading": "Built in environments where software has to stay reliable.",
+    "sub": "The strongest signal I can offer right now is not a polished slogan but the kind of teams and systems I've worked in: research analytics, fintech, and production backend delivery.",
+    "items": [
+      {
+        "label": "Production domains",
+        "value": "Energy, fintech, IT services",
+        "note": "Experience across data-heavy and high-stakes environments where correctness, uptime, and maintainability matter."
+      },
+      {
+        "label": "Ownership style",
+        "value": "Architecture to deploy",
+        "note": "Comfortable taking work from ambiguous problem definition through implementation, cleanup, and production rollout."
+      },
+      {
+        "label": "Engagement model",
+        "value": "Remote-ready B2B in Europe",
+        "note": "Clear communication, registered sole proprietorship in Poland, and a working style that fits remote product and engineering teams."
+      }
+    ],
+    "companiesHeading": "Recent environments",
+    "companies": [
+      {
+        "name": "Energy Aspects",
+        "role": "Python Developer",
+        "domain": "Research analytics and internal tools for institutional energy-market products."
+      },
+      {
+        "name": "JIT Team",
+        "role": "Senior Python Developer",
+        "domain": "Backend APIs, integrations, and delivery in a software-house model."
+      },
+      {
+        "name": "Equiti",
+        "role": "Python Developer",
+        "domain": "Brokerage and fintech systems in a regulated, high-availability environment."
+      }
+    ]
+  },
   "expertise": {
     "heading": "What I work on",
     "sub": "The areas where I can take ownership from first line to production.",
@@ -140,6 +180,24 @@
       "Remote or hybrid, Europe timezone preferred"
     ]
   },
+  "contactExpectations": {
+    "heading": "What to expect",
+    "sub": "A few practical details before you send anything.",
+    "items": [
+      {
+        "title": "Reply window",
+        "body": "Usually within a few business days. Faster for clear, concrete project inquiries."
+      },
+      {
+        "title": "Best fit",
+        "body": "Backend systems, APIs, automation, and adjacent AI tooling where Python is central."
+      },
+      {
+        "title": "Working model",
+        "body": "Remote-first, B2B-friendly, Europe timezone preferred. Short projects and longer engagements are both fine."
+      }
+    ]
+  },
   "contactForm": {
     "heading": "Project inquiry form",
     "sub": "Share the basics and I'll get back to you by email. Short, concrete messages are best.",
@@ -156,11 +214,13 @@
     "submit": "Send inquiry",
     "submitPending": "Sending...",
     "privacyNote": "This form sends your message to me via Resend and may send a confirmation email back to you. Don't include secrets or sensitive credentials.",
+    "botProtectionNote": "Protected by Cloudflare Turnstile to reduce automated spam.",
     "websiteLabel": "Website",
     "messages": {
       "success": "Message sent. I'll reply by email when I can.",
       "configError": "The contact form is not configured correctly yet. Please email me directly instead.",
-      "sendError": "Something went wrong while sending your message. Please try again or email me directly."
+      "sendError": "Something went wrong while sending your message. Please try again or email me directly.",
+      "captchaError": "Spam protection check failed. Please try again."
     },
     "errors": {
       "required": "This field is required.",
@@ -201,7 +261,7 @@
     "privacyControllerTitle": "Who controls the data",
     "privacyControllerBody": "The controller of the data processed through this site is Daniel Milewski, sole proprietorship registered in Poland. If you contact me through the site, I use the submitted data only to review your inquiry and reply.",
     "privacyFormTitle": "Contact form and email delivery",
-    "privacyFormBody": "When you send a message through the contact form, the submitted details (name, email address, optional company, subject and message) are processed to deliver your inquiry to my inbox. Delivery is handled through Resend. The form may also send a short confirmation email back to you after successful submission.",
+    "privacyFormBody": "When you send a message through the contact form, the submitted details (name, email address, optional company, subject and message) are processed to deliver your inquiry to my inbox. Delivery is handled through Resend. The form may also send a short confirmation email back to you after successful submission. Anti-spam protection may be provided through Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Basic website analytics",
     "privacyAnalyticsBody": "This site uses Cloudflare Web Analytics to measure visits, referrers, countries and basic performance metrics. The goal is to understand site usage and monitor reliability, not to build advertising profiles.",
     "privacyCookiesTitle": "Cookies and similar storage",

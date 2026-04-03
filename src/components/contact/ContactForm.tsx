@@ -6,6 +6,9 @@ import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { sendContactMessage } from "@/app/actions/sendContactMessage";
 import { initialContactFormState } from "@/components/contact/contactFormState";
+import { TurnstileWidget } from "@/components/contact/TurnstileWidget";
+
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -45,6 +48,8 @@ export function ContactForm() {
   const statusMessage = state.messageCode
     ? t(`messages.${state.messageCode}`)
     : null;
+  const turnstileEnabled = turnstileSiteKey != null && turnstileSiteKey !== "";
+  const turnstileResetKey = `${state.status}:${state.messageCode ?? "idle"}`;
 
   return (
     <section className="mb-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8">
@@ -120,6 +125,19 @@ export function ContactForm() {
           maxLength={4000}
           rows={8}
         />
+
+        {turnstileEnabled ? (
+          <div>
+            <TurnstileWidget
+              siteKey={turnstileSiteKey}
+              locale={locale}
+              resetKey={turnstileResetKey}
+            />
+            <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
+              {t("botProtectionNote")}
+            </p>
+          </div>
+        ) : null}
 
         {statusMessage ? (
           <p

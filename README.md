@@ -34,6 +34,8 @@ Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare W
 | `npm run start` | Production Next server after `npm run build`. |
 | `npm run lint` | ESLint. |
 | `npm run test` | `scripts/verify-messages.mjs` — checks EN/PL message key parity. |
+| `npm run test:unit` | Vitest unit tests for helper logic. |
+| `npm run test:e2e` | Playwright smoke tests on a local production build (`next build` + `next start` on port `3050`). |
 | `npm run preview` | `opennextjs-cloudflare build` + local Worker preview (Wrangler). |
 | `npm run deploy` | OpenNext build + `opennextjs-cloudflare deploy` to Cloudflare. |
 | `node scripts/generate-content-data.mjs` | Regenerate `content-data.json` only (used by `predev` / `prebuild`). |
@@ -152,6 +154,8 @@ scripts/
 | `RESEND_API_KEY` | Local `.dev.vars`; production secret via `wrangler secret put RESEND_API_KEY` | Required for the contact form. Secret value from Resend dashboard. |
 | `RESEND_FROM_EMAIL` | Local `.dev.vars`; production via Wrangler env or dashboard | Sender address for the contact form, e.g. `Daniel Milewski <hello@danielmilewski.com>`. In production this should use a verified Resend domain. |
 | `CONTACT_FORM_TO_EMAIL` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Inbox that receives form submissions. Defaults to the personal email configured in `src/lib/metadata.ts` if omitted. |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Public site key for Cloudflare Turnstile. When present together with `TURNSTILE_SECRET_KEY`, the contact form shows a captcha widget and verifies it server-side. |
+| `TURNSTILE_SECRET_KEY` | Optional local `.dev.vars`; production secret via `wrangler secret put TURNSTILE_SECRET_KEY` | Secret key for Cloudflare Turnstile verification. Keep this out of git. |
 
 **Wrangler vs dashboard:** `wrangler deploy` treats **`wrangler.jsonc` as source of truth**. If you add routes or vars only in the dashboard, the next CLI deploy can overwrite them. This repo keeps **`routes`** (apex + `www`) and **`vars`** in `wrangler.jsonc` so deploys stay consistent.
 
@@ -168,13 +172,16 @@ For this project, the intended split is:
   - `RESEND_API_KEY`
   - `RESEND_FROM_EMAIL`
   - `CONTACT_FORM_TO_EMAIL`
+  - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - `wrangler.jsonc`
   - `NEXT_PUBLIC_SITE_URL`
   - `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`
   - `RESEND_FROM_EMAIL`
   - `CONTACT_FORM_TO_EMAIL`
+  - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - Wrangler secret
   - `RESEND_API_KEY`
+  - `TURNSTILE_SECRET_KEY`
 
 `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` is optional. If it is missing or left as the placeholder value, the Cloudflare Web Analytics beacon is not rendered.
 
@@ -190,12 +197,22 @@ RESEND_FROM_EMAIL="Daniel Milewski <onboarding@resend.dev>"
 CONTACT_FORM_TO_EMAIL=danielmilewski123@gmail.com
 ```
 
+Optional anti-spam protection:
+
+```env
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=0x4AAAA...
+TURNSTILE_SECRET_KEY=0x4AAAA...
+```
+
 For production on Cloudflare Workers:
 
 1. Set the API key as a secret:
    `npx wrangler secret put RESEND_API_KEY`
 2. Set `RESEND_FROM_EMAIL` and optionally `CONTACT_FORM_TO_EMAIL` in `wrangler.jsonc`.
-3. Verify your sending domain in Resend before using a custom `from` address such as `contact@danielmilewski.com`.
+3. Optionally enable anti-spam protection:
+   - `npx wrangler secret put TURNSTILE_SECRET_KEY`
+   - set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in `wrangler.jsonc`
+4. Verify your sending domain in Resend before using a custom `from` address such as `contact@danielmilewski.com`.
 
 On successful submission, the form:
 
@@ -204,11 +221,14 @@ On successful submission, the form:
 
 The autoresponse is localized (`en` / `pl`) and is intentionally simple: it only confirms receipt and says that a reply should follow within a few business days.
 
+If both Turnstile keys are configured, the form also requires a successful Cloudflare Turnstile verification before sending.
+
 ### Cloudflare Web Analytics
 
 This project supports **Cloudflare Web Analytics** via `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`.
 
 - The beacon is only rendered when the token is real.
+- The beacon is only loaded on the real production hostnames (`danielmilewski.com` / `www.danielmilewski.com`), not on `localhost` or preview hosts.
 - The placeholder value `REPLACE_WITH_YOUR_TOKEN` is treated as disabled.
 - This keeps local development and production-safe defaults simple: no token, no analytics script.
 
@@ -218,6 +238,7 @@ Current site behavior that must stay reflected in the privacy page:
 
 - Contact form submissions are delivered via **Resend**
 - A confirmation email may be sent back to the sender
+- Optional anti-spam verification may be handled via **Cloudflare Turnstile**
 - The site may use **Cloudflare Web Analytics** for pageviews and basic performance data
 - The site uses a functional `NEXT_LOCALE` cookie to remember the selected language
 
@@ -240,6 +261,21 @@ If you later add heavier analytics, event tracking, marketing pixels, or session
 2. Test Worker preview via `npm run preview`
 3. Deploy with `npm run deploy`
 4. Submit a real production test from `/pl/contact` or `/en/contact`
+
+### E2E smoke tests
+
+Playwright smoke tests cover the current high-risk paths:
+
+- home page render
+- language switcher
+- blog and project detail pages
+- contact form submit in a test-only no-delivery mode
+
+Run them with:
+
+```bash
+npm run test:e2e
+```
 
 **If port 3000 gets stuck during local dev:**
 

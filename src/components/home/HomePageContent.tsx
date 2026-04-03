@@ -1,5 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { CredibilityStrip } from "@/components/home/CredibilityStrip";
+import { TrustSection } from "@/components/home/TrustSection";
 import { SelectedProjects } from "@/components/home/SelectedProjects";
 import { ExpertiseGrid } from "@/components/home/ExpertiseGrid";
 import { AboutPreview } from "@/components/home/AboutPreview";
@@ -19,6 +20,7 @@ export async function HomePageContent({ locale }: HomePageContentProps) {
     <>
       <Hero locale={locale} />
       <CredibilityStrip locale={locale} />
+      <TrustSection locale={locale} />
       <SelectedProjects projects={projects} locale={locale} />
       <ExpertiseGrid locale={locale} />
       <AboutPreview locale={locale} />

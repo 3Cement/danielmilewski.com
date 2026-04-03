@@ -17,6 +17,46 @@
   "credibility": {
     "tags": ["Python", "Systemy backendowe", "REST API", "FastAPI", "PostgreSQL", "Automatyzacja", "AI / ML"]
   },
+  "trust": {
+    "eyebrow": "Kontekst pracy",
+    "heading": "Budowane w środowiskach, gdzie oprogramowanie musi być po prostu niezawodne.",
+    "sub": "Najmocniejszym sygnałem zaufania nie jest tutaj slogan, tylko typ zespołów i systemów, przy których pracowałem: analityka badawcza, fintech i backend produkcyjny.",
+    "items": [
+      {
+        "label": "Domeny produkcyjne",
+        "value": "Energia, fintech, usługi IT",
+        "note": "Doświadczenie w środowiskach opartych o dane i decyzje, gdzie liczą się poprawność, stabilność i możliwość utrzymania systemu."
+      },
+      {
+        "label": "Styl odpowiedzialności",
+        "value": "Od architektury do wdrożenia",
+        "note": "Swobodnie biorę pracę od nie do końca doprecyzowanego problemu przez implementację, porządki i rollout na produkcję."
+      },
+      {
+        "label": "Model współpracy",
+        "value": "Remote-ready B2B w Europie",
+        "note": "Jasna komunikacja, zarejestrowana działalność w Polsce i sposób pracy dopasowany do zdalnych zespołów produktowych i engineeringowych."
+      }
+    ],
+    "companiesHeading": "Ostatnie środowiska",
+    "companies": [
+      {
+        "name": "Energy Aspects",
+        "role": "Python Developer",
+        "domain": "Analityka badawcza i narzędzia wewnętrzne dla produktów rynku energii."
+      },
+      {
+        "name": "JIT Team",
+        "role": "Senior Python Developer",
+        "domain": "Backendowe API, integracje i delivery w modelu software house."
+      },
+      {
+        "name": "Equiti",
+        "role": "Python Developer",
+        "domain": "Systemy brokerskie i fintechowe w regulowanym środowisku o wysokiej dostępności."
+      }
+    ]
+  },
   "expertise": {
     "heading": "Czym się zajmuję",
     "sub": "Obszary, w których mogę wziąć pełną odpowiedzialność — od pierwszej linii kodu do produkcji.",
@@ -140,6 +180,24 @@
       "Praca zdalna lub hybrydowa, strefa czasowa Europa"
     ]
   },
+  "contactExpectations": {
+    "heading": "Czego się spodziewać",
+    "sub": "Kilka praktycznych informacji, zanim wyślesz wiadomość.",
+    "items": [
+      {
+        "title": "Czas odpowiedzi",
+        "body": "Zwykle w ciągu kilku dni roboczych. Szybciej przy jasnych i konkretnych zapytaniach projektowych."
+      },
+      {
+        "title": "Najlepsze dopasowanie",
+        "body": "Systemy backendowe, API, automatyzacja i sąsiadujące narzędzia AI, w których Python jest centralny."
+      },
+      {
+        "title": "Model pracy",
+        "body": "Remote-first, B2B-friendly, preferowana strefa czasowa Europa. Krótsze i dłuższe współprace są OK."
+      }
+    ]
+  },
   "contactForm": {
     "heading": "Formularz kontaktowy",
     "sub": "Opisz krótko temat, a odezwę się mailowo. Najlepiej działają krótkie i konkretne wiadomości.",
@@ -156,11 +214,13 @@
     "submit": "Wyślij wiadomość",
     "submitPending": "Wysyłanie...",
     "privacyNote": "Ten formularz wysyła wiadomość do mnie przez Resend i może wysłać automatyczne potwierdzenie na Twój adres e-mail. Nie wpisuj tu sekretów ani wrażliwych danych dostępowych.",
+    "botProtectionNote": "Formularz jest chroniony przez Cloudflare Turnstile, żeby ograniczyć automatyczny spam.",
     "websiteLabel": "Strona WWW",
     "messages": {
       "success": "Wiadomość wysłana. Odpowiem mailowo, gdy tylko będę mógł.",
       "configError": "Formularz nie jest jeszcze poprawnie skonfigurowany. Napisz proszę bezpośrednio na maila.",
-      "sendError": "Coś poszło nie tak przy wysyłce. Spróbuj ponownie albo napisz bezpośrednio na maila."
+      "sendError": "Coś poszło nie tak przy wysyłce. Spróbuj ponownie albo napisz bezpośrednio na maila.",
+      "captchaError": "Nie udało się przejść weryfikacji antyspamowej. Spróbuj ponownie."
     },
     "errors": {
       "required": "To pole jest wymagane.",
@@ -201,7 +261,7 @@
     "privacyControllerTitle": "Kto jest administratorem danych",
     "privacyControllerBody": "Administratorem danych przetwarzanych przez tę stronę jest Daniel Milewski, przedsiębiorca prowadzący działalność gospodarczą w Polsce. Jeśli kontaktujesz się ze mną przez stronę, używam przekazanych danych wyłącznie do zapoznania się z zapytaniem i udzielenia odpowiedzi.",
     "privacyFormTitle": "Formularz kontaktowy i dostarczanie wiadomości",
-    "privacyFormBody": "Gdy wysyłasz wiadomość przez formularz kontaktowy, podane dane (imię i nazwisko, adres e-mail, opcjonalnie firma, temat i treść wiadomości) są przetwarzane po to, żeby dostarczyć zapytanie do mojej skrzynki. Dostarczanie wiadomości obsługuje Resend. Formularz może również wysłać krótkie potwierdzenie na Twój adres e-mail po udanym wysłaniu.",
+    "privacyFormBody": "Gdy wysyłasz wiadomość przez formularz kontaktowy, podane dane (imię i nazwisko, adres e-mail, opcjonalnie firma, temat i treść wiadomości) są przetwarzane po to, żeby dostarczyć zapytanie do mojej skrzynki. Dostarczanie wiadomości obsługuje Resend. Formularz może również wysłać krótkie potwierdzenie na Twój adres e-mail po udanym wysłaniu. Ochrona antyspamowa może być realizowana przez Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Podstawowa analityka strony",
     "privacyAnalyticsBody": "Ta strona korzysta z Cloudflare Web Analytics do pomiaru odwiedzin, źródeł ruchu, krajów i podstawowych metryk wydajności. Celem jest zrozumienie ruchu na stronie i monitorowanie niezawodności, a nie budowanie profili reklamowych.",
     "privacyCookiesTitle": "Cookies i podobne mechanizmy",
