@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import "./globals.css";
+import { AnalyticsBeacon } from "@/components/ui/AnalyticsBeacon";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
-import { hasRealAnalyticsToken } from "@/lib/analytics";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
-const hasCfAnalyticsToken = hasRealAnalyticsToken(cfAnalyticsToken);
 
 const geistSans = localFont({
   src: [
@@ -67,14 +65,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <ThemeInitializer />
         {children}
-        {hasCfAnalyticsToken && (
-          <Script
-            defer
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={JSON.stringify({ token: cfAnalyticsToken })}
-            strategy="afterInteractive"
-          />
-        )}
+        <AnalyticsBeacon token={cfAnalyticsToken} />
       </body>
     </html>
   );
