@@ -5,6 +5,7 @@
 	"vars": {
 		"NEXT_PUBLIC_SITE_URL": "https://danielmilewski.com",
 		"NEXT_PUBLIC_CF_ANALYTICS_TOKEN": "54a49ae249ed41419130625eb33b0f51",
+		"NEXT_PUBLIC_TURNSTILE_SITE_KEY": "0x4AAAAAAC0AzeprKfzM-j38",
 		"RESEND_FROM_EMAIL": "Daniel Milewski <contact@danielmilewski.com>",
 		"CONTACT_FORM_TO_EMAIL": "danielmilewski123@gmail.com"
 	},
