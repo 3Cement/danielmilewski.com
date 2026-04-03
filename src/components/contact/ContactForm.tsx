@@ -8,7 +8,9 @@ import { sendContactMessage } from "@/app/actions/sendContactMessage";
 import { initialContactFormState } from "@/components/contact/contactFormState";
 import { TurnstileWidget } from "@/components/contact/TurnstileWidget";
 
-const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+interface ContactFormProps {
+  turnstileSiteKey?: string;
+}
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -25,7 +27,7 @@ function SubmitButton() {
   );
 }
 
-export function ContactForm() {
+export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
   const locale = useLocale();
   const t = useTranslations("contactForm");
   const [state, formAction] = useActionState(
@@ -48,7 +50,7 @@ export function ContactForm() {
   const statusMessage = state.messageCode
     ? t(`messages.${state.messageCode}`)
     : null;
-  const turnstileEnabled = turnstileSiteKey != null && turnstileSiteKey !== "";
+  const turnstileEnabled = Boolean(turnstileSiteKey);
   const turnstileResetKey = `${state.status}:${state.messageCode ?? "idle"}`;
 
   return (
@@ -129,7 +131,7 @@ export function ContactForm() {
         {turnstileEnabled ? (
           <div>
             <TurnstileWidget
-              siteKey={turnstileSiteKey}
+              siteKey={turnstileSiteKey!}
               locale={locale}
               resetKey={turnstileResetKey}
             />

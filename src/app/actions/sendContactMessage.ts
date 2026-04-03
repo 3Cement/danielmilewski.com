@@ -1,10 +1,10 @@
 "use server";
 
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 import { EMAIL } from "@/lib/metadata";
 import { logger } from "@/lib/logger";
+import { readServerEnv } from "@/lib/serverEnv";
 import { isTurnstileConfigured, verifyTurnstileToken } from "@/lib/turnstile";
 import type {
   ContactField,
@@ -63,27 +63,6 @@ function validateContactForm(data: Record<ContactField, string>) {
   }
 
   return fieldErrors;
-}
-
-type ServerEnvName =
-  | "RESEND_API_KEY"
-  | "RESEND_FROM_EMAIL"
-  | "CONTACT_FORM_TO_EMAIL"
-  | "TURNSTILE_SECRET_KEY";
-
-async function readServerEnv(name: ServerEnvName): Promise<string | undefined> {
-  const directValue = process.env[name];
-  if (directValue) {
-    return directValue;
-  }
-
-  try {
-    const { env } = await getCloudflareContext({ async: true });
-    const value = (env as Record<string, unknown>)[name];
-    return typeof value === "string" && value ? value : undefined;
-  } catch {
-    return undefined;
-  }
 }
 
 async function sendEmailWithRetry({
