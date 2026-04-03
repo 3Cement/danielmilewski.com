@@ -12,12 +12,14 @@ import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { sendContactMessage } from "@/app/actions/sendContactMessage";
 import { initialContactFormState } from "@/components/contact/contactFormState";
+import { HCaptchaWidget } from "@/components/contact/HCaptchaWidget";
 import {
   TurnstileWidget,
   type TurnstileWidgetHandle,
 } from "@/components/contact/TurnstileWidget";
 
 interface ContactFormProps {
+  hcaptchaSiteKey?: string;
   turnstileSiteKey?: string;
 }
 
@@ -36,7 +38,10 @@ function SubmitButton() {
   );
 }
 
-export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
+export function ContactForm({
+  hcaptchaSiteKey,
+  turnstileSiteKey,
+}: ContactFormProps) {
   const locale = useLocale();
   const t = useTranslations("contactForm");
   const [state, formAction] = useActionState(
@@ -71,11 +76,13 @@ export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
   const statusMessage = state.messageCode
     ? t(`messages.${state.messageCode}`)
     : null;
+  const hcaptchaEnabled = Boolean(hcaptchaSiteKey);
   const turnstileEnabled = Boolean(turnstileSiteKey);
+  const useTurnstileFallback = !hcaptchaEnabled && turnstileEnabled;
   const turnstileResetKey = `${state.status}:${state.messageCode ?? "idle"}`;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    if (!turnstileEnabled || turnstileToken) {
+    if (!useTurnstileFallback || turnstileToken) {
       return;
     }
 
@@ -164,7 +171,20 @@ export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
           rows={8}
         />
 
-        {turnstileEnabled ? (
+        {hcaptchaEnabled ? (
+          <div>
+            <HCaptchaWidget
+              siteKey={hcaptchaSiteKey!}
+              resetKey={turnstileResetKey}
+              onTokenChange={setTurnstileToken}
+            />
+            <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
+              {t("botProtectionNote")}
+            </p>
+          </div>
+        ) : null}
+
+        {useTurnstileFallback ? (
           <div>
             <TurnstileWidget
               ref={turnstileRef}

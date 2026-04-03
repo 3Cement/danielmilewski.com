@@ -214,7 +214,7 @@
     "submit": "Wyślij wiadomość",
     "submitPending": "Wysyłanie...",
     "privacyNote": "Ten formularz wysyła wiadomość do mnie przez Resend i może wysłać automatyczne potwierdzenie na Twój adres e-mail. Nie wpisuj tu sekretów ani wrażliwych danych dostępowych.",
-    "botProtectionNote": "Formularz jest chroniony przez Cloudflare Turnstile, żeby ograniczyć automatyczny spam.",
+    "botProtectionNote": "Formularz jest chroniony przez captcha, żeby ograniczyć automatyczny spam.",
     "websiteLabel": "Strona WWW",
     "messages": {
       "success": "Wiadomość wysłana. Odpowiem mailowo, gdy tylko będę mógł.",
@@ -261,7 +261,7 @@
     "privacyControllerTitle": "Kto jest administratorem danych",
     "privacyControllerBody": "Administratorem danych przetwarzanych przez tę stronę jest Daniel Milewski, przedsiębiorca prowadzący działalność gospodarczą w Polsce. Jeśli kontaktujesz się ze mną przez stronę, używam przekazanych danych wyłącznie do zapoznania się z zapytaniem i udzielenia odpowiedzi.",
     "privacyFormTitle": "Formularz kontaktowy i dostarczanie wiadomości",
-    "privacyFormBody": "Gdy wysyłasz wiadomość przez formularz kontaktowy, podane dane (imię i nazwisko, adres e-mail, opcjonalnie firma, temat i treść wiadomości) są przetwarzane po to, żeby dostarczyć zapytanie do mojej skrzynki. Dostarczanie wiadomości obsługuje Resend. Formularz może również wysłać krótkie potwierdzenie na Twój adres e-mail po udanym wysłaniu. Ochrona antyspamowa może być realizowana przez Cloudflare Turnstile.",
+    "privacyFormBody": "Gdy wysyłasz wiadomość przez formularz kontaktowy, podane dane (imię i nazwisko, adres e-mail, opcjonalnie firma, temat i treść wiadomości) są przetwarzane po to, żeby dostarczyć zapytanie do mojej skrzynki. Dostarczanie wiadomości obsługuje Resend. Formularz może również wysłać krótkie potwierdzenie na Twój adres e-mail po udanym wysłaniu. Ochrona antyspamowa może być realizowana przez captcha, np. hCaptcha lub Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Podstawowa analityka strony",
     "privacyAnalyticsBody": "Ta strona korzysta z Cloudflare Web Analytics do pomiaru odwiedzin, źródeł ruchu, krajów i podstawowych metryk wydajności. Celem jest zrozumienie ruchu na stronie i monitorowanie niezawodności, a nie budowanie profili reklamowych.",
     "privacyCookiesTitle": "Cookies i podobne mechanizmy",

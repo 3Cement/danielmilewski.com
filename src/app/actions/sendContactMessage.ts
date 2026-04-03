@@ -5,6 +5,7 @@ import { Resend } from "resend";
 import { EMAIL } from "@/lib/metadata";
 import { logger } from "@/lib/logger";
 import { readServerEnv } from "@/lib/serverEnv";
+import { isHCaptchaConfigured, verifyHCaptchaToken } from "@/lib/hcaptcha";
 import { isTurnstileConfigured, verifyTurnstileToken } from "@/lib/turnstile";
 import type {
   ContactField,
@@ -143,32 +144,45 @@ export async function sendContactMessage(
     return { status: "success", messageCode: "success" };
   }
 
-  const turnstileToken = readField(formData, "cf-turnstile-response");
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const hcaptchaToken = readField(formData, "h-captcha-response");
+  const hcaptchaSiteKey = await readServerEnv("NEXT_PUBLIC_HCAPTCHA_SITE_KEY");
+  const hcaptchaSecret = await readServerEnv("HCAPTCHA_SECRET_KEY");
+  const turnstileSiteKey = await readServerEnv("NEXT_PUBLIC_TURNSTILE_SITE_KEY");
   const turnstileSecret = await readServerEnv("TURNSTILE_SECRET_KEY");
+  const shouldVerifyHCaptcha = isHCaptchaConfigured(
+    hcaptchaSiteKey,
+    hcaptchaSecret,
+  );
   const shouldVerifyTurnstile = isTurnstileConfigured(
     turnstileSiteKey,
     turnstileSecret,
   );
 
-  if (shouldVerifyTurnstile) {
+  if (shouldVerifyHCaptcha || shouldVerifyTurnstile) {
     const requestHeaders = await headers();
     const forwardedFor = requestHeaders.get("x-forwarded-for");
     const remoteIp =
       requestHeaders.get("cf-connecting-ip") ??
       forwardedFor?.split(",")[0]?.trim();
 
-    const turnstilePassed =
-      turnstileToken !== "" &&
-      (await verifyTurnstileToken({
-        token: turnstileToken,
-        secretKey: turnstileSecret!,
-        remoteIp,
-      }));
+    const captchaPassed = shouldVerifyHCaptcha
+      ? hcaptchaToken !== "" &&
+        (await verifyHCaptchaToken({
+          token: hcaptchaToken,
+          secretKey: hcaptchaSecret!,
+          remoteIp,
+        }))
+      : readField(formData, "cf-turnstile-response") !== "" &&
+        (await verifyTurnstileToken({
+          token: readField(formData, "cf-turnstile-response"),
+          secretKey: turnstileSecret!,
+          remoteIp,
+        }));
 
-    if (!turnstilePassed) {
-      logger.warn("contact_form_turnstile_failed", {
+    if (!captchaPassed) {
+      logger.warn("contact_form_captcha_failed", {
         locale,
+        provider: shouldVerifyHCaptcha ? "hcaptcha" : "turnstile",
         remoteIp,
       });
       return { status: "error", messageCode: "captchaError" };

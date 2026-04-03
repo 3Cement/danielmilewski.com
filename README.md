@@ -154,8 +154,10 @@ scripts/
 | `RESEND_API_KEY` | Local `.dev.vars`; production secret via `wrangler secret put RESEND_API_KEY` | Required for the contact form. Secret value from Resend dashboard. |
 | `RESEND_FROM_EMAIL` | Local `.dev.vars`; production via Wrangler env or dashboard | Sender address for the contact form, e.g. `Daniel Milewski <hello@danielmilewski.com>`. In production this should use a verified Resend domain. |
 | `CONTACT_FORM_TO_EMAIL` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Inbox that receives form submissions. Defaults to the personal email configured in `src/lib/metadata.ts` if omitted. |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Public site key for Cloudflare Turnstile. When present together with `TURNSTILE_SECRET_KEY`, the contact form shows a captcha widget and verifies it server-side. |
-| `TURNSTILE_SECRET_KEY` | Optional local `.dev.vars`; production secret via `wrangler secret put TURNSTILE_SECRET_KEY` | Secret key for Cloudflare Turnstile verification. Keep this out of git. |
+| `NEXT_PUBLIC_HCAPTCHA_SITE_KEY` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Public site key for hCaptcha. When present together with `HCAPTCHA_SECRET_KEY`, the contact form shows a visible checkbox captcha and verifies it server-side. |
+| `HCAPTCHA_SECRET_KEY` | Optional local `.dev.vars`; production secret via `wrangler secret put HCAPTCHA_SECRET_KEY` | Secret key for hCaptcha verification. Keep this out of git. |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Legacy fallback. Used only when hCaptcha keys are not configured. |
+| `TURNSTILE_SECRET_KEY` | Optional local `.dev.vars`; production secret via `wrangler secret put TURNSTILE_SECRET_KEY` | Legacy fallback secret for Turnstile verification. |
 
 **Wrangler vs dashboard:** `wrangler deploy` treats **`wrangler.jsonc` as source of truth**. If you add routes or vars only in the dashboard, the next CLI deploy can overwrite them. This repo keeps **`routes`** (apex + `www`) and **`vars`** in `wrangler.jsonc` so deploys stay consistent.
 
@@ -172,15 +174,18 @@ For this project, the intended split is:
   - `RESEND_API_KEY`
   - `RESEND_FROM_EMAIL`
   - `CONTACT_FORM_TO_EMAIL`
+  - `NEXT_PUBLIC_HCAPTCHA_SITE_KEY`
   - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - `wrangler.jsonc`
   - `NEXT_PUBLIC_SITE_URL`
   - `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`
   - `RESEND_FROM_EMAIL`
   - `CONTACT_FORM_TO_EMAIL`
+  - `NEXT_PUBLIC_HCAPTCHA_SITE_KEY`
   - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - Wrangler secret
   - `RESEND_API_KEY`
+  - `HCAPTCHA_SECRET_KEY`
   - `TURNSTILE_SECRET_KEY`
 
 `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` is optional. If it is missing or left as the placeholder value, the Cloudflare Web Analytics beacon is not rendered.
@@ -197,7 +202,14 @@ RESEND_FROM_EMAIL="Daniel Milewski <onboarding@resend.dev>"
 CONTACT_FORM_TO_EMAIL=danielmilewski123@gmail.com
 ```
 
-Optional anti-spam protection:
+Preferred anti-spam protection:
+
+```env
+NEXT_PUBLIC_HCAPTCHA_SITE_KEY=your-hcaptcha-site-key
+HCAPTCHA_SECRET_KEY=your-hcaptcha-secret
+```
+
+Legacy Turnstile fallback:
 
 ```env
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=0x4AAAA...
@@ -209,10 +221,13 @@ For production on Cloudflare Workers:
 1. Set the API key as a secret:
    `npx wrangler secret put RESEND_API_KEY`
 2. Set `RESEND_FROM_EMAIL` and optionally `CONTACT_FORM_TO_EMAIL` in `wrangler.jsonc`.
-3. Optionally enable anti-spam protection:
+3. Optionally enable hCaptcha:
+   - `npx wrangler secret put HCAPTCHA_SECRET_KEY`
+   - set `NEXT_PUBLIC_HCAPTCHA_SITE_KEY` in `wrangler.jsonc`
+4. Legacy fallback only if needed:
    - `npx wrangler secret put TURNSTILE_SECRET_KEY`
    - set `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in `wrangler.jsonc`
-4. Verify your sending domain in Resend before using a custom `from` address such as `contact@danielmilewski.com`.
+5. Verify your sending domain in Resend before using a custom `from` address such as `contact@danielmilewski.com`.
 
 On successful submission, the form:
 
@@ -221,7 +236,7 @@ On successful submission, the form:
 
 The autoresponse is localized (`en` / `pl`) and is intentionally simple: it only confirms receipt and says that a reply should follow within a few business days.
 
-If both Turnstile keys are configured, the form also requires a successful Cloudflare Turnstile verification before sending.
+If both hCaptcha keys are configured, the form requires a successful hCaptcha verification before sending. Turnstile is used only as a migration fallback when hCaptcha keys are missing.
 
 ### Cloudflare Web Analytics
 
@@ -238,7 +253,7 @@ Current site behavior that must stay reflected in the privacy page:
 
 - Contact form submissions are delivered via **Resend**
 - A confirmation email may be sent back to the sender
-- Optional anti-spam verification may be handled via **Cloudflare Turnstile**
+- Optional anti-spam verification may be handled via **hCaptcha** or **Cloudflare Turnstile**
 - The site may use **Cloudflare Web Analytics** for pageviews and basic performance data
 - The site uses a functional `NEXT_LOCALE` cookie to remember the selected language
 

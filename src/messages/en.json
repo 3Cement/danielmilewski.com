@@ -214,7 +214,7 @@
     "submit": "Send inquiry",
     "submitPending": "Sending...",
     "privacyNote": "This form sends your message to me via Resend and may send a confirmation email back to you. Don't include secrets or sensitive credentials.",
-    "botProtectionNote": "Protected by Cloudflare Turnstile to reduce automated spam.",
+    "botProtectionNote": "Protected by a captcha check to reduce automated spam.",
     "websiteLabel": "Website",
     "messages": {
       "success": "Message sent. I'll reply by email when I can.",
@@ -261,7 +261,7 @@
     "privacyControllerTitle": "Who controls the data",
     "privacyControllerBody": "The controller of the data processed through this site is Daniel Milewski, sole proprietorship registered in Poland. If you contact me through the site, I use the submitted data only to review your inquiry and reply.",
     "privacyFormTitle": "Contact form and email delivery",
-    "privacyFormBody": "When you send a message through the contact form, the submitted details (name, email address, optional company, subject and message) are processed to deliver your inquiry to my inbox. Delivery is handled through Resend. The form may also send a short confirmation email back to you after successful submission. Anti-spam protection may be provided through Cloudflare Turnstile.",
+    "privacyFormBody": "When you send a message through the contact form, the submitted details (name, email address, optional company, subject and message) are processed to deliver your inquiry to my inbox. Delivery is handled through Resend. The form may also send a short confirmation email back to you after successful submission. Anti-spam protection may be provided through a captcha provider such as hCaptcha or Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Basic website analytics",
     "privacyAnalyticsBody": "This site uses Cloudflare Web Analytics to measure visits, referrers, countries and basic performance metrics. The goal is to understand site usage and monitor reliability, not to build advertising profiles.",
     "privacyCookiesTitle": "Cookies and similar storage",
