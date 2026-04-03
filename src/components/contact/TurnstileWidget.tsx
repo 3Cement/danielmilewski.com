@@ -3,6 +3,7 @@
 import {
   forwardRef,
   useEffect,
+  useEffectEvent,
   useId,
   useImperativeHandle,
   useRef,
@@ -20,12 +21,19 @@ declare global {
         options: {
           sitekey: string;
           theme?: "auto" | "light" | "dark";
+          size?: "normal" | "flexible" | "compact";
           language?: string;
           appearance?: "always" | "execute" | "interaction-only";
           execution?: "render" | "execute";
+          retry?: "auto" | "never";
+          "retry-interval"?: number;
+          "refresh-expired"?: "auto" | "manual" | "never";
+          "refresh-timeout"?: "auto" | "manual" | "never";
+          "feedback-enabled"?: boolean;
           callback?: (token: string) => void;
           "expired-callback"?: () => void;
-          "error-callback"?: () => void;
+          "timeout-callback"?: () => void;
+          "error-callback"?: (errorCode?: string) => boolean;
         },
       ) => string;
       execute: (container: HTMLElement | string) => void;
@@ -64,6 +72,13 @@ export const TurnstileWidget = forwardRef<
   const widgetIdRef = useRef<string | null>(null);
   const containerId = `turnstile-${useId().replace(/:/g, "")}`;
 
+  const clearToken = useEffectEvent(() => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    onTokenChange?.("");
+  });
+
   useImperativeHandle(ref, () => ({
     execute() {
       if (!window.turnstile || !containerRef.current) {
@@ -78,12 +93,9 @@ export const TurnstileWidget = forwardRef<
       }
 
       window.turnstile.reset(widgetIdRef.current);
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-      onTokenChange?.("");
+      clearToken();
     },
-  }), [containerId, onTokenChange]);
+  }), [containerId]);
 
   useEffect(() => {
     const renderWidget = () => {
@@ -94,26 +106,28 @@ export const TurnstileWidget = forwardRef<
       widgetIdRef.current = window.turnstile.render(`#${containerId}`, {
         sitekey: siteKey,
         theme: "auto",
+        size: "flexible",
         language: locale,
-        appearance: "interaction-only",
+        appearance: "execute",
         execution: "execute",
+        retry: "never",
+        "refresh-expired": "manual",
+        "refresh-timeout": "manual",
+        "feedback-enabled": false,
         callback: (token) => {
           if (inputRef.current) {
             inputRef.current.value = token;
           }
           onTokenChange?.(token);
         },
-        "expired-callback": () => {
-          if (inputRef.current) {
-            inputRef.current.value = "";
-          }
-          onTokenChange?.("");
+        "expired-callback": clearToken,
+        "timeout-callback": () => {
+          clearToken();
+          return;
         },
         "error-callback": () => {
-          if (inputRef.current) {
-            inputRef.current.value = "";
-          }
-          onTokenChange?.("");
+          clearToken();
+          return true;
         },
       });
     };
@@ -153,10 +167,7 @@ export const TurnstileWidget = forwardRef<
     }
 
     window.turnstile.reset(widgetIdRef.current);
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-    onTokenChange?.("");
+    clearToken();
   }, [onTokenChange, resetKey]);
 
   useEffect(() => {
