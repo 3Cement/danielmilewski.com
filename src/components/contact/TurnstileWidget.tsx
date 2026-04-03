@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useRef,
+} from "react";
 
 const TURNSTILE_SCRIPT_ID = "cloudflare-turnstile-script";
 const TURNSTILE_SCRIPT_SRC =
@@ -10,60 +16,104 @@ declare global {
   interface Window {
     turnstile?: {
       render: (
-        container: HTMLElement,
+        container: HTMLElement | string,
         options: {
           sitekey: string;
           theme?: "auto" | "light" | "dark";
           language?: string;
+          appearance?: "always" | "execute" | "interaction-only";
+          execution?: "render" | "execute";
           callback?: (token: string) => void;
           "expired-callback"?: () => void;
           "error-callback"?: () => void;
         },
       ) => string;
+      execute: (container: HTMLElement | string) => void;
       reset: (widgetId: string) => void;
+      remove: (widgetId: string) => void;
     };
   }
+}
+
+export interface TurnstileWidgetHandle {
+  execute: () => void;
+  reset: () => void;
 }
 
 interface TurnstileWidgetProps {
   siteKey: string;
   locale: string;
   resetKey: string;
+  onTokenChange?: (token: string) => void;
 }
 
-export function TurnstileWidget({
-  siteKey,
-  locale,
-  resetKey,
-}: TurnstileWidgetProps) {
+export const TurnstileWidget = forwardRef<
+  TurnstileWidgetHandle,
+  TurnstileWidgetProps
+>(function TurnstileWidget(
+  {
+    siteKey,
+    locale,
+    resetKey,
+    onTokenChange,
+  }: TurnstileWidgetProps,
+  ref,
+) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const containerId = `turnstile-${useId().replace(/:/g, "")}`;
 
-  useEffect(() => {
-    const renderWidget = () => {
-      if (!window.turnstile || !containerRef.current || widgetIdRef.current) {
+  useImperativeHandle(ref, () => ({
+    execute() {
+      if (!window.turnstile || !containerRef.current) {
         return;
       }
 
-      widgetIdRef.current = window.turnstile.render(containerRef.current, {
+      window.turnstile.execute(`#${containerId}`);
+    },
+    reset() {
+      if (!window.turnstile || !widgetIdRef.current) {
+        return;
+      }
+
+      window.turnstile.reset(widgetIdRef.current);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+      onTokenChange?.("");
+    },
+  }), [containerId, onTokenChange]);
+
+  useEffect(() => {
+    const renderWidget = () => {
+      if (!window.turnstile || widgetIdRef.current) {
+        return;
+      }
+
+      widgetIdRef.current = window.turnstile.render(`#${containerId}`, {
         sitekey: siteKey,
         theme: "auto",
         language: locale,
+        appearance: "interaction-only",
+        execution: "execute",
         callback: (token) => {
           if (inputRef.current) {
             inputRef.current.value = token;
           }
+          onTokenChange?.(token);
         },
         "expired-callback": () => {
           if (inputRef.current) {
             inputRef.current.value = "";
           }
+          onTokenChange?.("");
         },
         "error-callback": () => {
           if (inputRef.current) {
             inputRef.current.value = "";
           }
+          onTokenChange?.("");
         },
       });
     };
@@ -95,7 +145,7 @@ export function TurnstileWidget({
     return () => {
       script.removeEventListener("load", renderWidget);
     };
-  }, [locale, siteKey]);
+  }, [containerId, locale, onTokenChange, siteKey]);
 
   useEffect(() => {
     if (!window.turnstile || !widgetIdRef.current) {
@@ -106,12 +156,24 @@ export function TurnstileWidget({
     if (inputRef.current) {
       inputRef.current.value = "";
     }
-  }, [resetKey]);
+    onTokenChange?.("");
+  }, [onTokenChange, resetKey]);
+
+  useEffect(() => {
+    return () => {
+      if (!window.turnstile || !widgetIdRef.current) {
+        return;
+      }
+
+      window.turnstile.remove(widgetIdRef.current);
+      widgetIdRef.current = null;
+    };
+  }, []);
 
   return (
     <div className="space-y-3">
       <input ref={inputRef} type="hidden" name="cf-turnstile-response" />
-      <div ref={containerRef} />
+      <div id={containerId} ref={containerRef} />
     </div>
   );
-}
+});

@@ -1,12 +1,21 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import {
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { useFormStatus } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { sendContactMessage } from "@/app/actions/sendContactMessage";
 import { initialContactFormState } from "@/components/contact/contactFormState";
-import { TurnstileWidget } from "@/components/contact/TurnstileWidget";
+import {
+  TurnstileWidget,
+  type TurnstileWidgetHandle,
+} from "@/components/contact/TurnstileWidget";
 
 interface ContactFormProps {
   turnstileSiteKey?: string;
@@ -35,12 +44,24 @@ export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
     initialContactFormState,
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const turnstileRef = useRef<TurnstileWidgetHandle>(null);
+  const pendingSubmitAfterCaptchaRef = useRef(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   useEffect(() => {
     if (state.status === "success") {
       formRef.current?.reset();
     }
   }, [state.status]);
+
+  useEffect(() => {
+    if (!pendingSubmitAfterCaptchaRef.current || !turnstileToken) {
+      return;
+    }
+
+    pendingSubmitAfterCaptchaRef.current = false;
+    formRef.current?.requestSubmit();
+  }, [turnstileToken]);
 
   const fieldError = (field: "name" | "email" | "company" | "subject" | "message") => {
     const code = state.fieldErrors?.[field];
@@ -53,6 +74,16 @@ export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
   const turnstileEnabled = Boolean(turnstileSiteKey);
   const turnstileResetKey = `${state.status}:${state.messageCode ?? "idle"}`;
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (!turnstileEnabled || turnstileToken) {
+      return;
+    }
+
+    event.preventDefault();
+    pendingSubmitAfterCaptchaRef.current = true;
+    turnstileRef.current?.execute();
+  };
+
   return (
     <section className="mb-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8">
       <div className="mb-6">
@@ -64,7 +95,12 @@ export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
         </p>
       </div>
 
-      <form ref={formRef} action={formAction} className="space-y-5">
+      <form
+        ref={formRef}
+        action={formAction}
+        className="space-y-5"
+        onSubmit={handleSubmit}
+      >
         <input type="hidden" name="locale" value={locale} />
 
         <div className="hidden" aria-hidden="true">
@@ -131,9 +167,11 @@ export function ContactForm({ turnstileSiteKey }: ContactFormProps) {
         {turnstileEnabled ? (
           <div>
             <TurnstileWidget
+              ref={turnstileRef}
               siteKey={turnstileSiteKey!}
               locale={locale}
               resetKey={turnstileResetKey}
+              onTokenChange={setTurnstileToken}
             />
             <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
               {t("botProtectionNote")}
