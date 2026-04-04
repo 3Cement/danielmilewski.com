@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1", "192.168.0.115"],
   images: {
     formats: ["image/avif", "image/webp"],
-    unoptimized: true,
   },
   async redirects() {
     return routing.locales.map((locale) => ({

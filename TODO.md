@@ -21,6 +21,8 @@
 - Add stronger trust signals on home/contact: credibility strip, working-context section, concrete company environments, CV access, and clearer contact expectations.
 - Harden the contact form with honeypot plus hCaptcha / Turnstile fallback.
 - Add a small E2E smoke suite for the highest-risk flows: locale redirects, language switcher, blog/project detail pages, and contact form submit.
+- Re-enable real `next/image` optimization through Cloudflare Images instead of the global `unoptimized` fallback.
+- Reduce the `next-intl` client payload to the namespaces actually needed by client components.
 
 ### Blocked on content
 
@@ -40,6 +42,10 @@
 
 - Add dynamic Open Graph images for posts and projects.
 - Add FAQ blocks on home or contact to address common objections: budget, scope, delivery speed, and collaboration model.
+- Run a stricter production performance pass:
+  - collect Lighthouse / Core Web Vitals style measurements
+  - verify image optimization behavior on the live domain
+  - fix the biggest measured bottlenecks instead of guessing
 
 ### Lower priority
 

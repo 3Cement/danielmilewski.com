@@ -12,6 +12,16 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+const CLIENT_MESSAGE_NAMESPACES = [
+  "nav",
+  "footer",
+  "contactForm",
+  "contactExpectations",
+  "errors",
+  "blog",
+  "caseStudy",
+] as const;
+
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -33,6 +43,9 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
   const messages = await getMessages({ locale });
+  const clientMessages = Object.fromEntries(
+    CLIENT_MESSAGE_NAMESPACES.map((namespace) => [namespace, messages[namespace]]),
+  );
   const siteLocale = locale as "en" | "pl";
   const structuredData = JSON.stringify([
     personSchema(siteLocale),
@@ -48,7 +61,10 @@ export default async function LocaleLayout({ children, params }: Props) {
           __html: structuredData,
         }}
       />
-      <NextIntlClientProvider locale={locale} messages={messages}>
+      <NextIntlClientProvider
+        locale={locale}
+        messages={clientMessages}
+      >
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
