@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useEffectEvent, useId, useRef } from "react";
 
 const HCAPTCHA_SCRIPT_ID = "hcaptcha-script";
-const HCAPTCHA_SCRIPT_SRC = "https://js.hcaptcha.com/1/api.js?render=explicit";
+const HCAPTCHA_ONLOAD_CALLBACK = "__onloadHCaptcha";
+const HCAPTCHA_SCRIPT_SRC =
+  `https://js.hcaptcha.com/1/api.js?onload=${HCAPTCHA_ONLOAD_CALLBACK}&render=explicit`;
 
 declare global {
   interface Window {
@@ -21,6 +23,7 @@ declare global {
       reset: (widgetId: string) => void;
       remove: (widgetId: string) => void;
     };
+    __onloadHCaptcha?: () => void;
   }
 }
 
@@ -36,16 +39,23 @@ export function HCaptchaWidget({
   onTokenChange,
 }: HCaptchaWidgetProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const containerId = `hcaptcha-${useId().replace(/:/g, "")}`;
+  const clearToken = useEffectEvent(() => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    onTokenChange?.("");
+  });
 
   useEffect(() => {
     const renderWidget = () => {
-      if (!window.hcaptcha || widgetIdRef.current) {
+      if (!window.hcaptcha || !containerRef.current || widgetIdRef.current) {
         return;
       }
 
-      widgetIdRef.current = window.hcaptcha.render(`#${containerId}`, {
+      widgetIdRef.current = window.hcaptcha.render(containerRef.current, {
         sitekey: siteKey,
         callback: (token) => {
           if (inputRef.current) {
@@ -53,34 +63,26 @@ export function HCaptchaWidget({
           }
           onTokenChange?.(token);
         },
-        "expired-callback": () => {
-          if (inputRef.current) {
-            inputRef.current.value = "";
-          }
-          onTokenChange?.("");
-        },
-        "error-callback": () => {
-          if (inputRef.current) {
-            inputRef.current.value = "";
-          }
-          onTokenChange?.("");
-        },
+        "expired-callback": clearToken,
+        "error-callback": clearToken,
       });
     };
 
     const existingScript = document.getElementById(
       HCAPTCHA_SCRIPT_ID,
     ) as HTMLScriptElement | null;
+    window[HCAPTCHA_ONLOAD_CALLBACK] = renderWidget;
 
     if (window.hcaptcha) {
       renderWidget();
-      return;
+      return () => {
+        delete window[HCAPTCHA_ONLOAD_CALLBACK];
+      };
     }
 
     if (existingScript) {
-      existingScript.addEventListener("load", renderWidget);
       return () => {
-        existingScript.removeEventListener("load", renderWidget);
+        delete window[HCAPTCHA_ONLOAD_CALLBACK];
       };
     }
 
@@ -89,13 +91,12 @@ export function HCaptchaWidget({
     script.src = HCAPTCHA_SCRIPT_SRC;
     script.async = true;
     script.defer = true;
-    script.addEventListener("load", renderWidget);
     document.body.appendChild(script);
 
     return () => {
-      script.removeEventListener("load", renderWidget);
+      delete window[HCAPTCHA_ONLOAD_CALLBACK];
     };
-  }, [containerId, onTokenChange, siteKey]);
+  }, [onTokenChange, siteKey]);
 
   useEffect(() => {
     if (!window.hcaptcha || !widgetIdRef.current) {
@@ -103,11 +104,8 @@ export function HCaptchaWidget({
     }
 
     window.hcaptcha.reset(widgetIdRef.current);
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-    onTokenChange?.("");
-  }, [onTokenChange, resetKey]);
+    clearToken();
+  }, [resetKey]);
 
   useEffect(() => {
     return () => {
@@ -123,7 +121,7 @@ export function HCaptchaWidget({
   return (
     <div className="space-y-3">
       <input ref={inputRef} type="hidden" name="h-captcha-response" />
-      <div id={containerId} />
+      <div id={containerId} ref={containerRef} />
     </div>
   );
 }
