@@ -214,7 +214,11 @@
     "submit": "Send inquiry",
     "submitPending": "Sending...",
     "privacyNote": "This form sends your message to me via Resend and may send a confirmation email back to you. Don't include secrets or sensitive credentials.",
-    "botProtectionNote": "Protected by a captcha check to reduce automated spam.",
+    "botProtectionNote": "Protected by invisible anti-spam verification that usually runs automatically and only shows a challenge for suspicious traffic.",
+    "invisibleCaptchaNoticePrefix": "This site is protected by hCaptcha and its use is subject to the",
+    "privacyPolicyLabel": "Privacy Policy",
+    "termsLabel": "Terms of Service",
+    "andLabel": "and",
     "websiteLabel": "Website",
     "messages": {
       "success": "Message sent. I'll reply by email when I can.",

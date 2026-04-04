@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useEffectEvent, useId, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useEffectEvent,
+  useId,
+  useImperativeHandle,
+  useRef,
+} from "react";
 
 const HCAPTCHA_SCRIPT_ID = "hcaptcha-script";
 const HCAPTCHA_ONLOAD_CALLBACK = "__onloadHCaptcha";
@@ -17,14 +24,21 @@ declare global {
           callback?: (token: string) => void;
           "expired-callback"?: () => void;
           "error-callback"?: () => void;
+          size?: "normal" | "compact" | "invisible";
           theme?: "light" | "dark";
         },
       ) => string;
+      execute: (widgetId?: string, options?: { async?: boolean }) => void | Promise<unknown>;
       reset: (widgetId: string) => void;
       remove: (widgetId: string) => void;
     };
     __onloadHCaptcha?: () => void;
   }
+}
+
+export interface HCaptchaWidgetHandle {
+  execute: () => void;
+  reset: () => void;
 }
 
 interface HCaptchaWidgetProps {
@@ -33,11 +47,14 @@ interface HCaptchaWidgetProps {
   onTokenChange?: (token: string) => void;
 }
 
-export function HCaptchaWidget({
+export const HCaptchaWidget = forwardRef<
+  HCaptchaWidgetHandle,
+  HCaptchaWidgetProps
+>(function HCaptchaWidget({
   siteKey,
   resetKey,
   onTokenChange,
-}: HCaptchaWidgetProps) {
+}: HCaptchaWidgetProps, ref) {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
@@ -49,6 +66,28 @@ export function HCaptchaWidget({
     onTokenChange?.("");
   });
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      execute() {
+        if (!window.hcaptcha || !widgetIdRef.current) {
+          return;
+        }
+
+        window.hcaptcha.execute(widgetIdRef.current);
+      },
+      reset() {
+        if (!window.hcaptcha || !widgetIdRef.current) {
+          return;
+        }
+
+        window.hcaptcha.reset(widgetIdRef.current);
+        clearToken();
+      },
+    }),
+    [],
+  );
+
   useEffect(() => {
     const renderWidget = () => {
       if (!window.hcaptcha || !containerRef.current || widgetIdRef.current) {
@@ -57,6 +96,7 @@ export function HCaptchaWidget({
 
       widgetIdRef.current = window.hcaptcha.render(containerRef.current, {
         sitekey: siteKey,
+        size: "invisible",
         callback: (token) => {
           if (inputRef.current) {
             inputRef.current.value = token;
@@ -124,4 +164,4 @@ export function HCaptchaWidget({
       <div id={containerId} ref={containerRef} />
     </div>
   );
-}
+});

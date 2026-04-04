@@ -214,7 +214,11 @@
     "submit": "Wyślij wiadomość",
     "submitPending": "Wysyłanie...",
     "privacyNote": "Ten formularz wysyła wiadomość do mnie przez Resend i może wysłać automatyczne potwierdzenie na Twój adres e-mail. Nie wpisuj tu sekretów ani wrażliwych danych dostępowych.",
-    "botProtectionNote": "Formularz jest chroniony przez captcha, żeby ograniczyć automatyczny spam.",
+    "botProtectionNote": "Formularz korzysta z niewidocznej ochrony antyspamowej, która zwykle działa automatycznie i pokazuje challenge tylko w podejrzanych przypadkach.",
+    "invisibleCaptchaNoticePrefix": "Ta strona jest chroniona przez hCaptcha, a jej użycie podlega",
+    "privacyPolicyLabel": "Privacy Policy",
+    "termsLabel": "Terms of Service",
+    "andLabel": "i",
     "websiteLabel": "Strona WWW",
     "messages": {
       "success": "Wiadomość wysłana. Odpowiem mailowo, gdy tylko będę mógł.",

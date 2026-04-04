@@ -12,7 +12,10 @@ import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { sendContactMessage } from "@/app/actions/sendContactMessage";
 import { initialContactFormState } from "@/components/contact/contactFormState";
-import { HCaptchaWidget } from "@/components/contact/HCaptchaWidget";
+import {
+  HCaptchaWidget,
+  type HCaptchaWidgetHandle,
+} from "@/components/contact/HCaptchaWidget";
 import {
   TurnstileWidget,
   type TurnstileWidgetHandle,
@@ -49,9 +52,10 @@ export function ContactForm({
     initialContactFormState,
   );
   const formRef = useRef<HTMLFormElement>(null);
+  const hcaptchaRef = useRef<HCaptchaWidgetHandle>(null);
   const turnstileRef = useRef<TurnstileWidgetHandle>(null);
   const pendingSubmitAfterCaptchaRef = useRef(false);
-  const [turnstileToken, setTurnstileToken] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
 
   useEffect(() => {
     if (state.status === "success") {
@@ -60,13 +64,13 @@ export function ContactForm({
   }, [state.status]);
 
   useEffect(() => {
-    if (!pendingSubmitAfterCaptchaRef.current || !turnstileToken) {
+    if (!pendingSubmitAfterCaptchaRef.current || !captchaToken) {
       return;
     }
 
     pendingSubmitAfterCaptchaRef.current = false;
     formRef.current?.requestSubmit();
-  }, [turnstileToken]);
+  }, [captchaToken]);
 
   const fieldError = (field: "name" | "email" | "company" | "subject" | "message") => {
     const code = state.fieldErrors?.[field];
@@ -79,16 +83,25 @@ export function ContactForm({
   const hcaptchaEnabled = Boolean(hcaptchaSiteKey);
   const turnstileEnabled = Boolean(turnstileSiteKey);
   const useTurnstileFallback = !hcaptchaEnabled && turnstileEnabled;
-  const turnstileResetKey = `${state.status}:${state.messageCode ?? "idle"}`;
+  const captchaResetKey = `${state.status}:${state.messageCode ?? "idle"}`;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    if (!useTurnstileFallback || turnstileToken) {
+    if (captchaToken) {
       return;
     }
 
-    event.preventDefault();
-    pendingSubmitAfterCaptchaRef.current = true;
-    turnstileRef.current?.execute();
+    if (hcaptchaEnabled) {
+      event.preventDefault();
+      pendingSubmitAfterCaptchaRef.current = true;
+      hcaptchaRef.current?.execute();
+      return;
+    }
+
+    if (useTurnstileFallback) {
+      event.preventDefault();
+      pendingSubmitAfterCaptchaRef.current = true;
+      turnstileRef.current?.execute();
+    }
   };
 
   return (
@@ -174,12 +187,34 @@ export function ContactForm({
         {hcaptchaEnabled ? (
           <div>
             <HCaptchaWidget
+              ref={hcaptchaRef}
               siteKey={hcaptchaSiteKey!}
-              resetKey={turnstileResetKey}
-              onTokenChange={setTurnstileToken}
+              resetKey={captchaResetKey}
+              onTokenChange={setCaptchaToken}
             />
             <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
               {t("botProtectionNote")}
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
+              {t("invisibleCaptchaNoticePrefix")}{" "}
+              <a
+                href="https://www.hcaptcha.com/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2"
+              >
+                {t("privacyPolicyLabel")}
+              </a>{" "}
+              {t("andLabel")}{" "}
+              <a
+                href="https://hcaptcha.com/terms"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2"
+              >
+                {t("termsLabel")}
+              </a>
+              .
             </p>
           </div>
         ) : null}
@@ -190,8 +225,8 @@ export function ContactForm({
               ref={turnstileRef}
               siteKey={turnstileSiteKey!}
               locale={locale}
-              resetKey={turnstileResetKey}
-              onTokenChange={setTurnstileToken}
+              resetKey={captchaResetKey}
+              onTokenChange={setCaptchaToken}
             />
             <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
               {t("botProtectionNote")}
