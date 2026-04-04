@@ -29,18 +29,17 @@ export async function Navbar({ locale }: NavbarProps) {
             locale={locale}
             href="/"
             prefetch
-            className="group inline-flex items-center gap-2.5 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
+            className="group inline-flex items-center gap-3 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
           >
             <Image
-              src="/favicon.ico"
-              alt=""
-              width={20}
-              height={20}
-              unoptimized
-              aria-hidden="true"
-              className="h-5 w-5 shrink-0 rounded-[4px]"
+              src="/logo.svg"
+              alt="Daniel Milewski logo"
+              width={120}
+              height={86}
+              priority
+              className="relative top-px h-7 w-auto shrink-0"
             />
-            Daniel Milewski
+            <span className="leading-none">Daniel Milewski</span>
           </LocalizedLink>
 
           <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">

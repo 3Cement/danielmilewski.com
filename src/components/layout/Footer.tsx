@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { COMPANY_NIP, SITE_NAME } from "@/lib/metadata";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
@@ -33,9 +34,16 @@ export async function Footer({ locale }: FooterProps) {
               <LocalizedLink
                 locale={locale}
                 href="/"
-                className="text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
+                className="inline-flex items-center gap-3 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
               >
-                {SITE_NAME}
+                <Image
+                  src="/logo.svg"
+                  alt="Daniel Milewski logo"
+                  width={120}
+                  height={86}
+                  className="relative top-px h-6 w-auto shrink-0"
+                />
+                <span className="leading-none">{SITE_NAME}</span>
               </LocalizedLink>
               <nav className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2" aria-label="Footer navigation">
                 {footerLinks.map((link) => (

@@ -34,6 +34,15 @@ export const metadata: Metadata = {
     template: `%s — ${SITE_NAME}`,
   },
   metadataBase: new URL(SITE_URL),
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-64.png", sizes: "64x64", type: "image/png" },
+      { url: "/logo.svg", type: "image/svg+xml", sizes: "any" },
+    ],
+    shortcut: [{ url: "/favicon-32.png", type: "image/png" }],
+    apple: [{ url: "/logo-256.png", sizes: "256x256", type: "image/png" }],
+  },
   openGraph: {
     siteName: SITE_NAME,
     type: "website",
