@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { BlogCard } from "@/components/blog/BlogCard";
 import type { PostMeta } from "@/types/post";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 interface WritingPreviewProps {
   posts: PostMeta[];
@@ -23,7 +23,8 @@ export async function WritingPreview({ posts, locale }: WritingPreviewProps) {
               {t("sub")}
             </p>
           </div>
-          <Link
+          <LocalizedLink
+            locale={locale as "en" | "pl"}
             href="/blog"
             className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
           >
@@ -31,7 +32,7 @@ export async function WritingPreview({ posts, locale }: WritingPreviewProps) {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
-          </Link>
+          </LocalizedLink>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

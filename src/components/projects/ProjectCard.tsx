@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import { Tag } from "@/components/ui/Tag";
 import type { ProjectMeta } from "@/types/project";
+import { type AppLocale } from "@/lib/localeHref";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 export interface ProjectCardLabels {
   problemLabel: string;
@@ -10,11 +11,12 @@ export interface ProjectCardLabels {
 }
 
 interface ProjectCardProps {
+  locale: AppLocale;
   project: ProjectMeta;
   labels: ProjectCardLabels;
 }
 
-export function ProjectCard({ project, labels }: ProjectCardProps) {
+export function ProjectCard({ locale, project, labels }: ProjectCardProps) {
   const { problemLabel, solutionLabel, readCaseStudy } = labels;
   const previewSrc = project.images?.[0];
 
@@ -25,9 +27,13 @@ export function ProjectCard({ project, labels }: ProjectCardProps) {
       </p>
 
       <h3 className="text-lg font-semibold text-[var(--color-text-base)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
-        <Link href={`/projects/${project.slug}`} className="focus-visible:outline-none">
+        <LocalizedLink
+          locale={locale}
+          href={`/projects/${project.slug}`}
+          className="focus-visible:outline-none"
+        >
           {project.title}
-        </Link>
+        </LocalizedLink>
       </h3>
 
       <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-2">
@@ -52,7 +58,8 @@ export function ProjectCard({ project, labels }: ProjectCardProps) {
         )}
       </div>
 
-      <Link
+      <LocalizedLink
+        locale={locale}
         href={`/projects/${project.slug}`}
         className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] hover:gap-2.5 transition-all"
         aria-label={`${readCaseStudy}: ${project.title}`}
@@ -61,7 +68,7 @@ export function ProjectCard({ project, labels }: ProjectCardProps) {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
         </svg>
-      </Link>
+      </LocalizedLink>
     </>
   );
 
@@ -81,7 +88,8 @@ export function ProjectCard({ project, labels }: ProjectCardProps) {
         </div>
 
         <div className="relative w-full min-h-[220px] shrink-0 overflow-hidden bg-[var(--color-surface-muted)] xl:flex-1 xl:min-h-[280px] xl:self-stretch">
-          <Link
+          <LocalizedLink
+            locale={locale}
             href={`/projects/${project.slug}`}
             className="absolute inset-0 z-10 block cursor-pointer outline-offset-[-2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]"
             aria-label={`${readCaseStudy}: ${project.title}`}
@@ -94,7 +102,7 @@ export function ProjectCard({ project, labels }: ProjectCardProps) {
               sizes="(max-width: 1280px) 100vw, 58vw"
               priority={false}
             />
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     </article>

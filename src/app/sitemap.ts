@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const projectRoutes = locales.flatMap((locale) =>
-    getAllProjectSlugs().map((slug) => ({
+    getAllProjectSlugs(locale).map((slug) => ({
       url: absoluteUrl(locale, `/projects/${slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.8,
@@ -31,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const blogRoutes = locales.flatMap((locale) =>
-    getAllPostSlugs().map((slug) => ({
+    getAllPostSlugs(locale).map((slug) => ({
       url: absoluteUrl(locale, `/blog/${slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.7,

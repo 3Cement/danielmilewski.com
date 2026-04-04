@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 interface AboutPreviewProps {
   locale: string;
@@ -20,7 +20,8 @@ export async function AboutPreview({ locale }: AboutPreviewProps) {
             <p>{t("bio1")}</p>
             <p>{t("bio2")}</p>
           </div>
-          <Link
+          <LocalizedLink
+            locale={locale as "en" | "pl"}
             href="/about"
             className="inline-flex items-center gap-1.5 mt-8 text-sm font-medium text-[var(--color-accent)] hover:gap-2.5 transition-all"
           >
@@ -28,7 +29,7 @@ export async function AboutPreview({ locale }: AboutPreviewProps) {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     </section>

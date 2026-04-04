@@ -1,48 +1,47 @@
-"use client";
-
-import {
-  forwardRef,
-  type ComponentPropsWithoutRef,
-  type MouseEvent,
-} from "react";
-import { Link } from "@/i18n/navigation";
-import {
-  sendAnalyticsEvent,
-  type ClientAnalyticsEventInput,
-} from "@/lib/analytics";
+import Link from "next/link";
+import { type ComponentPropsWithoutRef } from "react";
+import { type ClientAnalyticsEventInput } from "@/lib/analytics";
+import { localizeHref, type AppLocale } from "@/lib/localeHref";
 
 type BaseTrackedProps = {
   analytics: ClientAnalyticsEventInput;
 };
 
 type TrackedLinkProps = BaseTrackedProps &
-  Omit<ComponentPropsWithoutRef<typeof Link>, "onClick"> & {
-    onClick?: ComponentPropsWithoutRef<typeof Link>["onClick"];
+  Omit<ComponentPropsWithoutRef<typeof Link>, "href" | "onClick"> & {
+    href: string;
+    locale: AppLocale;
   };
 
-export const TrackedLink = forwardRef<HTMLAnchorElement, TrackedLinkProps>(
-  function TrackedLink({ analytics, onClick, ...props }, ref) {
-    function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-      sendAnalyticsEvent(analytics);
-      onClick?.(event);
-    }
-
-    return <Link ref={ref} {...props} onClick={handleClick} />;
-  },
-);
+export function TrackedLink({
+  analytics,
+  locale,
+  href,
+  ...props
+}: TrackedLinkProps) {
+  return (
+    <Link
+      {...props}
+      href={localizeHref(locale, href)}
+      data-analytics-event={analytics.event}
+      data-analytics-locale={analytics.locale}
+      data-analytics-cta-id={analytics.ctaId}
+      data-analytics-surface={analytics.surface}
+    />
+  );
+}
 
 type TrackedAnchorProps = BaseTrackedProps &
-  Omit<ComponentPropsWithoutRef<"a">, "onClick"> & {
-    onClick?: ComponentPropsWithoutRef<"a">["onClick"];
-  };
+  Omit<ComponentPropsWithoutRef<"a">, "onClick">;
 
-export const TrackedAnchor = forwardRef<HTMLAnchorElement, TrackedAnchorProps>(
-  function TrackedAnchor({ analytics, onClick, ...props }, ref) {
-    function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-      sendAnalyticsEvent(analytics);
-      onClick?.(event);
-    }
-
-    return <a ref={ref} {...props} onClick={handleClick} />;
-  },
-);
+export function TrackedAnchor({ analytics, ...props }: TrackedAnchorProps) {
+  return (
+    <a
+      {...props}
+      data-analytics-event={analytics.event}
+      data-analytics-locale={analytics.locale}
+      data-analytics-cta-id={analytics.ctaId}
+      data-analytics-surface={analytics.surface}
+    />
+  );
+}

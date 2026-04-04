@@ -3,9 +3,15 @@ import { buildRssFeed } from "@/lib/rss";
 
 export const dynamic = "force-static";
 
-export function GET() {
-  const posts = getAllPosts("en");
-  const rss = buildRssFeed("en", posts);
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function GET(_request: Request, { params }: Props) {
+  const { locale } = await params;
+  const siteLocale = locale === "pl" ? "pl" : "en";
+  const posts = getAllPosts(siteLocale);
+  const rss = buildRssFeed(siteLocale, posts);
 
   return new Response(rss, {
     headers: {

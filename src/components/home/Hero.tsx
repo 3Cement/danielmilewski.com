@@ -24,6 +24,7 @@ export async function Hero({ locale }: HeroProps) {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <TrackedLink
+              locale={locale as "en" | "pl"}
               href="/projects"
               analytics={{
                 event: "cta_click",
@@ -36,6 +37,7 @@ export async function Hero({ locale }: HeroProps) {
               {t("cta1")}
             </TrackedLink>
             <TrackedLink
+              locale={locale as "en" | "pl"}
               href="/contact"
               analytics={{
                 event: "cta_click",

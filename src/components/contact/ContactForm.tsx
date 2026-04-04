@@ -8,7 +8,6 @@ import {
   type FormEvent,
 } from "react";
 import { useFormStatus } from "react-dom";
-import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { sendContactMessage } from "@/app/actions/sendContactMessage";
 import { initialContactFormState } from "@/components/contact/contactFormState";
@@ -20,15 +19,53 @@ import {
   TurnstileWidget,
   type TurnstileWidgetHandle,
 } from "@/components/contact/TurnstileWidget";
+import type {
+  ContactField,
+  ContactMessageCode,
+  FieldErrorCode,
+} from "@/components/contact/contactFormState";
+
+interface ContactFormMessages {
+  heading: string;
+  sub: string;
+  nameLabel: string;
+  namePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  companyLabel: string;
+  companyPlaceholder: string;
+  subjectLabel: string;
+  subjectPlaceholder: string;
+  messageLabel: string;
+  messagePlaceholder: string;
+  submit: string;
+  submitPending: string;
+  privacyNote: string;
+  botProtectionNote: string;
+  invisibleCaptchaNoticePrefix: string;
+  privacyPolicyLabel: string;
+  termsLabel: string;
+  andLabel: string;
+  websiteLabel: string;
+  messages: Record<ContactMessageCode, string>;
+  errors: Record<FieldErrorCode, string>;
+}
 
 interface ContactFormProps {
+  locale: "en" | "pl";
+  messages: ContactFormMessages;
   hcaptchaSiteKey?: string;
   turnstileSiteKey?: string;
 }
 
-function SubmitButton() {
+function SubmitButton({
+  submitLabel,
+  submitPendingLabel,
+}: {
+  submitLabel: string;
+  submitPendingLabel: string;
+}) {
   const { pending } = useFormStatus();
-  const t = useTranslations("contactForm");
 
   return (
     <button
@@ -36,17 +73,17 @@ function SubmitButton() {
       disabled={pending}
       className="inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-accent-muted)] disabled:cursor-not-allowed disabled:opacity-70"
     >
-      {pending ? t("submitPending") : t("submit")}
+      {pending ? submitPendingLabel : submitLabel}
     </button>
   );
 }
 
 export function ContactForm({
+  locale,
+  messages,
   hcaptchaSiteKey,
   turnstileSiteKey,
 }: ContactFormProps) {
-  const locale = useLocale();
-  const t = useTranslations("contactForm");
   const [state, formAction] = useActionState(
     sendContactMessage,
     initialContactFormState,
@@ -72,13 +109,13 @@ export function ContactForm({
     formRef.current?.requestSubmit();
   }, [captchaToken]);
 
-  const fieldError = (field: "name" | "email" | "company" | "subject" | "message") => {
+  const fieldError = (field: ContactField) => {
     const code = state.fieldErrors?.[field];
-    return code ? t(`errors.${code}`) : null;
+    return code ? messages.errors[code] : null;
   };
 
   const statusMessage = state.messageCode
-    ? t(`messages.${state.messageCode}`)
+    ? messages.messages[state.messageCode]
     : null;
   const hcaptchaEnabled = Boolean(hcaptchaSiteKey);
   const turnstileEnabled = Boolean(turnstileSiteKey);
@@ -108,10 +145,10 @@ export function ContactForm({
     <section className="mb-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8">
       <div className="mb-6">
         <h2 className="text-xl font-semibold tracking-tight text-[var(--color-text-base)]">
-          {t("heading")}
+          {messages.heading}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
-          {t("sub")}
+          {messages.sub}
         </p>
       </div>
 
@@ -124,28 +161,28 @@ export function ContactForm({
         <input type="hidden" name="locale" value={locale} />
 
         <div className="hidden" aria-hidden="true">
-          <label htmlFor="website">{t("websiteLabel")}</label>
+          <label htmlFor="website">{messages.websiteLabel}</label>
           <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField
-            label={t("nameLabel")}
+            label={messages.nameLabel}
             name="name"
             type="text"
             autoComplete="name"
-            placeholder={t("namePlaceholder")}
+            placeholder={messages.namePlaceholder}
             error={fieldError("name")}
             required
             minLength={2}
             maxLength={80}
           />
           <FormField
-            label={t("emailLabel")}
+            label={messages.emailLabel}
             name="email"
             type="email"
             autoComplete="email"
-            placeholder={t("emailPlaceholder")}
+            placeholder={messages.emailPlaceholder}
             error={fieldError("email")}
             required
             maxLength={200}
@@ -153,20 +190,20 @@ export function ContactForm({
         </div>
 
         <FormField
-          label={t("companyLabel")}
+          label={messages.companyLabel}
           name="company"
           type="text"
           autoComplete="organization"
-          placeholder={t("companyPlaceholder")}
+          placeholder={messages.companyPlaceholder}
           error={fieldError("company")}
           maxLength={120}
         />
 
         <FormField
-          label={t("subjectLabel")}
+          label={messages.subjectLabel}
           name="subject"
           type="text"
-          placeholder={t("subjectPlaceholder")}
+          placeholder={messages.subjectPlaceholder}
           error={fieldError("subject")}
           required
           minLength={3}
@@ -174,9 +211,9 @@ export function ContactForm({
         />
 
         <FormTextArea
-          label={t("messageLabel")}
+          label={messages.messageLabel}
           name="message"
-          placeholder={t("messagePlaceholder")}
+          placeholder={messages.messagePlaceholder}
           error={fieldError("message")}
           required
           minLength={20}
@@ -193,26 +230,26 @@ export function ContactForm({
               onTokenChange={setCaptchaToken}
             />
             <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
-              {t("botProtectionNote")}
+              {messages.botProtectionNote}
             </p>
             <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
-              {t("invisibleCaptchaNoticePrefix")}{" "}
+              {messages.invisibleCaptchaNoticePrefix}{" "}
               <a
                 href="https://www.hcaptcha.com/privacy"
                 target="_blank"
                 rel="noreferrer"
                 className="underline underline-offset-2"
               >
-                {t("privacyPolicyLabel")}
+                {messages.privacyPolicyLabel}
               </a>{" "}
-              {t("andLabel")}{" "}
+              {messages.andLabel}{" "}
               <a
                 href="https://hcaptcha.com/terms"
                 target="_blank"
                 rel="noreferrer"
                 className="underline underline-offset-2"
               >
-                {t("termsLabel")}
+                {messages.termsLabel}
               </a>
               .
             </p>
@@ -229,7 +266,7 @@ export function ContactForm({
               onTokenChange={setCaptchaToken}
             />
             <p className="mt-2 text-xs leading-relaxed text-[var(--color-text-faint)]">
-              {t("botProtectionNote")}
+              {messages.botProtectionNote}
             </p>
           </div>
         ) : null}
@@ -250,9 +287,12 @@ export function ContactForm({
 
         <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs leading-relaxed text-[var(--color-text-faint)]">
-            {t("privacyNote")}
+            {messages.privacyNote}
           </p>
-          <SubmitButton />
+          <SubmitButton
+            submitLabel={messages.submit}
+            submitPendingLabel={messages.submitPending}
+          />
         </div>
       </form>
     </section>

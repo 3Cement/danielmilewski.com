@@ -1,7 +1,7 @@
-import { Link } from "@/i18n/navigation";
 import { Tag } from "@/components/ui/Tag";
 import type { PostMeta } from "@/types/post";
 import { getTranslations } from "next-intl/server";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 interface BlogCardProps {
   post: PostMeta;
@@ -21,7 +21,11 @@ export async function BlogCard({ post, locale, compact = false }: BlogCardProps)
   if (compact) {
     return (
       <article>
-        <Link href={`/blog/${post.slug}`} className="group block">
+        <LocalizedLink
+          locale={locale as "en" | "pl"}
+          href={`/blog/${post.slug}`}
+          className="group block"
+        >
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <h3 className="text-base font-medium text-[var(--color-text-base)] group-hover:text-[var(--color-accent)] transition-colors line-clamp-2">
@@ -44,7 +48,7 @@ export async function BlogCard({ post, locale, compact = false }: BlogCardProps)
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
           </div>
-        </Link>
+        </LocalizedLink>
       </article>
     );
   }
@@ -56,11 +60,14 @@ export async function BlogCard({ post, locale, compact = false }: BlogCardProps)
           <Tag key={tag} label={tag} />
         ))}
       </div>
-      <Link href={`/blog/${post.slug}`}>
+      <LocalizedLink
+        locale={locale as "en" | "pl"}
+        href={`/blog/${post.slug}`}
+      >
         <h3 className="text-lg font-semibold text-[var(--color-text-base)] group-hover:text-[var(--color-accent)] transition-colors mb-3 leading-snug">
           {post.title}
         </h3>
-      </Link>
+      </LocalizedLink>
       <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-5 line-clamp-3">
         {post.excerpt}
       </p>

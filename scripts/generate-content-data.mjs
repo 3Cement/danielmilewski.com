@@ -9,6 +9,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import * as runtime from "react/jsx-runtime";
 import readingTime from "reading-time";
 
+const LOCALES = ["en", "pl"];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
 const PROJECTS_DIR = path.join(root, "src/content/projects");
@@ -33,6 +34,28 @@ function normalizeStringArray(value) {
     .filter(Boolean);
 
   return normalized.length > 0 ? normalized : undefined;
+}
+
+function emptyLocaleBuckets() {
+  return Object.fromEntries(LOCALES.map((locale) => [locale, []]));
+}
+
+function emptyLocaleMaps() {
+  return Object.fromEntries(LOCALES.map((locale) => [locale, {}]));
+}
+
+function parseLocalizedFilename(filename) {
+  const localizedMatch = filename.match(/^(.*)\.(en|pl)\.mdx$/);
+  if (localizedMatch) {
+    return { slug: localizedMatch[1], locale: localizedMatch[2] };
+  }
+
+  const defaultMatch = filename.match(/^(.*)\.mdx$/);
+  if (!defaultMatch) {
+    return null;
+  }
+
+  return { slug: defaultMatch[1], locale: "en" };
 }
 
 function plainTextFromChildren(node) {
@@ -81,14 +104,20 @@ async function renderMdxToHtml(content, pathLabel) {
 
 async function readProjects() {
   const files = fs.readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".mdx"));
-  const metas = await Promise.all(
+  const localizedEntries = await Promise.all(
     files.map(async (filename) => {
-      const slug = filename.replace(/\.mdx$/, "");
+      const parsed = parseLocalizedFilename(filename);
+      if (!parsed) {
+        return null;
+      }
+
+      const { slug, locale } = parsed;
       const raw = await fsPromises.readFile(path.join(PROJECTS_DIR, filename), "utf8");
       const { data, content } = matter(raw);
       const contentHtml = await renderMdxToHtml(content, path.join(PROJECTS_DIR, filename));
       return {
         slug,
+        locale,
         ...data,
         relatedPostSlugs: normalizeStringArray(data.relatedPostSlugs),
         relatedSlugs: normalizeStringArray(data.relatedSlugs),
@@ -97,25 +126,40 @@ async function readProjects() {
       };
     }),
   );
-  metas.sort((a, b) =>
-    a.featured === b.featured ? 0 : a.featured ? -1 : 1,
-  );
-  const projectBySlug = Object.fromEntries(metas.map((p) => [p.slug, p]));
-  const projectMetas = metas.map(stripContent);
-  return { projectMetas, projectBySlug };
+  const projectMetasByLocale = emptyLocaleBuckets();
+  const projectByLocaleAndSlug = emptyLocaleMaps();
+
+  for (const entry of localizedEntries.filter(Boolean)) {
+    projectMetasByLocale[entry.locale].push(stripContent(entry));
+    projectByLocaleAndSlug[entry.locale][entry.slug] = entry;
+  }
+
+  for (const locale of LOCALES) {
+    projectMetasByLocale[locale].sort((a, b) =>
+      a.featured === b.featured ? 0 : a.featured ? -1 : 1,
+    );
+  }
+
+  return { projectMetasByLocale, projectByLocaleAndSlug };
 }
 
 async function readPosts() {
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx"));
-  const full = await Promise.all(
+  const localizedEntries = await Promise.all(
     files.map(async (filename) => {
-      const slug = filename.replace(/\.mdx$/, "");
+      const parsed = parseLocalizedFilename(filename);
+      if (!parsed) {
+        return null;
+      }
+
+      const { slug, locale } = parsed;
       const raw = await fsPromises.readFile(path.join(BLOG_DIR, filename), "utf8");
       const { data, content } = matter(raw);
       const rt = readingTime(content);
       const contentHtml = await renderMdxToHtml(content, path.join(BLOG_DIR, filename));
       return {
         slug,
+        locale,
         ...data,
         relatedProjectSlugs: normalizeStringArray(data.relatedProjectSlugs),
         content,
@@ -124,10 +168,21 @@ async function readPosts() {
       };
     }),
   );
-  full.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const postBySlug = Object.fromEntries(full.map((p) => [p.slug, p]));
-  const postMetas = full.map(stripContent);
-  return { postMetas, postBySlug };
+  const postMetasByLocale = emptyLocaleBuckets();
+  const postByLocaleAndSlug = emptyLocaleMaps();
+
+  for (const entry of localizedEntries.filter(Boolean)) {
+    postMetasByLocale[entry.locale].push(stripContent(entry));
+    postByLocaleAndSlug[entry.locale][entry.slug] = entry;
+  }
+
+  for (const locale of LOCALES) {
+    postMetasByLocale[locale].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+  }
+
+  return { postMetasByLocale, postByLocaleAndSlug };
 }
 
 const [projects, posts] = await Promise.all([readProjects(), readPosts()]);

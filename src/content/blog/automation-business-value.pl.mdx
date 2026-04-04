@@ -1,0 +1,67 @@
+---
+title: "Co Sprawia, Że Projekty Automatyzacji Naprawdę Dają Wartość Biznesowi"
+slug: "automation-business-value"
+date: "2024-09-10"
+excerpt: "Większość projektów automatyzacji nie przegrywa przez technologię, tylko dlatego, że rozwiązuje zły problem. Oto jak rozpoznać, co naprawdę warto automatyzować."
+tags: ["Python", "Automatyzacja", "Myślenie produktowe", "Inżynieria"]
+relatedProjectSlugs: ["investtracker"]
+---
+
+Zrobiłem już wystarczająco dużo projektów automatyzacji, żeby wiedzieć jedno: część techniczna jest zwykle prostsza. Trudniejsze jest ustalenie, co w ogóle warto automatyzować i czy ma to biznesowy sens.
+
+To jest model myślenia, którego używam zanim napiszę choć jedną linijkę Pythona.
+
+## Trzy pytania, które warto zadać najpierw
+
+Zanim dotkniesz kodu, zapytaj:
+
+**1. Ile ten proces naprawdę kosztuje?**
+
+Nie tylko w czasie. Policz: stawka godzinowa × liczba godzin tygodniowo × 52. Dodaj koszt poprawiania błędów. Dodaj koszt alternatywny: co ta osoba mogłaby zrobić zamiast tego? Większość zespołów mocno zaniża tę liczbę. Zadanie zajmujące 4 godziny tygodniowo przy stawce €60/h to €12 480 rocznie, jeszcze zanim policzysz błędy.
+
+**2. Jaki jest poziom błędów i ile kosztuje pojedynczy błąd?**
+
+Ludzie popełniają błędy przewidywalnie, zwłaszcza przy powtarzalnych zadaniach. W jednych procesach są tanie, np. literówka w wewnętrznym raporcie. W innych drogie, np. błędna liczba wysłana do klienta. Im wyższy koszt błędu, tym mocniejszy argument za automatyzacją.
+
+**3. Na ile stabilny jest proces?**
+
+Automatyzowanie procesu, który zmienia się co kwartał, oznacza przepisywanie automatyzacji co kwartał. Najlepsze cele do automatyzacji są stabilne, powtarzalne i dobrze zrozumiane. Jeśli biznes nie potrafi opisać procesu precyzyjnie, to zwykle nie jest jeszcze gotowy na automatyzację.
+
+## Gdzie automatyzacja w Pythonie daje największą wartość
+
+Na bazie tego, co widziałem w praktyce:
+
+**Przepływ danych między systemami**: pobranie danych z Systemu A, przekształcenie ich i wysłanie do Systemu B to prawdopodobnie najwyższy ROI w większości firm. To jest wszędzie, jest powtarzalne, podatne na błędy i zwykle niewidoczne aż do momentu, gdy coś się zepsuje.
+
+**Generowanie raportów**: wszystko, co polega na odpytywaniu danych, złożeniu dokumentu i wysłaniu go dalej, jest świetnym kandydatem do automatyzacji. Zwykle proces jest dobrze określony, a efekt biznesowy widoczny od razu.
+
+**Monitoring i alerting**: zamiast człowieka, który ręcznie sprawdza dashboardy albo odpala zapytania, skrypt działa cyklicznie i alarmuje tylko wtedy, gdy coś wymaga uwagi. Proste do zbudowania, a daje duży leverage.
+
+**Przetwarzanie dokumentów**: wyciąganie danych z PDF-ów, maili albo formularzy, szczególnie teraz, gdy LLM-y ułatwiły pracę z nieustrukturyzowanymi danymi.
+
+## Czego automatyzacja nie naprawia
+
+**Problemy procesowe nie są problemami technicznymi.** Jeśli proces jest chaotyczny, niespójny albo źle rozumiany przez ludzi, którzy go wykonują, automatyzacja nie pomoże. Dostaniesz tylko szybką i powtarzalną wersję tego samego bałaganu. Najpierw uporządkuj proces.
+
+**Automatyzacja wymaga utrzymania.** Zewnętrzne systemy się zmieniają. API dostają nowe wersje. Format danych potrafi się rozjechać. Ktoś musi za to odpowiadać długoterminowo. Jeśli nie ma planu ownershipu, to nie warto tego budować.
+
+**„Automatyzowanie” zadań wymagających osądu** jest trudniejsze, niż wygląda. Część zadań wydaje się powtarzalna, ale w praktyce zawiera mnóstwo niejawnych decyzji, które człowiek podejmuje automatycznie. To da się automatyzować, ale zwykle wymaga LLM-ów albo bardzo jasno zapisanych reguł biznesowych, a nie samego skryptu.
+
+## Praktyczne podejście do priorytetyzacji
+
+Używam prostej macierzy:
+
+| | Wysoka wartość | Niska wartość |
+|---|---|---|
+| Łatwe do zautomatyzowania | Zacznij tutaj | Miły dodatek |
+| Trudne do zautomatyzowania | Oceń ostrożnie | Odpuszczaj |
+
+„Łatwe do zautomatyzowania” oznacza: ustrukturyzowane wejścia, stabilny proces, jasne reguły. „Wysoka wartość” oznacza: znaczącą oszczędność czasu, wysoki koszt błędów albo strategiczne znaczenie.
+
+Zaczynaj od lewego górnego rogu. Prawie zawsze da się tam znaleźć coś, co dowiezie jasny ROI w ciągu tygodni, a nie miesięcy.
+
+---
+
+Najlepsze projekty automatyzacji, przy których pracowałem, nie wygrywały dzięki sprytnej inżynierii. Wygrywały dlatego, że ktoś zadał właściwe pytania, zanim powstał kod. Część techniczna była już tylko konsekwencją dobrze zdefiniowanego problemu.
+
+Jeśli próbujesz ustalić, co warto zautomatyzować w swoim zespole albo biznesie, [odezwij się](/contact) — chętnie pomogę to przemyśleć.

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { AnalyticsBeacon } from "@/components/ui/AnalyticsBeacon";
+import { AnalyticsEventScript } from "@/components/ui/AnalyticsEventScript";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 
@@ -64,6 +65,7 @@ export default function RootLayout({
       <head />
       <body className="min-h-screen flex flex-col">
         <ThemeInitializer />
+        <AnalyticsEventScript />
         {children}
         <AnalyticsBeacon token={cfAnalyticsToken} />
       </body>

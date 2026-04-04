@@ -139,6 +139,7 @@ export default async function AboutPage({ params }: Props) {
               </div>
 
               <TrackedLink
+                locale={locale as "en" | "pl"}
                 href="/contact"
                 analytics={{
                   event: "cta_click",

@@ -1,0 +1,150 @@
+---
+title: "Wzorce FastAPI, Których Naprawdę Używam w Realnych Projektach"
+slug: "fastapi-patterns"
+date: "2024-10-03"
+excerpt: "Nie wzorce z tutoriali, tylko te, które faktycznie wytrzymały produkcję i pracę kilkuosobowych zespołów."
+tags: ["Python", "FastAPI", "Backend", "Architektura"]
+relatedProjectSlugs: ["investtracker"]
+---
+
+Oficjalna dokumentacja FastAPI świetnie nadaje się do startu. Ale między „zrobieniem dema” a „zbudowaniem czegoś, co zespół będzie w stanie utrzymać i rozwijać” jest jeszcze spora luka.
+
+Poniżej są wzorce, których naprawdę używam w produkcyjnych projektach FastAPI.
+
+## Struktura modułów oparta o feature’y
+
+Układ warstwowy (`routers/`, `models/`, `services/`) szybko przestaje działać, gdy codebase rośnie. Przy prostej zmianie kończysz grzebiąc w pięciu różnych plikach.
+
+Wolę strukturę opartą o feature’y:
+
+```
+app/
+├── auth/
+│   ├── router.py
+│   ├── service.py
+│   ├── models.py
+│   └── schemas.py
+├── reports/
+│   ├── router.py
+│   ├── service.py
+│   └── schemas.py
+└── core/
+    ├── config.py
+    ├── database.py
+    └── dependencies.py
+```
+
+Każdy feature odpowiada za swoje trasy, logikę biznesową, modele bazy i schematy Pydantic. Dodanie nowej funkcji oznacza nowy katalog, a nie rozrzucanie zmian po całym projekcie.
+
+## Dependency injection wszędzie tam, gdzie liczy się testowalność
+
+System zależności FastAPI to jedna z jego największych zalet. Warto używać go szeroko:
+
+```python
+# core/dependencies.py
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> User:
+    ...
+
+# Router feature’a
+@router.get("/reports")
+async def list_reports(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    ...
+```
+
+W testach podmieniasz zależności na lekkie fake’i działające w pamięci. Dzięki temu testy są szybkie i nie zależą od zewnętrznego stanu.
+
+## Async SQLAlchemy z jawnym zarządzaniem sesją
+
+Używaj `AsyncSession` z SQLAlchemy 2.0 i zarządzaj sesją przez context manager, a nie globalny obiekt:
+
+```python
+# core/database.py
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from contextlib import asynccontextmanager
+
+engine = create_async_engine(settings.DATABASE_URL)
+
+@asynccontextmanager
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    async with AsyncSession(engine, expire_on_commit=False) as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            raise
+```
+
+`expire_on_commit=False` zapobiega wygaszaniu obiektów po `commit`, co w asyncowych kontekstach często powoduje niepotrzebne lazy-loady i dodatkowe zapytania.
+
+## Uporządkowana obsługa błędów
+
+Nie dopuszczaj do tego, żeby nieobsłużone wyjątki kończyły się gołym 500 i stack trace’em. Zdefiniuj własną hierarchię błędów:
+
+```python
+class AppError(Exception):
+    status_code: int = 500
+    detail: str = "Internal server error"
+
+class NotFoundError(AppError):
+    status_code = 404
+
+class PermissionError(AppError):
+    status_code = 403
+```
+
+Zarejestruj handler na instancji aplikacji, który łapie `AppError` i zwraca spójny JSON. Serwisy rzucają typowane błędy, a routery pozostają czyste.
+
+## Zadania w tle przez ARQ, nie FastAPI `BackgroundTasks`
+
+`BackgroundTasks` działa w tym samym procesie co aplikacja. Do czegokolwiek większego niż banał, np. generowania raportów, wysyłki maili czy wywołań zewnętrznych API, lepsza jest prawdziwa kolejka zadań.
+
+ARQ (asynchroniczna kolejka Redis) dobrze integruje się z FastAPI:
+
+```python
+from arq import create_pool
+
+@router.post("/reports/generate")
+async def generate_report(
+    report_id: UUID,
+    arq_pool: ArqRedis = Depends(get_arq_pool),
+):
+    await arq_pool.enqueue_job("generate_report_task", report_id)
+    return {"status": "queued", "report_id": report_id}
+```
+
+Zadanie działa w osobnym workerze. API może odpowiedzieć od razu, a użytkownik dostaje identyfikator joba do odpytywania albo późniejszego powiadomienia.
+
+## Konfiguracja przez Pydantic Settings
+
+`pydantic-settings` daje typowaną, walidowaną konfigurację opartą o zmienne środowiskowe:
+
+```python
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    DATABASE_URL: str
+    SECRET_KEY: str
+    OPENAI_API_KEY: str
+    REDIS_URL: str = "redis://localhost:6379"
+    DEBUG: bool = False
+
+    class Config:
+        env_file = ".env"
+
+settings = Settings()
+```
+
+Koniec z rozsianym po projekcie `os.getenv("THING", "default")`. Konfiguracja jest jawna, typowana i sprawdzana już przy starcie aplikacji.
+
+---
+
+To nie są rewolucyjne pomysły. To po prostu pragmatyczne decyzje, które sprawdziły się u mnie w kilku wdrożeniach produkcyjnych. Celem jest codebase, który da się zrozumieć, testować i bez bólu przekazać innemu inżynierowi.
+
+Jeśli startujesz nowy projekt w FastAPI i chcesz przegadać architekturę, [chętnie pomogę](/contact).

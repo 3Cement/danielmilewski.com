@@ -15,6 +15,7 @@ import { routing } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { breadcrumbSchema, softwareSchema } from "@/lib/schema";
+import { localizeHtmlContent } from "@/lib/localizeHtmlContent";
 
 export const dynamic = "force-static";
 
@@ -23,15 +24,14 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllProjectSlugs();
   return routing.locales.flatMap((locale) =>
-    slugs.map((slug) => ({ locale, slug }))
+    getAllProjectSlugs(locale).map((slug) => ({ locale, slug }))
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getProjectBySlug(locale, slug);
   if (!project) return {};
   return buildMetadata({
     title: project.title,
@@ -48,24 +48,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { locale, slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getProjectBySlug(locale, slug);
   if (!project) notFound();
   const tCommon = await getTranslations({ locale, namespace: "common" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
 
   const relatedProjects = (project.relatedSlugs ?? [])
-    .map((s) => getProjectBySlug(s))
+    .map((s) => getProjectBySlug(locale, s))
     .filter(Boolean)
     .map((p) => ({ slug: p!.slug, title: p!.title }));
 
   const relatedPosts = (project.relatedPostSlugs ?? [])
-    .map((s) => getPostBySlug(s))
+    .map((s) => getPostBySlug(locale, s))
     .filter(Boolean)
     .map((post) => ({
       slug: post!.slug,
       title: post!.title,
       excerpt: post!.excerpt,
     }));
+
+  const localizedContentHtml = localizeHtmlContent(
+    locale as "en" | "pl",
+    project.contentHtml,
+  );
 
   const structuredData = JSON.stringify([
     softwareSchema({
@@ -95,6 +100,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="mx-auto max-w-6xl">
           <Breadcrumbs
             ariaLabel={tCommon("breadcrumbsAriaLabel")}
+            locale={locale as "en" | "pl"}
             items={[
               { label: tNav("home"), href: "/" },
               { label: tNav("projects"), href: "/projects" },
@@ -108,8 +114,9 @@ export default async function ProjectPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: structuredData }}
       />
       <CaseStudySection
+        locale={locale}
         project={project}
-        mdxContent={project.contentHtml}
+        mdxContent={localizedContentHtml}
         relatedProjects={relatedProjects}
         relatedPosts={relatedPosts}
       />

@@ -17,13 +17,14 @@ import {
   type SiteLocale,
 } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
-import { Link } from "@/i18n/navigation";
 import { ContactCTA } from "@/components/ui/ContactCTA";
 import {
   blogPostingSchema,
   breadcrumbSchema,
 } from "@/lib/schema";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
+import { localizeHtmlContent } from "@/lib/localizeHtmlContent";
 
 export const dynamic = "force-static";
 
@@ -32,15 +33,14 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
   return routing.locales.flatMap((locale) =>
-    slugs.map((slug) => ({ locale, slug }))
+    getAllPostSlugs(locale).map((slug) => ({ locale, slug }))
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(locale, slug);
   if (!post) return {};
   return buildMetadata({
     title: post.title,
@@ -57,19 +57,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { locale, slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(locale, slug);
   if (!post) notFound();
 
   const t = await getTranslations({ locale, namespace: "blog" });
   const tCommon = await getTranslations({ locale, namespace: "common" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const headings = extractHeadings(post.content);
-  const allPosts = getAllPosts();
+  const localizedContentHtml = localizeHtmlContent(
+    locale as "en" | "pl",
+    post.contentHtml,
+  );
+  const allPosts = getAllPosts(locale);
   const related = allPosts
     .filter((p) => p.slug !== slug && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 2);
   const relatedProjects = (post.relatedProjectSlugs ?? [])
-    .map((relatedSlug) => getProjectBySlug(relatedSlug))
+    .map((relatedSlug) => getProjectBySlug(locale, relatedSlug))
     .filter(Boolean);
 
   const date = new Date(post.date).toLocaleDateString(locale === "pl" ? "pl-PL" : "en-GB", {
@@ -103,6 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="mx-auto max-w-6xl">
           <Breadcrumbs
             ariaLabel={tCommon("breadcrumbsAriaLabel")}
+            locale={locale as "en" | "pl"}
             items={[
               { label: tNav("home"), href: "/" },
               { label: tNav("blog"), href: "/blog" },
@@ -121,7 +126,10 @@ export default async function BlogPostPage({ params }: Props) {
             {/* TOC sidebar */}
             <aside className="hidden lg:block lg:col-span-1 order-2">
               <div className="sticky top-24">
-                <TableOfContents headings={headings} />
+                <TableOfContents
+                  headings={headings}
+                  tocHeading={t("tocHeading")}
+                />
               </div>
             </aside>
 
@@ -145,7 +153,7 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Body */}
               <div
                 className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-blockquote:border-[var(--color-accent)]"
-                dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+                dangerouslySetInnerHTML={{ __html: localizedContentHtml }}
               />
 
               {relatedProjects.length > 0 && (
@@ -160,12 +168,13 @@ export default async function BlogPostPage({ params }: Props) {
                         className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] p-5"
                       >
                         <h3 className="text-base font-semibold text-[var(--color-text-base)]">
-                          <Link
+                          <LocalizedLink
+                            locale={locale as "en" | "pl"}
                             href={`/projects/${project!.slug}`}
                             className="hover:text-[var(--color-accent)] transition-colors"
                           >
                             {project!.title}
-                          </Link>
+                          </LocalizedLink>
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
                           {project!.shortProblem}
@@ -197,7 +206,8 @@ export default async function BlogPostPage({ params }: Props) {
 
               {/* Back link */}
               <div className="pt-2 border-t border-[var(--color-border)]">
-                <Link
+                <LocalizedLink
+                  locale={locale as "en" | "pl"}
                   href="/blog"
                   className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
                 >
@@ -205,7 +215,7 @@ export default async function BlogPostPage({ params }: Props) {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                   </svg>
                   {t("allPosts")}
-                </Link>
+                </LocalizedLink>
               </div>
             </div>
           </div>

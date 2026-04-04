@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectsPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "projects" });
-  const projects = getAllProjects();
+  const projects = getAllProjects(locale);
   const cardLabels = {
     problemLabel: t("problemLabel"),
     solutionLabel: t("solutionLabel"),
@@ -42,7 +42,11 @@ export default async function ProjectsPage({ params }: Props) {
             {t("pageSub")}
           </p>
         </div>
-        <ProjectGrid projects={projects} labels={cardLabels} />
+        <ProjectGrid
+          locale={locale as "en" | "pl"}
+          projects={projects}
+          labels={cardLabels}
+        />
         {projects.length < 4 && (
           <div className="mt-8 p-6 rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface-muted)] text-center">
             <p className="text-sm font-medium text-[var(--color-text-muted)]">{t("comingSoon")}</p>

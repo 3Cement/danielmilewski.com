@@ -1,0 +1,112 @@
+---
+title: "InvestTracker — platforma do analityki majątku i portfela inwestycyjnego"
+slug: "investtracker"
+featured: true
+shortProblem: "Żadne istniejące narzędzie nie potrafiło poprawnie połączyć polskich rachunków inwestycyjnych (IKE, IKZE, OIPE, Finax) z zagranicznymi akcjami, ETF-ami, kryptowalutami i metalami szlachetnymi w jednym, wiarygodnym dashboardzie."
+shortSolution: "Zbudowałem od zera pełny tracker portfela: backend FastAPI z obliczeniami FIFO, trzy źródła danych rynkowych, rozliczenia wielowalutowe i dashboard w React pokazujący cały portfel w jednym miejscu."
+stack: ["Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "Alembic", "React", "TypeScript", "Vite", "Recharts", "Docker", "CoinGecko API", "EODHD API", "NBP API"]
+role: "Samodzielny Full-Stack Engineer i Product Owner"
+outcome: "Działająca produkcyjnie aplikacja pod investtracker.eu. Jedyne narzędzie, jakie znam, które poprawnie scala transakcje z Finax, polskimi kontami uprzywilejowanymi podatkowo i zagranicznymi aktywami w jeden, dokładny widok P&L. Projekt jest nadal rozwijany."
+overview: "InvestTracker to prywatna platforma do zarządzania majątkiem i portfelem inwestycyjnym, zbudowana po to, by rozwiązać realny problem: połączyć polskie rachunki uprzywilejowane podatkowo (IKE, IKZE, OIPE), portfele Finax, zagraniczne akcje, ETF-y, krypto, metale szlachetne i gotówkę wielowalutową w jeden dashboard z poprawnym kosztem nabycia i wynikiem."
+demo: "https://www.investtracker.eu/"
+repo: ""
+images: [
+  "/images/investtracker/dashboard-charts-main.webp",
+  "/images/investtracker/dashboard.webp",
+  "/images/investtracker/dashboard-charts.webp",
+  "/images/investtracker/investtracker-mobile.webp",
+  "/images/investtracker/portfolios.webp",
+  "/images/investtracker/transactions.webp",
+  "/images/investtracker/dividends.webp"
+]
+relatedSlugs: []
+relatedPostSlugs: ["fastapi-patterns", "automation-business-value"]
+---
+
+## Problem / kontekst
+
+Każde narzędzie, które testowałem, miało ten sam problem: albo obsługiwało polskie rachunki inwestycyjne, albo rynki zagraniczne, ale nigdy jednego i drugiego naraz. Żadne nie wspierało importu transakcji z Finax. Śledzenie inwestycji rozłożonych między IKE, IKZE, OIPE, portfel Finax, zagraniczne ETF-y, krypto i metale szlachetne oznaczało kilka arkuszy i ręczne uzgadnianie kursów walut.
+
+Efekt zawsze był „prawie poprawny”. Patrzysz na wartość całego portfela i wiesz, że czegoś tam brakuje. Zrealizowane zyski są zgadywaniem. FIFO dla aktywów kupowanych w różnych walutach jest praktycznie niewykonalne ręcznie.
+
+Chciałem jednego widoku. Dokładnych liczb. Narzędzia zbudowanego pod to, jak realnie inwestują polscy inwestorzy detaliczni, a nie pod amerykańskie założenia.
+
+## Podejście
+
+Zamiast dopasowywać istniejące rozwiązanie, zbudowałem dokładnie to, czego potrzebowałem:
+
+1. **Najpierw model danych** — zaprojektowałem schemat, który poprawnie reprezentuje wszystkie polskie typy rachunków obok zagranicznych aktywów, wraz z sensowną taksonomią transakcji (zakupy, sprzedaże, dywidendy, podatki u źródła, przymusowe wykupy, przewalutowania)
+2. **Silnik FIFO** — zaimplementowałem koszt nabycia od podstaw, z obsługą wielu walut i zdarzeń korporacyjnych
+3. **Warstwa danych rynkowych** — podłączyłem trzy niezależne źródła i zbudowałem fallback, żeby ceny były dostępne możliwie niezawodnie
+4. **Frontend** — dashboard w React pokazujący alokację, P&L i historię wartości dla całego portfela albo wybranego typu rachunku
+
+## Architektura / decyzje techniczne
+
+```
+React + TypeScript (Vite)
+        │
+        ▼
+FastAPI (Python 3.12, async)
+        │
+        ├── Holdings engine (FIFO, multi-currency)
+        ├── Market data service
+        │       ├── EODHD (stocks, ETFs, metals)
+        │       ├── CoinGecko (crypto)
+        │       └── NBP API (PLN FX rates)
+        └── PostgreSQL (SQLAlchemy + Alembic migrations)
+```
+
+**Najważniejsze decyzje:**
+
+- **FIFO napisane od zera**: nie ma biblioteki, która robi to dobrze dla wielowalutowych portfeli z polskimi typami rachunków. Każdy lot zakupu trzyma swoją walutę, cenę nabycia i kontekst rachunku. P&L liczę zarówno w walucie aktywa, jak i w PLN.
+
+- **Trzy źródła danych rynkowych z dual-key fallback**: EODHD pokrywa akcje, ETF-y i metale szlachetne. CoinGecko obsługuje krypto. NBP daje oficjalne kursy PLN. Zarówno dla EODHD, jak i CoinGecko są skonfigurowane dwa klucze API z automatycznym failoverem przy limitach lub problemach po stronie dostawcy.
+
+- **Dane rynkowe odseparowane od stanu portfela**: ceny są cache’owane niezależnie od danych transakcyjnych. Mogę uzupełniać historię cen bez dotykania transakcji, a silnik portfela działa nawet wtedy, gdy jedno ze źródeł cen chwilowo niedomaga.
+
+- **Migracje Alembic**: każda zmiana schematu jest wersjonowana. Odpalenie tej samej migracji dwa razy jest bezpieczne. Przy szybkim iterowaniu solo to ważne, bo stan bazy nigdy nie staje się zgadywanką.
+
+- **TypeScript na froncie**: struktury danych finansowych są złożone, wielowalutowe kwoty, rozbicia P&L, szeregi historyczne. TypeScript dobrze łapie błędy typu „to pole bywa nullem” albo „ta wartość jest w innej walucie, niż założyłem”.
+
+- **Docker tylko dla PostgreSQL**: aplikacja działa lokalnie w procesach (`backend :8000`, `frontend :5173`) dla szybszej iteracji, ale baza siedzi w Dockerze, żeby środowisko było czyste i powtarzalne.
+
+## Wyzwania
+
+**FIFO dla wielu walut i typów rachunków** było głównym wyzwaniem inżynierskim. Jedna pozycja akcyjna mogła zostać kupiona w USD w trzech różnych lotach, trzymana na rachunku IKZE, a potem częściowo sprzedana i przewalutowana do PLN. Poprawne policzenie kosztu, zrealizowanego zysku w USD i PLN oraz pozostałej niezrealizowanej pozycji wymaga bardzo ostrożnego śledzenia stanu.
+
+Edge case’y się nakładają: przymusowe wykupy, podatki u źródła od dywidend i specyficzny format transakcji Finax, który nie pasuje do standardowych modeli brokerskich. Każdy z tych przypadków wymagał jawnej obsługi. Nie ma tu sensownego generycznego rozwiązania.
+
+**Niezawodność danych rynkowych** była drugim dużym problemem. Każde pojedyncze API ma braki: brakujące ceny historyczne, limity, sporadyczne przestoje. Dual-key fallback dla EODHD i CoinGecko dodałem po realnym użyciu, kiedy okazało się, jak łatwo wejść w limity podczas backfillu cen historycznych.
+
+**Semantyka polskich typów rachunków**: IKE, IKZE i OIPE mają różne zasady podatkowe i limity. Zamodelowanie tego poprawnie już w warstwie danych było ważne, żeby przyszłe funkcje raportowania podatkowego mogły być wiarygodne.
+
+## Rezultat / wpływ
+
+InvestTracker działa pod [investtracker.eu](https://www.investtracker.eu/) i jest używany na co dzień jako moje główne narzędzie do zarządzania portfelem. To jedyne rozwiązanie, jakie znam, które poprawnie łączy:
+
+- polskie rachunki uprzywilejowane podatkowo (IKE, IKZE, OIPE)
+- import transakcji z Finax
+- zagraniczne akcje i ETF-y
+- kryptowaluty przez CoinGecko
+- metale szlachetne
+- gotówkę w wielu walutach
+
+Wszystko w jednym dashboardzie, z poprawnym FIFO i wynikiem liczonym w PLN.
+
+Projekt jest nadal rozwijany. Kolejne kroki to m.in. metryki performance (TWR, IRR), pełne widoki aktywów z wykresami cen, szersza obsługa corporate actions i porządny interfejs importu CSV. Publiczne wydanie w modelu SaaS rozważam po domknięciu podstawowego zestawu funkcji.
+
+---
+
+*Projekt powstał jako prywatne narzędzie rozwiązujące realną lukę w polskim ekosystemie retail investing. Wszystkie dane są prywatne i self-hostowane, bez dzielenia portfela z zewnętrznymi platformami.*
+
+## Zrzuty ekranu
+
+![Dashboard InvestTracker pokazujący KPI portfela — wartość całkowitą, P&L, niezrealizowany wynik i dywidendy](/images/investtracker/dashboard.webp)
+
+![Wykres historii wartości portfela z rozbiciem na typy rachunków](/images/investtracker/dashboard-charts.webp)
+
+![Widok portfeli — Finax OIPE, Finax Old, IKE Bossa, IKZE mBank, Krypto, Metale, Waluty](/images/investtracker/portfolios.webp)
+
+![Historia transakcji z filtrami po instrumencie, dacie, typie i portfelu](/images/investtracker/transactions.webp)
+
+![Śledzenie dywidend — wykres dochodu rocznego i historia wypłat](/images/investtracker/dividends.webp)

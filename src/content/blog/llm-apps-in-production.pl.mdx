@@ -1,0 +1,91 @@
+---
+title: "Praktyczne Lekcje z Budowania Aplikacji LLM na Produkcji"
+slug: "llm-apps-in-production"
+date: "2024-11-15"
+excerpt: "Demo z LLM-em zrobić łatwo. Produkcyjna aplikacja LLM to zupełnie inna gra. Oto czego nauczyłem się, wdrażając kilka takich systemów naprawdę."
+tags: ["Python", "LLMs", "Produkcja", "Inżynieria AI"]
+relatedProjectSlugs: ["investtracker"]
+---
+
+Zbudowanie dema, które robi wrażenie podczas pięciominutowego screen share’a, jest łatwe. Zbudowanie funkcji opartej o LLM, która działa stabilnie dla prawdziwych użytkowników, obsługuje edge case’y i nie rozpada się o 2 w nocy, kiedy nikt nie patrzy, to już właściwa robota.
+
+To są lekcje, których nauczyłem się po trudniejszej stronie wdrożeń.
+
+## 1. Prompt engineering nie jest zadaniem jednorazowym
+
+Największy błąd, jaki widzę, to traktowanie promptów jak konfiguracji: napisać raz, zacommitować i zapomnieć.
+
+W praktyce prompty dryfują. Zmieniają się dane. Użytkownicy znajdują edge case’y. Dostawca modelu po cichu aktualizuje model bazowy. Każda z tych rzeczy może niezauważalnie obniżyć jakość wyniku.
+
+Co faktycznie działa:
+
+- **Trzymaj prompty pod kontrolą wersji** razem z kodem. Traktuj je jak kod.
+- **Utrzymuj zestaw regresyjny** z reprezentatywnymi wejściami i oczekiwanymi wynikami. Uruchamiaj go przy każdym wdrożeniu.
+- **Loguj wyniki z produkcji** za zgodą użytkowników. Prawdziwe zapytania ujawniają problemy, których nie pokaże nawet dobry test set.
+
+## 2. Structured output jest obowiązkowy na produkcji
+
+Jeśli wywołanie LLM-a zwraca luźny tekst, który potem parsujesz ręcznie stringami, to masz bombę z opóźnionym zapłonem.
+
+Od początku używaj strukturalnego wyjścia. Dzięki function calling od OpenAI albo `instructor` dostajesz typowany, walidowany wynik, na którym aplikacja może bezpiecznie polegać. Schematy Pydantic sprawiają, że błędy ekstrakcji są jawne, zamiast po cichu produkować śmieci.
+
+```python
+from pydantic import BaseModel
+from instructor import patch
+from openai import OpenAI
+
+client = patch(OpenAI())
+
+class ExtractionResult(BaseModel):
+    company_name: str
+    revenue: float | None
+    year: int
+
+result = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": document_text}],
+    response_model=ExtractionResult,
+)
+# result to teraz typowany obiekt Pythona, nie string
+```
+
+## 3. Jakość retrievalu jest ważniejsza niż jakość modelu
+
+W systemie RAG wąskim gardłem prawie zawsze jest retrieval, nie generation.
+
+Widziałem zespoły, które spędzały tygodnie na dłubaniu promptów, podczas gdy prawdziwy problem był gdzie indziej: zła strategia chunkowania niszcząca kontekst albo embeddingi, które nie łapią semantyki konkretnej domeny.
+
+Zanim zaczniesz stroić prompt, zrób audyt retrievalu:
+
+- Weź 50 przykładowych zapytań i obejrzyj zwracane chunki. Czy one naprawdę są trafne?
+- Sprawdź precision i recall na odłożonym secie testowym.
+- Przetestuj hybrid search (BM25 + dense embeddings) — na zapytaniach bogatych w słowa kluczowe regularnie wypada lepiej niż czysty vector search.
+
+## 4. Latencja jest problemem produktowym
+
+Odpowiedź po 8 sekundach wydaje się użytkownikowi zepsuta, nawet jeśli technicznie jest poprawna.
+
+Rozwiązania, które sprawdzały mi się w produkcji:
+
+- **Streaming**: pokazuj tokeny od razu. Percepcyjna latencja spada bardzo mocno.
+- **Mniejsze modele do routingu**: użyj szybkiego i taniego modelu do klasyfikacji zapytania, zanim przekażesz je do większego, wolniejszego modelu.
+- **Caching**: w use-case’ach typu knowledge assistant nawet 20–40% zapytań to semantycznie bardzo podobne duplikaty. Cache’uj agresywnie.
+- **Async wszystko**: nie blokuj requestu webowego na wywołaniu LLM-a. Kolejkuj, streamuj albo zwracaj odpowiedź natychmiast i kończ pracę asynchronicznie.
+
+## 5. Tryby porażki muszą być jawne
+
+LLM-y zawodzą po cichu. Model nie rzuca wyjątku, kiedy zaczyna halucynować, tylko zwraca pewnie brzmiącą, błędną odpowiedź.
+
+Trzeba wbudować jawne sygnały niepewności:
+
+- Dodaj pole confidence do structured output
+- Projektuj prompty tak, by model wprost mówił „nie wiem”, jeśli odpowiedzi nie ma w dostarczonym kontekście
+- Traktuj „nie wiem” jako poprawny i pożądany wynik
+
+Użytkownicy dużo lepiej tolerują „nie udało mi się znaleźć tej informacji” niż odpowiedź, która brzmi wiarygodnie, ale jest zła.
+
+---
+
+Te lekcje kosztują czas. Sam wysłałbym lepsze oprogramowanie szybciej, gdyby ktoś powiedział mi to wcześniej. Mam nadzieję, że to zaoszczędzi komuś trochę niepotrzebnych iteracji.
+
+Jeśli budujesz coś w tym obszarze i chcesz przegadać architekturę, [napisz do mnie](/contact).

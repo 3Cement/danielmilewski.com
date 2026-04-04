@@ -1,24 +1,24 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Tag } from "@/components/ui/Tag";
 import type { Project } from "@/types/project";
-import { Link } from "@/i18n/navigation";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 interface CaseStudySectionProps {
+  locale: string;
   project: Project;
   mdxContent: string;
   relatedProjects?: Array<{ slug: string; title: string }>;
   relatedPosts?: Array<{ slug: string; title: string; excerpt: string }>;
 }
 
-export function CaseStudySection({
+export async function CaseStudySection({
+  locale,
   project,
   mdxContent,
   relatedProjects,
   relatedPosts,
 }: CaseStudySectionProps) {
-  const t = useTranslations("caseStudy");
+  const t = await getTranslations({ locale, namespace: "caseStudy" });
 
   return (
     <article className="py-16 px-4">
@@ -101,13 +101,14 @@ export function CaseStudySection({
                   </h2>
                   <div className="space-y-2">
                     {relatedProjects.map((p) => (
-                      <Link
+                      <LocalizedLink
+                        locale={locale as "en" | "pl"}
                         key={p.slug}
                         href={`/projects/${p.slug}`}
                         className="block text-sm text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors"
                       >
                         {p.title}
-                      </Link>
+                      </LocalizedLink>
                     ))}
                   </div>
                 </div>
@@ -134,12 +135,13 @@ export function CaseStudySection({
                       className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] p-5"
                     >
                       <h3 className="text-base font-semibold text-[var(--color-text-base)]">
-                        <Link
+                        <LocalizedLink
+                          locale={locale as "en" | "pl"}
                           href={`/blog/${post.slug}`}
                           className="hover:text-[var(--color-accent)] transition-colors"
                         >
                           {post.title}
-                        </Link>
+                        </LocalizedLink>
                       </h3>
                       <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
                         {post.excerpt}
@@ -154,7 +156,8 @@ export function CaseStudySection({
 
         {/* Back link */}
         <div className="mt-16 pt-8 border-t border-[var(--color-border)]">
-          <Link
+          <LocalizedLink
+            locale={locale as "en" | "pl"}
             href="/projects"
             className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
           >
@@ -162,7 +165,7 @@ export function CaseStudySection({
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
             {t("allProjects")}
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     </article>

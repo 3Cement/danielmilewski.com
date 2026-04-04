@@ -4,6 +4,17 @@ export function hasRealAnalyticsToken(token: string | undefined): boolean {
   return token != null && token !== "" && token !== "REPLACE_WITH_YOUR_TOKEN";
 }
 
+export function getProductionAnalyticsHosts(siteUrl: string): string[] {
+  try {
+    const configuredHost = new URL(siteUrl).hostname.toLowerCase();
+    return configuredHost.startsWith("www.")
+      ? [configuredHost, configuredHost.slice(4)]
+      : [configuredHost, `www.${configuredHost}`];
+  } catch {
+    return [];
+  }
+}
+
 export function isProductionAnalyticsHost(
   hostname: string | undefined,
   siteUrl: string,
@@ -13,20 +24,8 @@ export function isProductionAnalyticsHost(
   }
 
   const normalizedHostname = hostname.toLowerCase();
-
-  try {
-    const configuredHost = new URL(siteUrl).hostname.toLowerCase();
-    const allowedHosts = new Set([
-      configuredHost,
-      configuredHost.startsWith("www.")
-        ? configuredHost.slice(4)
-        : `www.${configuredHost}`,
-    ]);
-
-    return allowedHosts.has(normalizedHostname);
-  } catch {
-    return false;
-  }
+  const allowedHosts = new Set(getProductionAnalyticsHosts(siteUrl));
+  return allowedHosts.has(normalizedHostname);
 }
 
 export const analyticsEventNames = [

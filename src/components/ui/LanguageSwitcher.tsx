@@ -1,18 +1,38 @@
 "use client";
 
-import { useLocale } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export function LanguageSwitcher() {
-  const locale = useLocale();
-  const pathname = usePathname() || "/";
+interface LanguageSwitcherProps {
+  locale: "en" | "pl";
+}
+
+function localizePathname(pathname: string, locale: "en" | "pl") {
+  const normalizedPathname =
+    pathname.replace(/^\/(en|pl)(?=\/|$)/, "") || "/";
+
+  if (normalizedPathname === "/") {
+    return `/${locale}`;
+  }
+
+  return `/${locale}${normalizedPathname}`;
+}
+
+function persistLocale(locale: "en" | "pl") {
+  document.cookie = `NEXT_LOCALE=${locale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+}
+
+export function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
+  const pathname = usePathname() || `/${locale}`;
+  const englishPath = localizePathname(pathname, "en");
+  const polishPath = localizePathname(pathname, "pl");
 
   return (
     <div className="flex items-center gap-0.5">
       <Link
-        href={pathname}
-        locale="en"
+        href={englishPath}
         prefetch={false}
+        onClick={() => persistLocale("en")}
         className={`px-1.5 py-1 text-sm rounded transition-opacity ${
           locale === "en" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"
         }`}
@@ -23,9 +43,9 @@ export function LanguageSwitcher() {
         EN
       </Link>
       <Link
-        href={pathname}
-        locale="pl"
+        href={polishPath}
         prefetch={false}
+        onClick={() => persistLocale("pl")}
         className={`px-1.5 py-1 text-sm rounded transition-opacity ${
           locale === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"
         }`}

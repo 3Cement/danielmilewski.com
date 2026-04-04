@@ -1,14 +1,20 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 interface ExpectationItem {
   title: string;
   body: string;
 }
 
-export function ContactExpectations() {
-  const t = useTranslations("contactExpectations");
+interface ContactExpectationsProps {
+  locale: string;
+  compact?: boolean;
+}
+
+export async function ContactExpectations({
+  locale,
+  compact = false,
+}: ContactExpectationsProps) {
+  const t = await getTranslations({ locale, namespace: "contactExpectations" });
   const items = t.raw("items") as ExpectationItem[];
 
   return (
@@ -22,7 +28,13 @@ export function ContactExpectations() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div
+        className={
+          compact
+            ? "grid grid-cols-1 gap-4"
+            : "grid grid-cols-1 gap-4 sm:grid-cols-3"
+        }
+      >
         {items.map((item) => (
           <article
             key={item.title}

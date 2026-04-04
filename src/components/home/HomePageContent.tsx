@@ -13,8 +13,8 @@ interface HomePageContentProps {
 }
 
 export async function HomePageContent({ locale }: HomePageContentProps) {
-  const projects = getFeaturedProjects();
-  const posts = getLatestPosts(3);
+  const projects = getFeaturedProjects(locale);
+  const posts = getLatestPosts(locale, 3);
 
   return (
     <>

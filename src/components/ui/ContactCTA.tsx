@@ -17,6 +17,7 @@ export async function ContactCTA({ locale }: ContactCTAProps) {
         <p className="mt-4 text-lg text-[var(--color-text-muted)]">{t("contactSub")}</p>
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <TrackedLink
+            locale={locale as "en" | "pl"}
             href="/contact"
             analytics={{
               event: "cta_click",
@@ -29,6 +30,7 @@ export async function ContactCTA({ locale }: ContactCTAProps) {
             {t("getInTouch")}
           </TrackedLink>
           <TrackedLink
+            locale={locale as "en" | "pl"}
             href="/projects"
             analytics={{
               event: "cta_click",

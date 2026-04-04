@@ -1,14 +1,18 @@
-"use client";
-
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { COMPANY_NIP, SITE_NAME } from "@/lib/metadata";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
-export function Footer() {
-  const tNav = useTranslations("nav");
-  const tFoot = useTranslations("footer");
+interface FooterProps {
+  locale: "en" | "pl";
+}
+
+export async function Footer({ locale }: FooterProps) {
+  const [tNav, tFoot] = await Promise.all([
+    getTranslations({ locale, namespace: "nav" }),
+    getTranslations({ locale, namespace: "footer" }),
+  ]);
   const year = new Date().getFullYear();
 
   const footerLinks = [
@@ -26,22 +30,24 @@ export function Footer() {
         <div className="flex flex-col gap-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-              <Link
+              <LocalizedLink
+                locale={locale}
                 href="/"
                 className="text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
               >
                 {SITE_NAME}
-              </Link>
+              </LocalizedLink>
               <nav className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2" aria-label="Footer navigation">
                 {footerLinks.map((link) => (
-                  <Link
+                  <LocalizedLink
                     key={link.href}
+                    locale={locale}
                     href={link.href}
                     prefetch
                     className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] transition-colors"
                   >
                     {link.label}
-                  </Link>
+                  </LocalizedLink>
                 ))}
               </nav>
             </div>
@@ -51,9 +57,10 @@ export function Footer() {
           </div>
           <div className="flex justify-center sm:justify-start">
             <TrackedAnchor
-              href="/feed.xml"
+              href={`/${locale}/feed.xml`}
               analytics={{
                 event: "cta_click",
+                locale,
                 ctaId: "footer_rss_feed",
                 surface: "footer",
               }}

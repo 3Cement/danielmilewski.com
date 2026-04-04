@@ -1,9 +1,7 @@
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { LocaleSync } from "@/components/ui/LocaleSync";
 import { personSchema, websiteSchema } from "@/lib/schema";
 import { routing } from "@/i18n/routing";
 
@@ -11,16 +9,6 @@ interface Props {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }
-
-const CLIENT_MESSAGE_NAMESPACES = [
-  "nav",
-  "footer",
-  "contactForm",
-  "contactExpectations",
-  "errors",
-  "blog",
-  "caseStudy",
-] as const;
 
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -42,10 +30,6 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   setRequestLocale(locale);
-  const messages = await getMessages({ locale });
-  const clientMessages = Object.fromEntries(
-    CLIENT_MESSAGE_NAMESPACES.map((namespace) => [namespace, messages[namespace]]),
-  );
   const siteLocale = locale as "en" | "pl";
   const structuredData = JSON.stringify([
     personSchema(siteLocale),
@@ -54,21 +38,20 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <>
-      <LocaleSync locale={siteLocale} />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.lang="${siteLocale}";document.cookie="NEXT_LOCALE=${siteLocale}; Path=/; Max-Age=31536000; SameSite=Lax";`,
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: structuredData,
         }}
       />
-      <NextIntlClientProvider
-        locale={locale}
-        messages={clientMessages}
-      >
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </NextIntlClientProvider>
+      <Navbar locale={siteLocale} />
+      <main className="flex-1">{children}</main>
+      <Footer locale={siteLocale} />
     </>
   );
 }

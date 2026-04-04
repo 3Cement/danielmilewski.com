@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import type { ProjectMeta } from "@/types/project";
+import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 interface SelectedProjectsProps {
   projects: ProjectMeta[];
@@ -28,7 +28,8 @@ export async function SelectedProjects({ projects, locale }: SelectedProjectsPro
               {t("sub")}
             </p>
           </div>
-          <Link
+          <LocalizedLink
+            locale={locale as "en" | "pl"}
             href="/projects"
             prefetch
             className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
@@ -37,17 +38,23 @@ export async function SelectedProjects({ projects, locale }: SelectedProjectsPro
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
-          </Link>
+          </LocalizedLink>
         </div>
 
         <div className="grid grid-cols-1 gap-8 w-full">
           {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} labels={cardLabels} />
+            <ProjectCard
+              key={project.slug}
+              locale={locale as "en" | "pl"}
+              project={project}
+              labels={cardLabels}
+            />
           ))}
         </div>
 
         <div className="mt-8 sm:hidden">
-          <Link
+          <LocalizedLink
+            locale={locale as "en" | "pl"}
             href="/projects"
             prefetch
             className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
@@ -56,7 +63,7 @@ export async function SelectedProjects({ projects, locale }: SelectedProjectsPro
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     </section>
