@@ -22,6 +22,19 @@ function stripContent(entry) {
   return meta;
 }
 
+function normalizeStringArray(value) {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const normalized = value
+    .filter((item) => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  return normalized.length > 0 ? normalized : undefined;
+}
+
 function plainTextFromChildren(node) {
   if (node == null || typeof node === "boolean") return "";
   if (typeof node === "string" || typeof node === "number") return String(node);
@@ -74,7 +87,14 @@ async function readProjects() {
       const raw = await fsPromises.readFile(path.join(PROJECTS_DIR, filename), "utf8");
       const { data, content } = matter(raw);
       const contentHtml = await renderMdxToHtml(content, path.join(PROJECTS_DIR, filename));
-      return { slug, ...data, content, contentHtml };
+      return {
+        slug,
+        ...data,
+        relatedPostSlugs: normalizeStringArray(data.relatedPostSlugs),
+        relatedSlugs: normalizeStringArray(data.relatedSlugs),
+        content,
+        contentHtml,
+      };
     }),
   );
   metas.sort((a, b) =>
@@ -97,6 +117,7 @@ async function readPosts() {
       return {
         slug,
         ...data,
+        relatedProjectSlugs: normalizeStringArray(data.relatedProjectSlugs),
         content,
         contentHtml,
         readingTime: String(Math.ceil(rt.minutes)),

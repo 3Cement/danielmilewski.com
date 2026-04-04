@@ -95,4 +95,21 @@ describe("buildMetadata", () => {
     const meta = buildMetadata({ pathWithoutLocale: "/about", locale: "en" });
     expect(meta.robots).toEqual({ index: true, follow: true });
   });
+
+  it("uses the provided custom image", () => {
+    const meta = buildMetadata({
+      pathWithoutLocale: "/blog/my-post",
+      locale: "en",
+      image: `${SITE_URL}/en/blog/my-post/opengraph-image`,
+    });
+
+    expect(meta.openGraph?.images).toEqual([
+      {
+        url: `${SITE_URL}/en/blog/my-post/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} — Python Developer`,
+      },
+    ]);
+  });
 });

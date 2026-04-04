@@ -5,6 +5,7 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
+import { TrackedAnchor } from "@/components/ui/TrackedLink";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -45,6 +46,18 @@ export default async function BlogPage({ params, searchParams }: Props) {
           <p className="mt-3 text-lg text-[var(--color-text-muted)] max-w-xl">
             {t("pageSub")}
           </p>
+          <TrackedAnchor
+            href="/feed.xml"
+            analytics={{
+              event: "cta_click",
+              locale: locale as "en" | "pl",
+              ctaId: "blog_rss_feed",
+              surface: "blog_index",
+            }}
+            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-accent)] hover:underline"
+          >
+            {t("rssFeed")}
+          </TrackedAnchor>
         </div>
 
         {/* Tag filter */}

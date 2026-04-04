@@ -5,6 +5,7 @@ export interface Post {
   excerpt: string;
   tags: string[];
   readingTime: string;
+  relatedProjectSlugs?: string[];
   content: string;
   contentHtml: string;
 }

@@ -12,7 +12,7 @@ import {
   SITE_NAME,
   type SiteLocale,
 } from "@/lib/metadata";
-import { Link } from "@/i18n/navigation";
+import { TrackedAnchor, TrackedLink } from "@/components/ui/TrackedLink";
 
 export const dynamic = "force-static";
 
@@ -107,31 +107,49 @@ export default async function AboutPage({ params }: Props) {
                   {t("cvHeading")}
                 </p>
                 <div className="flex flex-col gap-2">
-                  <a
+                  <TrackedAnchor
                     href={CV_URL_EN}
                     target="_blank"
                     rel="noopener noreferrer"
+                    analytics={{
+                      event: "cv_download_click",
+                      locale: locale as "en" | "pl",
+                      ctaId: "about_cv_en",
+                      surface: "about_page",
+                    }}
                     className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-subtle)] transition-colors"
                   >
                     {t("cvEnglish")}
-                  </a>
-                  <a
+                  </TrackedAnchor>
+                  <TrackedAnchor
                     href={CV_URL_PL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    analytics={{
+                      event: "cv_download_click",
+                      locale: locale as "en" | "pl",
+                      ctaId: "about_cv_pl",
+                      surface: "about_page",
+                    }}
                     className="inline-flex items-center justify-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-surface-subtle)] transition-colors"
                   >
                     {t("cvPolish")}
-                  </a>
+                  </TrackedAnchor>
                 </div>
               </div>
 
-              <Link
+              <TrackedLink
                 href="/contact"
+                analytics={{
+                  event: "cta_click",
+                  locale: locale as "en" | "pl",
+                  ctaId: "about_get_in_touch",
+                  surface: "about_page",
+                }}
                 className="inline-flex items-center justify-center w-full rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-accent-muted)] transition-colors"
               >
                 {t("getInTouch")}
-              </Link>
+              </TrackedLink>
             </div>
           </aside>
 

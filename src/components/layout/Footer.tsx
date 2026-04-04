@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { COMPANY_NIP, SITE_NAME } from "@/lib/metadata";
+import { TrackedAnchor } from "@/components/ui/TrackedLink";
 
 export function Footer() {
   const tNav = useTranslations("nav");
@@ -47,6 +48,19 @@ export function Footer() {
             <div className="flex justify-center sm:justify-end">
               <SocialLinks />
             </div>
+          </div>
+          <div className="flex justify-center sm:justify-start">
+            <TrackedAnchor
+              href="/feed.xml"
+              analytics={{
+                event: "cta_click",
+                ctaId: "footer_rss_feed",
+                surface: "footer",
+              }}
+              className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] transition-colors"
+            >
+              {tFoot("rss")}
+            </TrackedAnchor>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-[var(--color-border-muted)] text-xs text-[var(--color-text-faint)]">
             <p>{tFoot("copyright", { year })}</p>

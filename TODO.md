@@ -16,21 +16,30 @@
 
 ## Product backlog
 
-### High priority
+### Done recently
 
-- Add `2-4` more case studies in `src/content/projects/` later, not now. This remains the biggest proof-of-work gap, but it is intentionally postponed until after the current analytics, anti-spam, and quality-of-life improvements are done.
-- Add stronger trust signals on home/contact: testimonials, company logos if available, concrete outcomes, years of experience, and short credibility metrics.
-- Enable real analytics on production and measure at least pageviews, referrers, top landing pages, and contact-form success.
-- Harden the contact form with anti-spam controls such as rate limiting and/or Cloudflare Turnstile.
+- Add stronger trust signals on home/contact: credibility strip, working-context section, concrete company environments, CV access, and clearer contact expectations.
+- Harden the contact form with honeypot plus hCaptcha / Turnstile fallback.
 - Add a small E2E smoke suite for the highest-risk flows: locale redirects, language switcher, blog/project detail pages, and contact form submit.
 
-### Medium priority
+### Blocked on content
 
-- Add FAQ blocks on home or contact to address common objections: budget, scope, delivery speed, and collaboration model.
-- Extend the contact form with light lead qualification fields such as timeline, project type, or budget range.
-- Expose RSS/feed more clearly in the UI.
-- Improve blog/project detail pages with related content and stronger internal linking.
+- Add `2-4` more case studies in `src/content/projects/` once the source material is ready. This is still the biggest proof-of-work gap, but it is blocked by missing write-up assets rather than engineering work.
+
+### Current focus
+
+- Domknąć analitykę konwersji w modelu privacy-first na darmowym Cloudflare:
+  - Cloudflare Web Analytics for pageviews, referrers, top landing pages, and performance.
+  - Structured application events/logs for contact-form outcomes and key CTA clicks.
+- Wzmocnić linkowanie wewnętrzne i SEO:
+  - expose RSS/feed more clearly in the UI
+  - add breadcrumbs + BreadcrumbList schema on blog/project detail pages
+  - connect blog posts and project pages with explicit related-content links
+
+### Next
+
 - Add dynamic Open Graph images for posts and projects.
+- Add FAQ blocks on home or contact to address common objections: budget, scope, delivery speed, and collaboration model.
 
 ### Lower priority
 
@@ -47,3 +56,4 @@
 - database-backed admin tooling
 - heavy animation work
 - a full cookie banner while analytics remain privacy-first and minimal
+- more contact-form qualification fields for now

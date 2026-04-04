@@ -247,6 +247,24 @@ This project supports **Cloudflare Web Analytics** via `NEXT_PUBLIC_CF_ANALYTICS
 - The placeholder value `REPLACE_WITH_YOUR_TOKEN` is treated as disabled.
 - This keeps local development and production-safe defaults simple: no token, no analytics script.
 
+### Conversion tracking on the free Cloudflare plan
+
+Because this project stays on the free Cloudflare tier, conversion tracking is intentionally split into two layers:
+
+- **Cloudflare Web Analytics** for pageviews, referrers, landing pages, countries, and basic performance.
+- **Structured application logs** for conversion-adjacent events such as:
+  - `contact_form_success`
+  - `contact_form_validation_error`
+  - `contact_form_captcha_failed`
+  - `contact_form_send_failed`
+  - key CTA / CV / mailto click events
+
+These events are privacy-first:
+
+- no message body or contact-form PII is copied into custom analytics payloads
+- no marketing cookies are added
+- event inspection is done through Worker logs (for example via `wrangler tail`) rather than a separate paid analytics product
+
 ### Privacy / data handling
 
 Current site behavior that must stay reflected in the privacy page:
@@ -255,6 +273,7 @@ Current site behavior that must stay reflected in the privacy page:
 - A confirmation email may be sent back to the sender
 - Optional anti-spam verification may be handled via **hCaptcha** or **Cloudflare Turnstile**
 - The site may use **Cloudflare Web Analytics** for pageviews and basic performance data
+- The site may log minimal technical event data for contact-form outcomes and key CTA interactions
 - The site uses a functional `NEXT_LOCALE` cookie to remember the selected language
 
 If you later add heavier analytics, event tracking, marketing pixels, or session replay, revisit the privacy copy and consent requirements instead of quietly extending the current setup.

@@ -8,6 +8,7 @@ import { isHCaptchaConfigured } from "@/lib/hcaptcha";
 import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
 import { readServerEnv } from "@/lib/serverEnv";
 import { isTurnstileConfigured } from "@/lib/turnstile";
+import { TrackedAnchor } from "@/components/ui/TrackedLink";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -62,22 +63,34 @@ export default async function ContactPage({ params }: Props) {
               {t("cvHeading")}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
+              <TrackedAnchor
                 href={CV_URL_EN}
                 target="_blank"
                 rel="noopener noreferrer"
+                analytics={{
+                  event: "cv_download_click",
+                  locale: locale as "en" | "pl",
+                  ctaId: "contact_cv_en",
+                  surface: "contact_page",
+                }}
                 className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 transition-colors"
               >
                 {t("cvEnglish")}
-              </a>
-              <a
+              </TrackedAnchor>
+              <TrackedAnchor
                 href={CV_URL_PL}
                 target="_blank"
                 rel="noopener noreferrer"
+                analytics={{
+                  event: "cv_download_click",
+                  locale: locale as "en" | "pl",
+                  ctaId: "contact_cv_pl",
+                  surface: "contact_page",
+                }}
                 className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] hover:border-[var(--color-accent)]/50 transition-colors"
               >
                 {t("cvPolish")}
-              </a>
+              </TrackedAnchor>
             </div>
           </div>
 
@@ -94,13 +107,19 @@ export default async function ContactPage({ params }: Props) {
             <p className="text-sm text-[var(--color-text-muted)] mb-4">
               {t("emailSub")}
             </p>
-            <a
+            <TrackedAnchor
               href={`mailto:${EMAIL}`}
+              analytics={{
+                event: "mailto_click",
+                locale: locale as "en" | "pl",
+                ctaId: "contact_direct_email",
+                surface: "contact_page",
+              }}
               className="inline-flex items-center gap-2 text-[var(--color-accent)] font-medium hover:underline"
             >
               <EmailIcon size={16} />
               {EMAIL}
-            </a>
+            </TrackedAnchor>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">

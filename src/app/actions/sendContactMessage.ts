@@ -133,6 +133,10 @@ export async function sendContactMessage(
 
   const fieldErrors = validateContactForm(data);
   if (Object.keys(fieldErrors).length > 0) {
+    logger.warn("contact_form_validation_error", {
+      locale,
+      invalidFields: Object.keys(fieldErrors).sort(),
+    });
     return {
       status: "error",
       fieldErrors,
@@ -194,6 +198,12 @@ export async function sendContactMessage(
   const to = (await readServerEnv("CONTACT_FORM_TO_EMAIL")) ?? EMAIL;
 
   if (!apiKey || !from || !to) {
+    logger.error("contact_form_config_error", {
+      locale,
+      hasApiKey: Boolean(apiKey),
+      hasFrom: Boolean(from),
+      hasTo: Boolean(to),
+    });
     return {
       status: "error",
       messageCode: "configError",
@@ -215,6 +225,7 @@ export async function sendContactMessage(
     logPrefix: "contact_form_email",
   });
   if (!ownerEmailSent) {
+    logger.error("contact_form_send_failed", { locale });
     return { status: "error", messageCode: "sendError" };
   }
 
@@ -230,5 +241,6 @@ export async function sendContactMessage(
     logPrefix: "contact_form_autoreply_email",
   });
 
+  logger.info("contact_form_success", { locale });
   return { status: "success", messageCode: "success" };
 }

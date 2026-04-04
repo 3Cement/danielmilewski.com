@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   hasRealAnalyticsToken,
   isProductionAnalyticsHost,
+  sanitizeAnalyticsEvent,
+  shouldTrackConversionHost,
 } from "@/lib/analytics";
 
 describe("hasRealAnalyticsToken", () => {
@@ -51,5 +53,59 @@ describe("isProductionAnalyticsHost", () => {
     expect(isProductionAnalyticsHost("danielmilewski.com", "not-a-url")).toBe(
       false,
     );
+  });
+});
+
+describe("sanitizeAnalyticsEvent", () => {
+  it("keeps only the approved analytics fields", () => {
+    expect(
+      sanitizeAnalyticsEvent(
+        {
+          event: "cta_click",
+          locale: "en",
+          pathname: "/en/blog",
+          ctaId: "hero_contact",
+          surface: "hero",
+          email: "jane@example.com",
+        },
+        "https://google.com/search?q=portfolio",
+      ),
+    ).toEqual(
+      expect.objectContaining({
+        event: "cta_click",
+        locale: "en",
+        pathname: "/en/blog",
+        ctaId: "hero_contact",
+        surface: "hero",
+        referrerHost: "google.com",
+      }),
+    );
+  });
+
+  it("filters invalid contact fields and rejects unknown events", () => {
+    expect(
+      sanitizeAnalyticsEvent(
+        {
+          event: "contact_form_validation_error",
+          invalidFields: ["message", "email", "unknown"],
+        },
+        null,
+      ),
+    ).toEqual(
+      expect.objectContaining({
+        event: "contact_form_validation_error",
+        invalidFields: ["email", "message"],
+      }),
+    );
+
+    expect(sanitizeAnalyticsEvent({ event: "pageview" }, null)).toBeNull();
+  });
+});
+
+describe("shouldTrackConversionHost", () => {
+  it("tracks only the production hostnames", () => {
+    expect(shouldTrackConversionHost("danielmilewski.com")).toBe(true);
+    expect(shouldTrackConversionHost("www.danielmilewski.com")).toBe(true);
+    expect(shouldTrackConversionHost("localhost")).toBe(false);
   });
 });

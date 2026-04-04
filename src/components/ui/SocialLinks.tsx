@@ -1,4 +1,5 @@
 import { GITHUB_URL, LINKEDIN_URL, EMAIL } from "@/lib/metadata";
+import { TrackedAnchor } from "@/components/ui/TrackedLink";
 
 interface SocialLinksProps {
   className?: string;
@@ -27,13 +28,18 @@ export function SocialLinks({ className, showEmail = false }: SocialLinksProps) 
         <LinkedInIcon />
       </a>
       {showEmail && (
-        <a
+        <TrackedAnchor
           href={`mailto:${EMAIL}`}
           aria-label="Email"
+          analytics={{
+            event: "mailto_click",
+            ctaId: "social_email",
+            surface: "social_links",
+          }}
           className="text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] transition-colors"
         >
           <EmailIcon />
-        </a>
+        </TrackedAnchor>
       )}
     </div>
   );

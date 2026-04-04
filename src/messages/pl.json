@@ -238,8 +238,10 @@
     "sub": "Notatki z budowania prawdziwych systemów, nie teorii.",
     "tocHeading": "Na tej stronie",
     "allPosts": "Wszystkie wpisy",
+    "rssFeed": "Kanał RSS",
     "minRead": "min czytania",
     "relatedPosts": "Powiązane wpisy",
+    "relatedProjects": "Powiązane projekty",
     "pageHeading": "Blog",
     "pageSub": "Notatki o Pythonie, systemach i lekcjach nauczonych na własnych błędach.",
     "filterAll": "Wszystkie",
@@ -250,6 +252,7 @@
     "stack": "Stack",
     "links": "Linki",
     "related": "Powiązane",
+    "relatedPosts": "Powiązane wpisy",
     "viewRepo": "Zobacz repozytorium",
     "liveDemo": "Live demo",
     "allProjects": "Wszystkie projekty"
@@ -257,6 +260,7 @@
   "footer": {
     "copyright": "© {year} Daniel Milewski",
     "privacy": "Polityka prywatności",
+    "rss": "Kanał RSS",
     "legalLine": "JDG (CEIDG) · NIP {nip}"
   },
   "legal": {
@@ -267,7 +271,7 @@
     "privacyFormTitle": "Formularz kontaktowy i dostarczanie wiadomości",
     "privacyFormBody": "Gdy wysyłasz wiadomość przez formularz kontaktowy, podane dane (imię i nazwisko, adres e-mail, opcjonalnie firma, temat i treść wiadomości) są przetwarzane po to, żeby dostarczyć zapytanie do mojej skrzynki. Dostarczanie wiadomości obsługuje Resend. Formularz może również wysłać krótkie potwierdzenie na Twój adres e-mail po udanym wysłaniu. Ochrona antyspamowa może być realizowana przez captcha, np. hCaptcha lub Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Podstawowa analityka strony",
-    "privacyAnalyticsBody": "Ta strona korzysta z Cloudflare Web Analytics do pomiaru odwiedzin, źródeł ruchu, krajów i podstawowych metryk wydajności. Celem jest zrozumienie ruchu na stronie i monitorowanie niezawodności, a nie budowanie profili reklamowych.",
+    "privacyAnalyticsBody": "Ta strona korzysta z Cloudflare Web Analytics do pomiaru odwiedzin, źródeł ruchu, krajów i podstawowych metryk wydajności. Dodatkowo zapisuje minimalne techniczne zdarzenia dotyczące wyniku formularza kontaktowego i kluczowych kliknięć CTA, żebym mógł sprawdzić, czy strona faktycznie działa. Celem jest zrozumienie ruchu na stronie i monitorowanie niezawodności, a nie budowanie profili reklamowych.",
     "privacyCookiesTitle": "Cookies i podobne mechanizmy",
     "privacyCookiesBody": "Strona używa funkcjonalnego cookie NEXT_LOCALE do zapamiętania wybranego języka. Cloudflare Web Analytics jest tu używane w sposób privacy-first i nie służy do reklam ani śledzenia między stronami.",
     "privacyRetentionTitle": "Czas przechowywania",
@@ -280,7 +284,8 @@
     "getInTouch": "Napisz do mnie",
     "viewProjects": "Zobacz projekty",
     "contactHeading": "Szukasz seniora Python do backendu, API lub automatyzacji?",
-    "contactSub": "Ograniczona dostępność na nowe projekty — chętnie o przyszłej współpracy."
+    "contactSub": "Ograniczona dostępność na nowe projekty — chętnie o przyszłej współpracy.",
+    "breadcrumbsAriaLabel": "Okruszki"
   },
   "errors": {
     "notFoundTitle": "Nie znaleziono strony",

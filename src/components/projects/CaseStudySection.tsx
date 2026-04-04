@@ -9,9 +9,15 @@ interface CaseStudySectionProps {
   project: Project;
   mdxContent: string;
   relatedProjects?: Array<{ slug: string; title: string }>;
+  relatedPosts?: Array<{ slug: string; title: string; excerpt: string }>;
 }
 
-export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseStudySectionProps) {
+export function CaseStudySection({
+  project,
+  mdxContent,
+  relatedProjects,
+  relatedPosts,
+}: CaseStudySectionProps) {
   const t = useTranslations("caseStudy");
 
   return (
@@ -115,6 +121,34 @@ export function CaseStudySection({ project, mdxContent, relatedProjects }: CaseS
               className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-img:rounded-xl prose-img:border prose-img:border-[var(--color-border)] prose-img:shadow-md"
               dangerouslySetInnerHTML={{ __html: mdxContent }}
             />
+
+            {relatedPosts && relatedPosts.length > 0 ? (
+              <section className="mt-12 border-t border-[var(--color-border)] pt-8">
+                <h2 className="text-lg font-semibold text-[var(--color-text-base)] mb-6">
+                  {t("relatedPosts")}
+                </h2>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {relatedPosts.map((post) => (
+                    <article
+                      key={post.slug}
+                      className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] p-5"
+                    >
+                      <h3 className="text-base font-semibold text-[var(--color-text-base)]">
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="hover:text-[var(--color-accent)] transition-colors"
+                        >
+                          {post.title}
+                        </Link>
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                        {post.excerpt}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
           </div>
         </div>
 

@@ -238,8 +238,10 @@
     "sub": "Notes from building real systems, not theory.",
     "tocHeading": "On this page",
     "allPosts": "All posts",
+    "rssFeed": "RSS feed",
     "minRead": "min read",
     "relatedPosts": "Related posts",
+    "relatedProjects": "Related projects",
     "pageHeading": "Writing",
     "pageSub": "Notes on Python, systems, and the occasional lesson learned the hard way.",
     "filterAll": "All",
@@ -250,6 +252,7 @@
     "stack": "Stack",
     "links": "Links",
     "related": "Related",
+    "relatedPosts": "Related writing",
     "viewRepo": "View repository",
     "liveDemo": "Live demo",
     "allProjects": "All projects"
@@ -257,6 +260,7 @@
   "footer": {
     "copyright": "© {year} Daniel Milewski",
     "privacy": "Privacy policy",
+    "rss": "RSS feed",
     "legalLine": "Sole proprietorship (CEIDG, Poland) · NIP {nip}"
   },
   "legal": {
@@ -267,7 +271,7 @@
     "privacyFormTitle": "Contact form and email delivery",
     "privacyFormBody": "When you send a message through the contact form, the submitted details (name, email address, optional company, subject and message) are processed to deliver your inquiry to my inbox. Delivery is handled through Resend. The form may also send a short confirmation email back to you after successful submission. Anti-spam protection may be provided through a captcha provider such as hCaptcha or Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Basic website analytics",
-    "privacyAnalyticsBody": "This site uses Cloudflare Web Analytics to measure visits, referrers, countries and basic performance metrics. The goal is to understand site usage and monitor reliability, not to build advertising profiles.",
+    "privacyAnalyticsBody": "This site uses Cloudflare Web Analytics to measure visits, referrers, countries and basic performance metrics. It also logs minimal technical event data for contact-form outcomes and key CTA interactions so I can understand whether the site is working. The goal is to understand site usage and monitor reliability, not to build advertising profiles.",
     "privacyCookiesTitle": "Cookies and similar storage",
     "privacyCookiesBody": "The site uses a functional NEXT_LOCALE cookie to remember your language choice. Cloudflare Web Analytics is configured in a privacy-first way and is not used here for advertising or cross-site tracking.",
     "privacyRetentionTitle": "Retention",
@@ -280,7 +284,8 @@
     "getInTouch": "Get in touch",
     "viewProjects": "View projects",
     "contactHeading": "Need a senior Python developer for backend, API, or automation work?",
-    "contactSub": "Limited availability for new work — happy to talk about future collaboration."
+    "contactSub": "Limited availability for new work — happy to talk about future collaboration.",
+    "breadcrumbsAriaLabel": "Breadcrumb"
   },
   "errors": {
     "notFoundTitle": "Page not found",

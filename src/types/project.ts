@@ -12,6 +12,7 @@ export interface Project {
   demo?: string;
   images?: string[];
   relatedSlugs?: string[];
+  relatedPostSlugs?: string[];
   content: string;
   contentHtml: string;
 }
