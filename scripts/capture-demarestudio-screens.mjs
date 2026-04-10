@@ -89,6 +89,23 @@ for (const item of pages) {
     .webp({ quality: 85, effort: 6 })
     .toFile(webpPath);
 
+  if (item.name === "home") {
+    const cardPngPath = join(outputDir, "home-card.png");
+    const cardWebpPath = join(outputDir, "home-card.webp");
+    const heroClipHeight = 800;
+    await page.screenshot({
+      path: cardPngPath,
+      fullPage: false,
+      type: "png",
+      clip: { x: 0, y: 0, width: VIEWPORT.width, height: heroClipHeight },
+    });
+    await sharp(cardPngPath)
+      .webp({ quality: 85, effort: 6 })
+      .toFile(cardWebpPath);
+    console.log("wrote", cardPngPath.replace(`${root}/`, ""));
+    console.log("wrote", cardWebpPath.replace(`${root}/`, ""));
+  }
+
   console.log("captured", item.url);
   console.log("wrote", pngPath.replace(`${root}/`, ""));
   console.log("wrote", webpPath.replace(`${root}/`, ""));
