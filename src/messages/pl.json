@@ -247,6 +247,30 @@
     "filterAll": "Wszystkie",
     "noResults": "Brak wpisów dla tego tagu."
   },
+  "homeFaq": {
+    "eyebrow": "Krótko i konkretnie",
+    "heading": "Najczęstsze pytania przed kontaktem",
+    "sub": "Krótki kontekst dla osób, które chcą szybko ocenić, czy to jest dobre dopasowanie do projektu.",
+    "updatedLabel": "Ostatnia aktualizacja treści",
+    "items": [
+      {
+        "question": "W czym się specjalizujesz?",
+        "answer": "Głównie w backendzie Python, API, automatyzacji i przetwarzaniu danych. Czasem dokładam AI albo frontend, jeśli to realnie pomaga projektowi."
+      },
+      {
+        "question": "Jakie projekty są dla Ciebie najlepszym dopasowaniem?",
+        "answer": "Najlepiej wchodzę w projekty, gdzie trzeba zaprojektować albo uporządkować backend, dowieźć API, zautomatyzować proces lub naprawić problem z utrzymywalnością systemu."
+      },
+      {
+        "question": "Czy pracujesz zdalnie i w modelu B2B?",
+        "answer": "Tak. Działam remote-first i prowadzę jednoosobową działalność gospodarczą w Polsce, więc współpraca B2B jest naturalnym modelem."
+      },
+      {
+        "question": "Czy bierzesz tylko duże wdrożenia?",
+        "answer": "Nie. Mogę wejść zarówno w większy projekt, jak i w krótszy, konkretny zakres: audyt techniczny, stabilizacja backendu, projekt API albo automatyzacja wybranego procesu."
+      }
+    ]
+  },
   "caseStudy": {
     "outcome": "Wynik",
     "stack": "Stack",
@@ -261,19 +285,26 @@
     "copyright": "© {year} Daniel Milewski",
     "privacy": "Polityka prywatności",
     "rss": "Kanał RSS",
+    "cookieSettings": "Ustawienia cookies",
     "legalLine": "JDG (CEIDG) · NIP {nip}"
+  },
+  "cookieConsent": {
+    "title": "Cookies analityczne",
+    "body": "Ta strona może używać Google Analytics 4 do pomiaru odwiedzin i użycia podstron. Cloudflare Web Analytics pozostaje aktywne w obecnym, privacy-first zakresie. Wybierz, czy chcesz włączyć cookies analityczne Google na tym urządzeniu.",
+    "accept": "Akceptuję analitykę",
+    "reject": "Tylko niezbędne"
   },
   "legal": {
     "privacyTitle": "Polityka prywatności",
-    "privacyIntro": "Ta strona to osobiste portfolio. Nie używam tu reklam ani marketingowych trackerów, ale korzystam z podstawowej analityki oraz infrastruktury do obsługi formularza kontaktowego opisanych poniżej.",
+    "privacyIntro": "Ta strona to osobiste portfolio. Nie używam tu reklam ani trackerów marketingowych, ale korzystam z podstawowej analityki oraz infrastruktury do obsługi formularza kontaktowego opisanych poniżej.",
     "privacyControllerTitle": "Kto jest administratorem danych",
     "privacyControllerBody": "Administratorem danych przetwarzanych przez tę stronę jest Daniel Milewski, przedsiębiorca prowadzący działalność gospodarczą w Polsce. Jeśli kontaktujesz się ze mną przez stronę, używam przekazanych danych wyłącznie do zapoznania się z zapytaniem i udzielenia odpowiedzi.",
     "privacyFormTitle": "Formularz kontaktowy i dostarczanie wiadomości",
     "privacyFormBody": "Gdy wysyłasz wiadomość przez formularz kontaktowy, podane dane (imię i nazwisko, adres e-mail, opcjonalnie firma, temat i treść wiadomości) są przetwarzane po to, żeby dostarczyć zapytanie do mojej skrzynki. Dostarczanie wiadomości obsługuje Resend. Formularz może również wysłać krótkie potwierdzenie na Twój adres e-mail po udanym wysłaniu. Ochrona antyspamowa może być realizowana przez captcha, np. hCaptcha lub Cloudflare Turnstile.",
     "privacyAnalyticsTitle": "Podstawowa analityka strony",
-    "privacyAnalyticsBody": "Ta strona korzysta z Cloudflare Web Analytics do pomiaru odwiedzin, źródeł ruchu, krajów i podstawowych metryk wydajności. Dodatkowo zapisuje minimalne techniczne zdarzenia dotyczące wyniku formularza kontaktowego i kluczowych kliknięć CTA, żebym mógł sprawdzić, czy strona faktycznie działa. Celem jest zrozumienie ruchu na stronie i monitorowanie niezawodności, a nie budowanie profili reklamowych.",
+    "privacyAnalyticsBody": "Ta strona korzysta z Cloudflare Web Analytics do privacy-first pomiaru ruchu i wydajności. Może też korzystać z Google Analytics 4, żeby mierzyć odwiedziny, użycie podstron i ogólne zaangażowanie użytkowników, ale dopiero po Twojej wyraźnej zgodzie udzielonej w bannerze cookies. Dodatkowo zapisuje minimalne techniczne zdarzenia dotyczące wyniku formularza kontaktowego i kluczowych kliknięć CTA, żebym mógł sprawdzić, czy strona faktycznie działa. Celem jest zrozumienie ruchu na stronie i monitorowanie niezawodności, a nie budowanie profili reklamowych.",
     "privacyCookiesTitle": "Cookies i podobne mechanizmy",
-    "privacyCookiesBody": "Strona używa funkcjonalnego cookie NEXT_LOCALE do zapamiętania wybranego języka. Cloudflare Web Analytics jest tu używane w sposób privacy-first i nie służy do reklam ani śledzenia między stronami.",
+    "privacyCookiesBody": "Strona używa funkcjonalnego cookie NEXT_LOCALE do zapamiętania wybranego języka. Cloudflare Web Analytics jest tu używane w sposób privacy-first i nie służy do reklam ani śledzenia między stronami. Jeśli zaakceptujesz Google Analytics 4 w bannerze, Google może również ustawiać analityczne cookies, takie jak _ga, żeby odróżniać wizyty w czasie.",
     "privacyRetentionTitle": "Czas przechowywania",
     "privacyRetentionBody": "Wiadomości wysłane przez formularz kontaktowy mogą pozostać w mojej skrzynce mailowej tak długo, jak jest to rozsądnie potrzebne do obsługi korespondencji, zachowania kontaktu biznesowego lub powrotu do rozmowy w przyszłości. Okres przechowywania danych analitycznych zależy od ustawień i polityk danego dostawcy.",
     "privacyContact": "Pytania: napisz na adres e-mail z podstrony Kontakt.",

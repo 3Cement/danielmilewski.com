@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   hasRealAnalyticsToken,
+  hasRealGoogleAnalyticsMeasurementId,
   isProductionAnalyticsHost,
   sanitizeAnalyticsEvent,
   shouldTrackConversionHost,
@@ -18,6 +19,19 @@ describe("hasRealAnalyticsToken", () => {
 
   it("returns true for a real token", () => {
     expect(hasRealAnalyticsToken("cf-real-token")).toBe(true);
+  });
+});
+
+describe("hasRealGoogleAnalyticsMeasurementId", () => {
+  it("returns false for missing and malformed values", () => {
+    expect(hasRealGoogleAnalyticsMeasurementId(undefined)).toBe(false);
+    expect(hasRealGoogleAnalyticsMeasurementId("")).toBe(false);
+    expect(hasRealGoogleAnalyticsMeasurementId("UA-12345")).toBe(false);
+    expect(hasRealGoogleAnalyticsMeasurementId("G-")).toBe(false);
+  });
+
+  it("returns true for GA4 measurement ids", () => {
+    expect(hasRealGoogleAnalyticsMeasurementId("G-9XHYRXZ4WK")).toBe(true);
   });
 });
 

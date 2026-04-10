@@ -55,6 +55,11 @@ describe("buildMetadata", () => {
     expect(meta.description).toBeTruthy();
   });
 
+  it("does not override the root default title when no page title is provided", () => {
+    const meta = buildMetadata({ pathWithoutLocale: "/", locale: "en" });
+    expect("title" in meta).toBe(false);
+  });
+
   it("sets canonical for en locale", () => {
     const meta = buildMetadata({ pathWithoutLocale: "/about", locale: "en" });
     expect((meta.alternates?.canonical as string)).toBe(`${SITE_URL}/en/about`);

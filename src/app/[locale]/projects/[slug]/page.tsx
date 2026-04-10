@@ -9,6 +9,7 @@ import { CaseStudySection } from "@/components/projects/CaseStudySection";
 import {
   absoluteUrl,
   buildMetadata,
+  SITE_NAME,
   type SiteLocale,
 } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const project = getProjectBySlug(locale, slug);
   if (!project) return {};
-  return buildMetadata({
+  const metadata = buildMetadata({
     title: project.title,
     description: project.shortProblem,
     pathWithoutLocale: `/projects/${slug}`,
@@ -44,6 +45,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `/projects/${slug}/opengraph-image`,
     ),
   });
+
+  return {
+    ...metadata,
+    keywords: project.stack,
+    authors: [{ name: SITE_NAME, url: absoluteUrl(locale as SiteLocale, "/") }],
+  };
 }
 
 export default async function ProjectPage({ params }: Props) {

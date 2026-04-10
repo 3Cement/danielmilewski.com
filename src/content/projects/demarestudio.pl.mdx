@@ -1,0 +1,127 @@
+---
+title: "DeMāre Studio — strona dla studia wnętrz z naciskiem na SEO i konwersję"
+slug: "demarestudio"
+featured: true
+featuredRank: 2
+shortProblem: "Studio potrzebowało strony premium, która buduje zaufanie, pozyskuje lokalne zapytania z Trójmiasta i jednocześnie działa dobrze pod SEO, AI oraz wydajność mobilną."
+shortSolution: "Zaprojektowałem i wdrożyłem kompletną stronę w Astro: UX pod konwersję, pełne fundamenty technical SEO, gotowość GEO/AEO i iteracyjne poprawki oparte o realne audyty."
+stack: ["Astro", "TypeScript", "CSS", "Cloudflare Pages", "Cloudflare Analytics", "Formspree", "Structured Data", "Technical SEO", "GEO/AEO"]
+role: "Samodzielny Full-Stack Engineer"
+outcome: "Strona działa produkcyjnie pod demarestudio.com z mocnymi wynikami: SEO 97/100, Szybkość 93/100, AI Ready 100/100, Indeksowanie 100/100, RODO 100/100 (snapshot Dr Strona: 10.04.2026)."
+overview: "DeMāre Studio to dwujęzyczna strona marketingowa dla studia projektowania wnętrz z Gdańska. Celem projektu było połączenie estetyki premium z wysoką skutecznością techniczną i sprzedażową."
+demo: "https://demarestudio.com/"
+repo: ""
+images: [
+  "/images/demarestudio/home.webp",
+  "/images/demarestudio/portfolio.webp",
+  "/images/demarestudio/services.webp",
+  "/images/demarestudio/process.webp",
+  "/images/demarestudio/about.webp",
+  "/images/demarestudio/contact.webp"
+]
+relatedSlugs: []
+relatedPostSlugs: []
+---
+
+## Problem / kontekst
+
+Klient potrzebował strony, która nie tylko dobrze wygląda, ale realnie wspiera sprzedaż usług. Kluczowe wymagania:
+
+- spójny wizerunek premium,
+- skuteczne pozyskiwanie leadów lokalnych (Gdańsk, Gdynia, Sopot),
+- wygodna obsługa treści PL/EN,
+- czytelne sygnały zaufania (dane firmy, prywatność, regulamin),
+- techniczna poprawność pod Google i asystentów AI.
+
+Punkt startowy miał potencjał brandingowy, ale wymagał dopracowania architektury treści i fundamentów SEO/GEO.
+
+## Podejście
+
+Potraktowałem projekt jak wdrożenie produktu marketingowego opartego na danych:
+
+1. Ułożyłem architekturę pod intencje użytkownika (usługi, portfolio, proces, kontakt, strony lokalne).
+2. Zbudowałem lekki i stabilny frontend w Astro z dwujęzycznym UX.
+3. Najpierw wdrożyłem technical SEO (canonical, hreflang, sitemap, robots, Open Graph, JSON-LD).
+4. Potem iteracyjnie poprawiałem wyniki audytów: dostępność botów AI, świeżość treści, sygnały prawne i trust, ścieżkę ładowania mobile.
+
+## Co zostało wdrożone
+
+- Kompletna statyczna strona Astro gotowa do produkcji.
+- Przełączanie języka PL/EN i lokalizacja kluczowych sekcji.
+- Homepage pod konwersję: usługi, realizacje, FAQ i szybki kontakt.
+- Formularz kontaktowy przez Formspree + dedykowana podstrona podziękowania.
+- Sekcje prawne i zaufanie (`Polityka prywatności`, `Regulamin`) podpięte globalnie.
+- Rozszerzona warstwa discoverability (`sitemap`, `robots`, `llms.txt`, structured data).
+
+## Szczegóły techniczne
+
+### SEO i indeksowanie
+
+- Canonicale i hreflangi.
+- Mapa strony XML i poprawne dyrektywy robots.
+- Open Graph / Twitter metadata.
+- Dane strukturalne opisujące biznes i kontekst stron.
+
+### GEO/AEO i widoczność w AI
+
+- `llms.txt` z kluczowymi URL-ami i opisem działalności.
+- Potwierdzony dostęp botów GPTBot, ClaudeBot i PerplexityBot.
+- Sygnały świeżości (`article:modified_time`, `dateModified`).
+- Formaty treści przyjazne AEO (listy, definicje, tabela porównawcza).
+
+### Wydajność
+
+- Uporządkowana ścieżka ładowania elementów hero.
+- Ograniczenie zachowań blokujących render na stronie głównej.
+- Architektura static-first dla niskiego narzutu runtime.
+
+### Zgodność i zaufanie
+
+- Podpięte strony prawne i sygnały kontaktowe.
+- Dane kontaktowe widoczne i czytelne dla narzędzi audytowych.
+- Wdrożenie przygotowane pod podejście privacy-first zgodne z RODO.
+
+### Hosting i bezpieczeństwo transportu
+
+- **HSTS** (`Strict-Transport-Security`) ustawiane jest na brzegu **Cloudflare** (SSL/TLS → Edge Certificates), a nie w samym kodzie Astro — standard przy statycznej stronie za Cloudflare.
+
+## Wyniki SEO i wydajności (snapshot)
+
+Źródło: audyt Dr Strona (drstrona.pl), pomiar z **10.04.2026, 16:21:51**.
+
+| Obszar | Wynik |
+| --- | --- |
+| SEO | 97/100 |
+| Szybkość | 93/100 |
+| AI Ready (GEO) | 100/100 |
+| Indeksowanie | 100/100 |
+| Struktura | 96/100 |
+| RODO | 100/100 |
+
+Kluczowe metryki z raportu:
+
+- Mobile performance: 93/100
+- Desktop performance: 100/100
+- LCP mobile: 3.2 s
+- Dostęp botów AI: GPTBot, ClaudeBot, PerplexityBot — otwarty
+- Sygnał świeżości wykryty: `meta article:modified_time`
+
+To wyniki punktowe z konkretnego dnia. Przy nowych treściach, zmianach infrastruktury i aktualizacjach narzędzi audytowych wartości mogą się zmieniać.
+
+## Efekt biznesowy
+
+Strona działa jako pełne narzędzie pozyskiwania klientów: łączy estetykę premium, zaufanie i mocne fundamenty techniczne. Projekt pokazuje kompletny proces delivery: strategia, implementacja, optymalizacje i walidacja wyników po wdrożeniu.
+
+## Zrzuty ekranu
+
+![Strona główna DeMāre Studio z hero i sekcjami konwersyjnymi](/images/demarestudio/home.webp)
+
+![Portfolio z realizacjami wnętrz w układzie visual-first](/images/demarestudio/portfolio.webp)
+
+![Podstrona usług z klarowną strukturą oferty](/images/demarestudio/services.webp)
+
+![Podstrona procesu pokazująca etapy współpracy](/images/demarestudio/process.webp)
+
+![Podstrona O mnie / o studiu wzmacniająca wiarygodność](/images/demarestudio/about.webp)
+
+![Podstrona kontaktu z formularzem i CTA do zapytania](/images/demarestudio/contact.webp)

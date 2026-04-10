@@ -4,6 +4,16 @@ export function hasRealAnalyticsToken(token: string | undefined): boolean {
   return token != null && token !== "" && token !== "REPLACE_WITH_YOUR_TOKEN";
 }
 
+export function hasRealGoogleAnalyticsMeasurementId(
+  measurementId: string | undefined,
+): boolean {
+  return (
+    measurementId != null &&
+    measurementId !== "" &&
+    /^G-[A-Z0-9]+$/i.test(measurementId)
+  );
+}
+
 export function getProductionAnalyticsHosts(siteUrl: string): string[] {
   try {
     const configuredHost = new URL(siteUrl).hostname.toLowerCase();

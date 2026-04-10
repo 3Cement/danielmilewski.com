@@ -8,6 +8,7 @@ import {
   profileImageAbsoluteUrl,
   type SiteLocale,
 } from "./metadata";
+import { getLatestContentDate } from "./contentDates";
 
 export function personSchema(locale: SiteLocale) {
   return {
@@ -17,6 +18,7 @@ export function personSchema(locale: SiteLocale) {
     image: profileImageAbsoluteUrl(),
     url: absoluteUrl(locale, "/"),
     email: EMAIL,
+    inLanguage: locale,
     jobTitle: "Senior Python Developer",
     description: SITE_DESCRIPTION,
     sameAs: [GITHUB_URL, LINKEDIN_URL],
@@ -38,8 +40,15 @@ export function websiteSchema(locale: SiteLocale) {
     "@type": "WebSite",
     name: SITE_NAME,
     url: absoluteUrl(locale, "/"),
+    inLanguage: locale,
     description: SITE_DESCRIPTION,
+    dateModified: getLatestContentDate(),
     author: { "@type": "Person", name: SITE_NAME },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${absoluteUrl(locale, "/blog")}?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 
@@ -80,6 +89,9 @@ export function blogPostingSchema({
     headline: title,
     description: excerpt,
     datePublished: date,
+    dateModified: date,
+    inLanguage: locale,
+    mainEntityOfPage: pageUrl,
     url: pageUrl,
     author: {
       "@type": "Person",
@@ -115,6 +127,8 @@ export function softwareSchema({
     "@type": "SoftwareSourceCode",
     name: title,
     description,
+    inLanguage: locale,
+    keywords: stack.join(", "),
     url: absoluteUrl(locale, `/projects/${slug}`),
     codeRepository: repo,
     programmingLanguage: stack,
@@ -123,5 +137,63 @@ export function softwareSchema({
       name: SITE_NAME,
       url: absoluteUrl(locale, "/"),
     },
+  };
+}
+
+export function homePageSchema(locale: SiteLocale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: `${SITE_NAME} — Python Developer`,
+    url: absoluteUrl(locale, "/"),
+    inLanguage: locale,
+    description: SITE_DESCRIPTION,
+    dateModified: getLatestContentDate(),
+    about: {
+      "@type": "Person",
+      name: SITE_NAME,
+      url: absoluteUrl(locale, "/"),
+    },
+  };
+}
+
+export function serviceSchema(locale: SiteLocale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: locale === "pl" ? "Backend Python, API i automatyzacja" : "Python backend, APIs, and automation",
+    serviceType: [
+      "Python backend development",
+      "API development",
+      "Automation engineering",
+      "AI tooling",
+    ],
+    provider: {
+      "@type": "Person",
+      name: SITE_NAME,
+      url: absoluteUrl(locale, "/"),
+    },
+    areaServed: "Europe",
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: absoluteUrl(locale, "/contact"),
+    },
+  };
+}
+
+export function faqPageSchema(
+  items: Array<{ question: string; answer: string }>,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 }

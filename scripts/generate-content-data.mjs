@@ -36,6 +36,17 @@ function normalizeStringArray(value) {
   return normalized.length > 0 ? normalized : undefined;
 }
 
+function normalizeFeaturedRank(value) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return undefined;
+}
+
 function emptyLocaleBuckets() {
   return Object.fromEntries(LOCALES.map((locale) => [locale, []]));
 }
@@ -119,6 +130,7 @@ async function readProjects() {
         slug,
         locale,
         ...data,
+        featuredRank: normalizeFeaturedRank(data.featuredRank),
         relatedPostSlugs: normalizeStringArray(data.relatedPostSlugs),
         relatedSlugs: normalizeStringArray(data.relatedSlugs),
         content,
@@ -135,9 +147,19 @@ async function readProjects() {
   }
 
   for (const locale of LOCALES) {
-    projectMetasByLocale[locale].sort((a, b) =>
-      a.featured === b.featured ? 0 : a.featured ? -1 : 1,
-    );
+    projectMetasByLocale[locale].sort((a, b) => {
+      if (a.featured !== b.featured) {
+        return a.featured ? -1 : 1;
+      }
+
+      const aRank = typeof a.featuredRank === "number" ? a.featuredRank : Number.POSITIVE_INFINITY;
+      const bRank = typeof b.featuredRank === "number" ? b.featuredRank : Number.POSITIVE_INFINITY;
+      if (aRank !== bRank) {
+        return aRank - bRank;
+      }
+
+      return a.slug.localeCompare(b.slug);
+    });
   }
 
   return { projectMetasByLocale, projectByLocaleAndSlug };

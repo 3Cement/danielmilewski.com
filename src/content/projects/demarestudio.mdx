@@ -1,0 +1,127 @@
+---
+title: "DeMāre Studio — SEO-first Interior Design Website (Astro)"
+slug: "demarestudio"
+featured: true
+featuredRank: 2
+shortProblem: "The studio needed a premium website that converts local traffic in Tricity, supports bilingual content, and performs well in SEO, AI discovery, and trust signals."
+shortSolution: "I delivered a complete Astro website with bilingual UX, strong technical SEO, GEO/AEO readiness, high mobile performance, and a measurable audit-driven optimization process."
+stack: ["Astro", "TypeScript", "CSS", "Cloudflare Pages", "Cloudflare Analytics", "Formspree", "Structured Data", "Technical SEO", "GEO/AEO"]
+role: "Solo Full-Stack Engineer"
+outcome: "Production launch at demarestudio.com with strong scores: SEO 97/100, Speed 93/100, AI Ready 100/100, Indexing 100/100, GDPR 100/100 (Dr Strona snapshot: 2026-04-10)."
+overview: "DeMāre Studio is a bilingual marketing website for an interior design business in Gdańsk. The project focused on clear conversion paths, premium visual presentation, technical SEO correctness, and AI-search visibility."
+demo: "https://demarestudio.com/"
+repo: ""
+images: [
+  "/images/demarestudio/home.webp",
+  "/images/demarestudio/portfolio.webp",
+  "/images/demarestudio/services.webp",
+  "/images/demarestudio/process.webp",
+  "/images/demarestudio/about.webp",
+  "/images/demarestudio/contact.webp"
+]
+relatedSlugs: []
+relatedPostSlugs: []
+---
+
+## Problem / Context
+
+The client needed a modern studio website that does more than look good. The site had to:
+
+- communicate premium positioning,
+- attract local leads from Gdańsk, Gdynia, and Sopot,
+- handle Polish and English content without UX friction,
+- provide transparent trust signals (privacy, company data, terms),
+- and be technically sound for Google and AI assistants.
+
+The previous state had content and branding potential, but required a structured implementation focused on measurable outcomes.
+
+## Approach
+
+I treated this as a performance + SEO product build, not just a visual redesign:
+
+1. Defined page architecture around intent (services, portfolio, process, contact, local landing pages).
+2. Built a clean bilingual front-end in Astro with stable layout and clear CTA hierarchy.
+3. Implemented technical SEO foundations first (canonical, hreflang, sitemap, robots, Open Graph, JSON-LD).
+4. Iterated using audit feedback until key weak points were solved (AI crawler access, freshness signals, legal/trust links, mobile loading path).
+
+## What I shipped
+
+- Full static Astro website with production-ready deployment flow.
+- Bilingual content switching (PL/EN) and localized key sections.
+- Conversion-focused homepage with service framing, project previews, FAQ, and direct contact actions.
+- Contact flow integrated through Formspree with dedicated thank-you page.
+- Legal and trust pages integrated into navigation/footer (`Privacy`, `Terms`).
+- Rich structured data graph and content discoverability files (`sitemap`, `robots`, `llms.txt`).
+
+## Technical implementation details
+
+### SEO and indexing
+
+- Canonical URLs and hreflang handling.
+- XML sitemap generation and robots directives.
+- Open Graph and Twitter card metadata.
+- Structured data for business + page context.
+
+### GEO/AEO and AI visibility
+
+- `llms.txt` published with key pages and business context.
+- AI crawler access verified (GPTBot, ClaudeBot, PerplexityBot).
+- Freshness signals added (`article:modified_time`, `dateModified` in structured data).
+- Added answer-friendly content patterns (lists, definitions, compact comparison table).
+
+### Performance
+
+- Prioritized hero loading path and controlled lazy-loading for non-critical assets.
+- Reduced render-blocking behavior on homepage interactions.
+- Kept static-first architecture to minimize runtime overhead.
+
+### Compliance and trust
+
+- Privacy policy and terms available and linked globally.
+- Contact details visible and machine-readable.
+- Local hosting/font/privacy choices aligned with GDPR-oriented implementation.
+
+### Hosting and transport security
+
+- **HSTS** (`Strict-Transport-Security`) is configured at the **Cloudflare** edge (SSL/TLS → Edge Certificates), not inside the Astro bundle — typical for static sites behind Cloudflare.
+
+## SEO and performance results (snapshot)
+
+Source: Dr Strona (drstrona.pl) audit snapshot from **2026-04-10 16:21:51**.
+
+| Area | Score |
+| --- | --- |
+| SEO | 97/100 |
+| Speed | 93/100 |
+| AI Ready (GEO) | 100/100 |
+| Indexing | 100/100 |
+| Structure | 96/100 |
+| GDPR | 100/100 |
+
+Key reported metrics:
+
+- Mobile performance: 93/100
+- Desktop performance: 100/100
+- LCP mobile: 3.2s
+- AI crawler access: open for GPTBot, ClaudeBot, PerplexityBot
+- Freshness signal detected: `meta article:modified_time`
+
+These values are point-in-time audit measurements and can change with new content, infrastructure settings, or third-party scoring updates.
+
+## Outcome
+
+The website now operates as a complete lead-generation asset with premium presentation and strong technical health. The project demonstrates an end-to-end delivery process: strategy, implementation, performance tuning, SEO/GEO hardening, and measurable validation after launch.
+
+## Screenshots
+
+![DeMāre Studio homepage with premium hero and conversion-focused sections](/images/demarestudio/home.webp)
+
+![Portfolio page presenting interior design projects with visual-first layout](/images/demarestudio/portfolio.webp)
+
+![Services page explaining core interior design offers and positioning](/images/demarestudio/services.webp)
+
+![Design process page with step-by-step collaboration model](/images/demarestudio/process.webp)
+
+![About page introducing the designer and studio credibility signals](/images/demarestudio/about.webp)
+
+![Contact page with direct CTA, email, phone, and structured inquiry form](/images/demarestudio/contact.webp)

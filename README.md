@@ -155,6 +155,7 @@ scripts/
 | `RESEND_FROM_EMAIL` | Local `.dev.vars`; production via Wrangler env or dashboard | Sender address for the contact form, e.g. `Daniel Milewski <hello@danielmilewski.com>`. In production this should use a verified Resend domain. |
 | `CONTACT_FORM_TO_EMAIL` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Inbox that receives form submissions. Defaults to the personal email configured in `src/lib/metadata.ts` if omitted. |
 | `NEXT_PUBLIC_HCAPTCHA_SITE_KEY` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Public site key for hCaptcha. When present together with `HCAPTCHA_SECRET_KEY`, the contact form shows a visible checkbox captcha and verifies it server-side. |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Optional GA4 Measurement ID in the `G-XXXXXXXXXX` format. When set, the Google tag is rendered only on the real production hostnames and only after the visitor accepts analytics cookies. |
 | `HCAPTCHA_SECRET_KEY` | Optional local `.dev.vars`; production secret via `wrangler secret put HCAPTCHA_SECRET_KEY` | Secret key for hCaptcha verification. Keep this out of git. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional local `.dev.vars`; production via Wrangler env or dashboard | Legacy fallback. Used only when hCaptcha keys are not configured. |
 | `TURNSTILE_SECRET_KEY` | Optional local `.dev.vars`; production secret via `wrangler secret put TURNSTILE_SECRET_KEY` | Legacy fallback secret for Turnstile verification. |
@@ -179,6 +180,7 @@ For this project, the intended split is:
 - `wrangler.jsonc`
   - `NEXT_PUBLIC_SITE_URL`
   - `NEXT_PUBLIC_CF_ANALYTICS_TOKEN`
+  - `NEXT_PUBLIC_GA_MEASUREMENT_ID`
   - `RESEND_FROM_EMAIL`
   - `CONTACT_FORM_TO_EMAIL`
   - `NEXT_PUBLIC_HCAPTCHA_SITE_KEY`
@@ -189,6 +191,7 @@ For this project, the intended split is:
   - `TURNSTILE_SECRET_KEY`
 
 `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` is optional. If it is missing or left as the placeholder value, the Cloudflare Web Analytics beacon is not rendered.
+`NEXT_PUBLIC_GA_MEASUREMENT_ID` is optional. If it is missing or malformed, the GA4 tag is not rendered.
 
 ### Contact form / Resend setup
 
@@ -247,6 +250,15 @@ This project supports **Cloudflare Web Analytics** via `NEXT_PUBLIC_CF_ANALYTICS
 - The placeholder value `REPLACE_WITH_YOUR_TOKEN` is treated as disabled.
 - This keeps local development and production-safe defaults simple: no token, no analytics script.
 
+### Google Analytics 4
+
+This project can also render the **Google Analytics 4** tag via `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
+
+- The measurement ID must be a real GA4 ID in the `G-XXXXXXXXXX` format.
+- The tag is only loaded on the real production hostnames (`danielmilewski.com` / `www.danielmilewski.com`), not on `localhost` or preview hosts.
+- The tag is only loaded after the visitor explicitly accepts analytics cookies in the site banner.
+- Visitors can reopen the banner later through the footer link and change their decision.
+
 ### Conversion tracking on the free Cloudflare plan
 
 Because this project stays on the free Cloudflare tier, conversion tracking is intentionally split into two layers:
@@ -273,6 +285,7 @@ Current site behavior that must stay reflected in the privacy page:
 - A confirmation email may be sent back to the sender
 - Optional anti-spam verification may be handled via **hCaptcha** or **Cloudflare Turnstile**
 - The site may use **Cloudflare Web Analytics** for pageviews and basic performance data
+- The site may use **Google Analytics 4** for website usage measurement after explicit consent
 - The site may log minimal technical event data for contact-form outcomes and key CTA interactions
 - The site uses a functional `NEXT_LOCALE` cookie to remember the selected language
 

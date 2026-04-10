@@ -63,7 +63,7 @@ export function buildMetadata({
   const ogImage = image ?? defaultOgImagePath;
 
   return {
-    title,
+    ...(title ? { title } : {}),
     description: metaDescription,
     metadataBase: new URL(SITE_URL),
     alternates: {

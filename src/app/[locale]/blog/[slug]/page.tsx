@@ -14,6 +14,7 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import {
   absoluteUrl,
   buildMetadata,
+  SITE_NAME,
   type SiteLocale,
 } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const post = getPostBySlug(locale, slug);
   if (!post) return {};
-  return buildMetadata({
+  const metadata = buildMetadata({
     title: post.title,
     description: post.excerpt,
     pathWithoutLocale: `/blog/${slug}`,
@@ -53,6 +54,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `/blog/${slug}/opengraph-image`,
     ),
   });
+
+  return {
+    ...metadata,
+    keywords: post.tags,
+    authors: [{ name: SITE_NAME, url: absoluteUrl(locale as SiteLocale, "/") }],
+    openGraph: {
+      ...metadata.openGraph,
+      type: "article",
+      publishedTime: post.date,
+      modifiedTime: post.date,
+      authors: [SITE_NAME],
+      tags: post.tags,
+    },
+  };
 }
 
 export default async function BlogPostPage({ params }: Props) {

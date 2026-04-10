@@ -4,6 +4,7 @@ import { SocialLinks } from "@/components/ui/SocialLinks";
 import { COMPANY_NIP, SITE_NAME } from "@/lib/metadata";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
 import { LocalizedLink } from "@/components/ui/LocalizedLink";
+import { CookieSettingsButton } from "@/components/ui/CookieSettingsButton";
 
 interface FooterProps {
   locale: "en" | "pl";
@@ -64,18 +65,21 @@ export async function Footer({ locale }: FooterProps) {
             </div>
           </div>
           <div className="flex justify-center sm:justify-start">
-            <TrackedAnchor
-              href={`/${locale}/feed.xml`}
-              analytics={{
-                event: "cta_click",
-                locale,
-                ctaId: "footer_rss_feed",
-                surface: "footer",
-              }}
-              className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] transition-colors"
-            >
-              {tFoot("rss")}
-            </TrackedAnchor>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-start">
+              <TrackedAnchor
+                href={`/${locale}/feed.xml`}
+                analytics={{
+                  event: "cta_click",
+                  locale,
+                  ctaId: "footer_rss_feed",
+                  surface: "footer",
+                }}
+                className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] transition-colors"
+              >
+                {tFoot("rss")}
+              </TrackedAnchor>
+              <CookieSettingsButton label={tFoot("cookieSettings")} />
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-[var(--color-border-muted)] text-xs text-[var(--color-text-faint)]">
             <p>{tFoot("copyright", { year })}</p>
