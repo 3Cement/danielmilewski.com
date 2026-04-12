@@ -13,11 +13,27 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   async redirects() {
-    return routing.locales.map((locale) => ({
+    const { defaultLocale, locales } = routing;
+
+    const mainRedirects = locales.map((locale) => ({
       source: `/${locale}/main`,
       destination: `/${locale}`,
       permanent: true,
     }));
+
+    const legacyPaths = ["/about", "/blog", "/contact", "/projects", "/privacy"] as const;
+    const localelessRedirects = legacyPaths.map((path) => ({
+      source: path,
+      destination: `/${defaultLocale}${path}`,
+      permanent: true,
+    }));
+
+    const legacyFileRedirects = [
+      { source: "/index.html", destination: `/${defaultLocale}`, permanent: true as const },
+      { source: "/home.html", destination: `/${defaultLocale}`, permanent: true as const },
+    ];
+
+    return [...mainRedirects, ...localelessRedirects, ...legacyFileRedirects];
   },
 };
 
