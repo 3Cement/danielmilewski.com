@@ -8,9 +8,9 @@
     "toggleMenu": "Otwórz menu"
   },
   "hero": {
-    "badge": "Ograniczona dostępność — chętnie porozmawiam",
-    "h1": "Senior Python Developer — systemy backendowe, API i oprogramowanie, które działa.",
-    "sub": "Buduję systemy backendowe i API w Pythonie. Czasem pracuję z AI i frontendem, gdy projekt tego wymaga.",
+    "badge": "Backend · API · automatyzacja · AI",
+    "h1": "Buduję solidne systemy backendowe, API i oprogramowanie dla realnych produktów.",
+    "sub": "Pomagam zespołom projektować i dostarczać niezawodne rozwiązania: backend, integracje, automatyzację i narzędzia AI tam, gdzie faktycznie mają sens.",
     "cta1": "Zobacz projekty",
     "cta2": "Napisz do mnie"
   },
@@ -116,8 +116,8 @@
     "companyRegistryLink": "Publiczny wpis firmy (Monitor Firm / PB.pl)",
     "getInTouch": "Napisz do mnie",
     "backgroundHeading": "O mnie",
-    "bio1": "Jestem Python developerem z doświadczeniem w inżynierii backendowej, systemach finansowych i automatyzacji. Pracowałem w obszarze analityki rynku energii, fintech i usług IT — głównie budując oprogramowanie obsługujące prawdziwe dane i brzegowe przypadki.",
-    "bio2": "Moim głównym narzędziem jest Python. Czasem pracuję z AI/ML i React, gdy projekt tego wymaga, ale systemy backendowe i API to moje główne pole działania.",
+    "bio1": "Jestem inżynierem oprogramowania z doświadczeniem w backendzie, systemach finansowych i automatyzacji. Pracowałem w obszarze analityki rynku energii, fintech i usług IT — głównie budując oprogramowanie obsługujące prawdziwe dane i brzegowe przypadki.",
+    "bio2": "Python pozostaje jednym z moich głównych narzędzi. Pracuję też z AI/ML i frontendem, gdy projekt tego wymaga, ale systemy backendowe i API to moje główne pole działania.",
     "bio3": "Potrafię wziąć odpowiedzialność za projekt od początku do końca: od decyzji architektonicznych przez implementację po wdrożenie. Zależy mi na jakości kodu, przejrzystej architekturze i decyzjach, które następny inżynier będzie w stanie zrozumieć.",
     "bio4": "Najlepiej pracuję z firmami, które mają jasno określony problem, szanują inżynierię i potrzebują kogoś, kto komunikuje się sprawnie zarówno z technicznymi, jak i nietechnicznymi interesariuszami.",
     "experienceHeading": "Doświadczenie",
@@ -314,8 +314,8 @@
     "moreAbout": "Więcej o mnie",
     "getInTouch": "Napisz do mnie",
     "viewProjects": "Zobacz projekty",
-    "contactHeading": "Szukasz seniora Python do backendu, API lub automatyzacji?",
-    "contactSub": "Ograniczona dostępność na nowe projekty — chętnie o przyszłej współpracy.",
+    "contactHeading": "Masz backend, API albo system, który trzeba dowieźć lub uporządkować?",
+    "contactSub": "Jeśli budujesz produkt, modernizujesz usługę albo chcesz uporządkować bardziej złożony fragment systemu, chętnie porozmawiam o zakresie, dopasowaniu i terminach.",
     "breadcrumbsAriaLabel": "Okruszki"
   },
   "errors": {
@@ -326,9 +326,9 @@
     "errorRetry": "Spróbuj ponownie"
   },
   "metadata": {
-    "siteDescription": "Senior Python Developer — systemy backendowe, API i automatyzacja.",
-    "aboutDescription": "Senior Python Developer z doświadczeniem w inżynierii backendowej, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
-    "contactDescription": "Kontakt z Danielem Milewskim — senior Python developer. Ograniczona dostępność; otwarty na rozmowy o backendzie, API i automatyzacji.",
+    "siteDescription": "Inżynier oprogramowania skupiony na systemach backendowych, API, automatyzacji i produktach z AI.",
+    "aboutDescription": "Inżynier oprogramowania z doświadczeniem w backendzie, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
+    "contactDescription": "Kontakt z Danielem Milewskim w sprawie backendu, API, automatyzacji i produktów z AI.",
     "privacyDescription": "Polityka prywatności serwisu danielmilewski.com.",
     "projectsDescription": "Projekty Daniela Milewskiego — od narzędzi osobistych po systemy produkcyjne.",
     "blogDescription": "Notatki o Pythonie, inżynierii backendowej i oprogramowaniu, które działa.",

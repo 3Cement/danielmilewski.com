@@ -19,7 +19,7 @@ export function personSchema(locale: SiteLocale) {
     url: absoluteUrl(locale, "/"),
     email: EMAIL,
     inLanguage: locale,
-    jobTitle: "Senior Python Developer",
+    jobTitle: "Software Engineer",
     description: SITE_DESCRIPTION,
     sameAs: [GITHUB_URL, LINKEDIN_URL],
     knowsAbout: [
@@ -144,7 +144,7 @@ export function homePageSchema(locale: SiteLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: `${SITE_NAME} — Python Developer`,
+    name: `${SITE_NAME} — Software Engineer`,
     url: absoluteUrl(locale, "/"),
     inLanguage: locale,
     description: SITE_DESCRIPTION,
@@ -161,7 +161,10 @@ export function serviceSchema(locale: SiteLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: locale === "pl" ? "Backend Python, API i automatyzacja" : "Python backend, APIs, and automation",
+    name:
+      locale === "pl"
+        ? "Systemy backendowe, API i automatyzacja"
+        : "Backend systems, APIs, and automation",
     serviceType: [
       "Python backend development",
       "API development",

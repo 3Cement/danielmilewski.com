@@ -113,7 +113,7 @@ describe("buildMetadata", () => {
         url: `${SITE_URL}/en/blog/my-post/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Python Developer`,
+        alt: `${SITE_NAME} — Software Engineer`,
       },
     ]);
   });

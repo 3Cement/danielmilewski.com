@@ -17,6 +17,7 @@ import { getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { breadcrumbSchema, softwareSchema } from "@/lib/schema";
 import { localizeHtmlContent } from "@/lib/localizeHtmlContent";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
 export const dynamic = "force-static";
 
@@ -116,10 +117,7 @@ export default async function ProjectPage({ params }: Props) {
           />
         </div>
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: structuredData }}
-      />
+      <StructuredDataScript id="project-structured-data" json={structuredData} />
       <CaseStudySection
         locale={locale}
         project={project}

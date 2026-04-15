@@ -19,7 +19,7 @@ test("home page renders trust signals", async ({ page }) => {
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: /Senior Python Developer/i,
+      name: /I build reliable backend systems/i,
     }),
   ).toBeVisible();
   await expect(
@@ -41,7 +41,7 @@ test("language switcher moves from EN to PL", async ({ page }) => {
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: /Senior Python Developer — systemy backendowe/i,
+      name: /Buduję solidne systemy backendowe/i,
     }),
   ).toBeVisible();
 });

@@ -6,6 +6,7 @@ export function ThemeToggle() {
     const next = !root.classList.contains("dark");
     root.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
+    document.cookie = `theme=${next ? "dark" : "light"}; Path=/; Max-Age=31536000; SameSite=Lax`;
   }
 
   return (

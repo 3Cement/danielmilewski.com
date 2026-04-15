@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { HomePageContent } from "@/components/home/HomePageContent";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 import { faqPageSchema, homePageSchema, serviceSchema } from "@/lib/schema";
 
 export const dynamic = "force-static";
@@ -32,10 +33,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: structuredData }}
-      />
+      <StructuredDataScript id="home-structured-data" json={structuredData} />
       <HomePageContent locale={locale} />
     </>
   );

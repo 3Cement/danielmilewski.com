@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import "../globals.css";
@@ -10,6 +11,8 @@ import { GoogleAnalytics } from "@/components/ui/GoogleAnalytics";
 import { AnalyticsBeacon } from "@/components/ui/AnalyticsBeacon";
 import { AnalyticsEventScript } from "@/components/ui/AnalyticsEventScript";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
+import { ThemeSync } from "@/components/ui/ThemeSync";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 import { personSchema, websiteSchema } from "@/lib/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
@@ -55,7 +58,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "metadata" });
   return {
     title: {
-      default: `${SITE_NAME} — Python Developer`,
+      default: `${SITE_NAME} — Software Engineer`,
       template: `%s — ${SITE_NAME}`,
     },
     description: t("siteDescription"),
@@ -108,25 +111,17 @@ export default async function LocaleLayout({ children, params }: Props) {
   ]);
 
   return (
-    <html
-      lang={siteLocale}
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable}`}
-    >
-      <body className="min-h-screen flex flex-col">
+    <html lang={siteLocale} suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
+      >
         <ThemeInitializer />
+        <ThemeSync />
         <AnalyticsEventScript />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.cookie="NEXT_LOCALE=${siteLocale}; Path=/; Max-Age=31536000; SameSite=Lax";`,
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: structuredData,
-          }}
-        />
+        <Script id="persist-locale" strategy="beforeInteractive">
+          {`document.cookie="NEXT_LOCALE=${siteLocale}; Path=/; Max-Age=31536000; SameSite=Lax";`}
+        </Script>
+        <StructuredDataScript id="site-structured-data" json={structuredData} />
         <Navbar locale={siteLocale} />
         <main className="flex-1">{children}</main>
         <Footer locale={siteLocale} />

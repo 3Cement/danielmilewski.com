@@ -26,6 +26,7 @@ import {
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { LocalizedLink } from "@/components/ui/LocalizedLink";
 import { localizeHtmlContent } from "@/lib/localizeHtmlContent";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
 export const dynamic = "force-static";
 
@@ -131,10 +132,7 @@ export default async function BlogPostPage({ params }: Props) {
           />
         </div>
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: structuredData }}
-      />
+      <StructuredDataScript id="blog-post-structured-data" json={structuredData} />
       <div className="py-16 px-4">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">

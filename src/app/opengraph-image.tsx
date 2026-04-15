@@ -22,7 +22,7 @@ export default function OpengraphImage() {
         }}
       >
         <div style={{ fontSize: 56, fontWeight: 700, letterSpacing: -1.5 }}>{SITE_NAME}</div>
-        <div style={{ marginTop: 16, fontSize: 28, color: "#8b949e" }}>Senior Python Developer</div>
+        <div style={{ marginTop: 16, fontSize: 28, color: "#8b949e" }}>Software Engineer</div>
         <div style={{ marginTop: 32, fontSize: 22, color: "#4493f8" }}>Backend · APIs · Automation</div>
       </div>
     ),

@@ -8,9 +8,9 @@
     "toggleMenu": "Toggle menu"
   },
   "hero": {
-    "badge": "Limited availability — open to conversations",
-    "h1": "Senior Python Developer — backend systems, APIs, and software that ships.",
-    "sub": "I build backend systems and APIs in Python. I occasionally work on AI tools and frontend — when the project needs it.",
+    "badge": "Backend · APIs · Automation · AI",
+    "h1": "I build reliable backend systems, APIs, and software for real products.",
+    "sub": "I help teams design and ship dependable software: backend services, integrations, automation, and AI-enabled workflows where they add real value.",
     "cta1": "View selected work",
     "cta2": "Contact me"
   },
@@ -116,8 +116,8 @@
     "companyRegistryLink": "Public company record (Monitor Firm / PB.pl)",
     "getInTouch": "Get in touch",
     "backgroundHeading": "Background",
-    "bio1": "I'm a Python developer with a background in backend engineering, financial systems, and automation. I've worked in energy market intelligence, fintech, and IT services — mostly building the kind of software that handles real data and real edge cases.",
-    "bio2": "My primary tool is Python. I occasionally work with AI/ML and React when the project calls for it, but backend systems and APIs are where I spend most of my time.",
+    "bio1": "I'm a software engineer with a background in backend engineering, financial systems, and automation. I've worked in energy market intelligence, fintech, and IT services — mostly building the kind of software that handles real data and real edge cases.",
+    "bio2": "Python is still one of my main tools. I also work with AI/ML and frontend when the project calls for it, but backend systems and APIs are where I spend most of my time.",
     "bio3": "I'm comfortable owning a project end-to-end: from architecture decisions through implementation to deployment. I care about code quality, clear architecture, and making technical decisions that the next engineer can understand.",
     "bio4": "I work best with companies that have a clear problem, respect engineering, and want someone who communicates well with both technical and non-technical stakeholders.",
     "experienceHeading": "Experience",
@@ -314,8 +314,8 @@
     "moreAbout": "More about me",
     "getInTouch": "Get in touch",
     "viewProjects": "View projects",
-    "contactHeading": "Need a senior Python developer for backend, API, or automation work?",
-    "contactSub": "Limited availability for new work — happy to talk about future collaboration.",
+    "contactHeading": "Need a backend engineer who can take ownership?",
+    "contactSub": "If you're building a product, modernizing a service, or untangling a complex part of a system, I'm happy to talk through scope, fit, and timing.",
     "breadcrumbsAriaLabel": "Breadcrumb"
   },
   "errors": {
@@ -326,9 +326,9 @@
     "errorRetry": "Try again"
   },
   "metadata": {
-    "siteDescription": "Senior Python Developer — backend systems, APIs, and automation.",
-    "aboutDescription": "Senior Python Developer with a background in backend engineering, fintech, and energy market intelligence. Based in Europe, working remotely.",
-    "contactDescription": "Contact Daniel Milewski — senior Python developer. Limited availability; open to conversations about backend, APIs, and automation.",
+    "siteDescription": "Software engineer focused on backend systems, APIs, automation, and AI-enabled products.",
+    "aboutDescription": "Software engineer with a background in backend engineering, fintech, and energy market intelligence. Based in Europe, working remotely.",
+    "contactDescription": "Contact Daniel Milewski about backend systems, APIs, automation, and AI-enabled products.",
     "privacyDescription": "Privacy policy for danielmilewski.com — data handling on this portfolio site.",
     "projectsDescription": "Projects built by Daniel Milewski — from personal tools to production systems.",
     "blogDescription": "Writing about Python, backend engineering, and software that ships.",
