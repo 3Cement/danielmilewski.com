@@ -16,7 +16,7 @@ export async function HomeFAQ({ locale }: HomeFAQProps) {
   const latestContentDate = formatContentDate(getLatestContentDate(), locale);
 
   return (
-    <section className="py-24 px-4 bg-[var(--color-surface-muted)]">
+    <section className="scroll-mt-24 bg-[var(--color-surface-muted)] py-24 px-4" id="faq">
       <div className="mx-auto max-w-4xl">
         <div className="mb-12 max-w-3xl">
           <p className="text-sm font-medium text-[var(--color-accent)] uppercase tracking-wide mb-3">

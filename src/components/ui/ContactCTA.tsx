@@ -9,7 +9,7 @@ export async function ContactCTA({ locale }: ContactCTAProps) {
   const t = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <section className="py-24 px-4">
+    <section className="scroll-mt-24 py-24 px-4" id="contact">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold tracking-tight text-[var(--color-text-base)] sm:text-4xl">
           {t("contactHeading")}

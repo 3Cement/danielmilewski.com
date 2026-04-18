@@ -22,7 +22,7 @@ export async function TrustSection({ locale }: TrustSectionProps) {
   const companies = t.raw("companies") as CompanyItem[];
 
   return (
-    <section className="py-24 px-4 bg-[var(--color-surface-muted)]">
+    <section className="scroll-mt-24 bg-[var(--color-surface-muted)] py-24 px-4" id="trust">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 max-w-3xl">
           <p className="text-sm font-medium text-[var(--color-accent)] uppercase tracking-wide mb-3">

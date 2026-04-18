@@ -15,7 +15,10 @@ export async function ExpertiseGrid({ locale }: ExpertiseGridProps) {
   const items = t.raw("items") as ExpertiseItem[];
 
   return (
-    <section className="py-24 px-4 bg-[var(--color-surface-muted)]">
+    <section
+      className="scroll-mt-24 bg-[var(--color-surface-muted)] py-24 px-4"
+      id="expertise"
+    >
       <div className="mx-auto max-w-6xl">
         <div className="mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text-base)]">

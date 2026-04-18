@@ -10,7 +10,7 @@ export async function Hero({ locale }: HeroProps) {
   const t = await getTranslations({ locale, namespace: "hero" });
 
   return (
-    <section className="relative py-24 sm:py-32 px-4">
+    <section className="relative scroll-mt-24 py-24 sm:py-32 px-4" id="hero">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-3xl">
           <p className="text-sm font-medium text-[var(--color-accent)] mb-4 tracking-wide uppercase">

@@ -12,7 +12,10 @@ export async function WritingPreview({ posts, locale }: WritingPreviewProps) {
   const t = await getTranslations({ locale, namespace: "blog" });
 
   return (
-    <section className="py-24 px-4 bg-[var(--color-surface-muted)]">
+    <section
+      className="scroll-mt-24 bg-[var(--color-surface-muted)] py-24 px-4"
+      id="writing"
+    >
       <div className="mx-auto max-w-6xl">
         <div className="flex items-end justify-between mb-12">
           <div>

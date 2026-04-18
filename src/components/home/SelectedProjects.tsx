@@ -17,7 +17,7 @@ export async function SelectedProjects({ projects, locale }: SelectedProjectsPro
   };
 
   return (
-    <section className="py-24 px-4" id="projects">
+    <section className="scroll-mt-24 py-24 px-4" id="projects">
       <div className="mx-auto max-w-6xl">
         <div className="flex items-end justify-between mb-12">
           <div>

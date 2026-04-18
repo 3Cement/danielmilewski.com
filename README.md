@@ -40,6 +40,7 @@ Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare W
 | `npm run deploy` | OpenNext build + `opennextjs-cloudflare deploy` to Cloudflare. |
 | `node scripts/generate-content-data.mjs` | Regenerate `content-data.json` only (used by `predev` / `prebuild`). |
 | `npm run generate:favicon` | Regenerate `src/app/favicon.ico` from the current SVG-based favicon source. |
+| `npm run verify:markdown` | Checks Cloudflare Markdown for Agents negotiation against a deployed URL. |
 
 ---
 
@@ -50,6 +51,39 @@ Local `next dev` / `next start` use Node and a normal filesystem. **Cloudflare W
 - Validation happens locally before push/deploy via `npm run test`, `npm run lint`, `npm run build`, and when needed `npm run test:unit`.
 - If GitHub still shows old failed checks on historical PRs, treat them as legacy noise rather than an active repo problem.
 - Future CI alternatives are tracked in `TODO.md`.
+
+---
+
+## Agent-ready features
+
+This site now publishes machine-readable discovery and agent-integration endpoints for crawlers, assistants, and browser agents.
+
+### Discovery and metadata
+
+- Homepage responses include RFC 8288 `Link` headers advertising the API catalog and service documentation.
+- `/.well-known/service-doc.json` exposes a compact site discovery document.
+- `/.well-known/api-catalog` publishes an RFC 9727-style linkset for the public analytics API.
+- `/.well-known/agent-skills/index.json` publishes an Agent Skills Discovery v0.2.0 index with `digest` values in `sha256:{hex}` format.
+- `/.well-known/agent-skills/skills/*/SKILL.md` serves the concrete skill artifacts as Markdown.
+- `/.well-known/mcp/server-card.json` publishes an MCP Server Card for the site MCP endpoint.
+- `/mcp` exposes a Streamable HTTP MCP server with read-only discovery resources.
+
+### Crawl and content preferences
+
+- `/robots.txt` is served by a route handler and includes `Content-Signal` directives for `ai-train`, `search`, and `ai-input`.
+- Markdown for Agents is enabled at the Cloudflare layer. Browsers still get HTML by default, while requests with `Accept: text/markdown` can receive Markdown responses from Cloudflare.
+
+### API and status surface
+
+- `/api/analytics/openapi.json` publishes the OpenAPI description for the public analytics endpoint.
+- `/docs/api/analytics` provides human-readable API documentation.
+- `/api/analytics/status` provides a simple health/status endpoint for automated discovery.
+
+### Browser agent integration
+
+- The localized site layout registers WebMCP tools with `navigator.modelContext.provideContext()` when the browser supports the preview API.
+- The current tool set covers high-level page navigation, project case studies, blog posts, language switching, and homepage section jumps.
+- WebMCP is browser-dependent and currently treated as progressive enhancement rather than a hard dependency.
 
 ---
 
@@ -90,12 +124,24 @@ src/
 │   ├── page.tsx                # Redirects / -> preferred locale
 │   ├── main/page.tsx           # Redirects /main -> preferred locale
 │   ├── globals.css
-│   ├── robots.ts
+│   ├── robots.txt/route.ts
 │   ├── sitemap.ts
 │   ├── icon.tsx, apple-icon.tsx, opengraph-image.tsx
 │   ├── favicon.ico
+│   ├── .well-known/
+│   │   ├── service-doc.json/route.ts
+│   │   ├── api-catalog/route.ts
+│   │   ├── agent-skills/
+│   │   └── mcp/server-card.json/route.ts
 │   ├── actions/
 │   │   └── sendContactMessage.ts
+│   ├── api/analytics/
+│   │   ├── route.ts
+│   │   ├── openapi.json/route.ts
+│   │   └── status/route.ts
+│   ├── docs/
+│   │   ├── api/analytics/route.ts
+│   │   └── mcp/route.ts
 │   ├── fonts/
 │   │   └── geist-*.woff2
 │   └── [locale]/               # All localized routes
@@ -117,6 +163,13 @@ src/
 │   ├── content.ts              # Data from generated JSON
 │   ├── metadata.ts             # SITE_URL, SEO helpers (uses NEXT_PUBLIC_SITE_URL)
 │   ├── schema.ts               # JSON-LD
+│   ├── agentDiscovery.ts       # Link headers + service-doc references
+│   ├── agentSkills.ts          # Agent Skills Discovery index + SKILL.md bodies
+│   ├── apiCatalog.ts           # API catalog linkset
+│   ├── mcp.ts                  # MCP resources + server card helpers
+│   ├── robots.ts               # robots.txt + Content-Signal helpers
+│   ├── webmcp.ts               # Shared WebMCP route/section helpers
+│   └── webmcpContent.ts        # Server-side WebMCP project/post options
 │   └── ...
 ├── messages/
 │   ├── en.json
@@ -129,6 +182,8 @@ public/                         # Static files (CVs, images, _headers)
 scripts/
 ├── generate-favicon.mjs
 ├── generate-content-data.mjs
+├── enable-markdown-for-agents.sh
+├── verify-markdown-negotiation.sh
 └── verify-messages.mjs
 ```
 
@@ -249,6 +304,29 @@ This project supports **Cloudflare Web Analytics** via `NEXT_PUBLIC_CF_ANALYTICS
 - The beacon is only loaded on the real production hostnames (`danielmilewski.com` / `www.danielmilewski.com`), not on `localhost` or preview hosts.
 - The placeholder value `REPLACE_WITH_YOUR_TOKEN` is treated as disabled.
 - This keeps local development and production-safe defaults simple: no token, no analytics script.
+
+### Markdown for Agents
+
+This site is deployed behind Cloudflare, and Markdown negotiation is controlled by a **Cloudflare zone setting**, not by Next.js route code.
+
+- Enable it zone-wide in the Cloudflare dashboard under `AI Crawl Control -> Markdown for Agents`, or via API.
+- Cloudflare currently documents this feature as available on `Pro`, `Business`, and `Enterprise` plans, plus `SSL for SaaS`.
+- Once enabled, requests that send `Accept: text/markdown` should receive `Content-Type: text/markdown; charset=utf-8`. Cloudflare may also include `x-markdown-tokens`.
+- HTML remains the default for browsers and other normal requests.
+
+Repo helpers:
+
+- `scripts/enable-markdown-for-agents.sh <zone_id>`
+  Requires `CLOUDFLARE_API_TOKEN` with Zone Settings edit permission. It sends `PATCH /client/v4/zones/{zone_id}/settings/content_converter` with `{"value":"on"}`.
+- `npm run verify:markdown`
+  Verifies the live homepage with `Accept: text/markdown` and fails unless the response comes back as `text/markdown`.
+
+Example:
+
+```bash
+CLOUDFLARE_API_TOKEN=... ./scripts/enable-markdown-for-agents.sh <zone_id>
+npm run verify:markdown
+```
 
 ### Google Analytics 4
 

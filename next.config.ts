@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 import createNextIntlPlugin from "next-intl/plugin";
 import { routing } from "./src/i18n/routing";
+import { createHomepageAgentDiscoveryHeaders } from "./src/lib/agentDiscovery";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -11,6 +12,9 @@ const nextConfig: NextConfig = {
   htmlLimitedBots: /.*/,
   images: {
     formats: ["image/avif", "image/webp"],
+  },
+  async headers() {
+    return createHomepageAgentDiscoveryHeaders(routing.locales);
   },
   async redirects() {
     const { defaultLocale, locales } = routing;

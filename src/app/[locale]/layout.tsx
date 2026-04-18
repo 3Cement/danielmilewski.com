@@ -12,9 +12,14 @@ import { AnalyticsBeacon } from "@/components/ui/AnalyticsBeacon";
 import { AnalyticsEventScript } from "@/components/ui/AnalyticsEventScript";
 import { ThemeInitializer } from "@/components/ui/ThemeInitializer";
 import { ThemeSync } from "@/components/ui/ThemeSync";
+import { WebMcpProvider } from "@/components/ui/WebMcpProvider";
 import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 import { personSchema, websiteSchema } from "@/lib/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/metadata";
+import {
+  buildWebMcpPostOptions,
+  buildWebMcpProjectOptions,
+} from "@/lib/webmcpContent";
 import { routing } from "@/i18n/routing";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
@@ -109,6 +114,8 @@ export default async function LocaleLayout({ children, params }: Props) {
       ),
     ),
   ]);
+  const webMcpProjectOptions = buildWebMcpProjectOptions(siteLocale);
+  const webMcpPostOptions = buildWebMcpPostOptions(siteLocale);
 
   return (
     <html lang={siteLocale} suppressHydrationWarning>
@@ -117,6 +124,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       >
         <ThemeInitializer />
         <ThemeSync />
+        <WebMcpProvider
+          locale={siteLocale}
+          projectOptions={webMcpProjectOptions}
+          postOptions={webMcpPostOptions}
+        />
         <AnalyticsEventScript />
         <Script id="persist-locale" strategy="beforeInteractive">
           {`document.cookie="NEXT_LOCALE=${siteLocale}; Path=/; Max-Age=31536000; SameSite=Lax";`}

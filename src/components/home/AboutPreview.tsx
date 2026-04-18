@@ -10,7 +10,7 @@ export async function AboutPreview({ locale }: AboutPreviewProps) {
   const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <section className="py-24 px-4">
+    <section className="scroll-mt-24 py-24 px-4" id="about">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-2xl">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text-base)] mb-6">
