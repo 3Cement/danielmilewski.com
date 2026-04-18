@@ -35,6 +35,7 @@
 
 # Playwright MCP / local browser output
 .playwright-mcp/
+GEMINI.md
 
 # IDE
 .idea/
