@@ -478,6 +478,42 @@ Serves the built Worker locally (Wrangler). Use this to verify behavior close to
 - JSON-LD: `src/lib/schema.ts` (Person, WebSite, BlogPosting, etc.).
 - `sitemap.ts` and `robots.ts` at app root.
 
+### Google Search Console (GSC)
+
+- This project has an active GSC property: `sc-domain:danielmilewski.com`.
+- On Daniel's machine, GSC is accessible through a local MCP server named `gsc`, configured in the untracked `.mcp.json`.
+- The local MCP setup uses `uvx mcp-search-console` with a service-account credentials file stored outside the repo. Do not commit `.mcp.json` or credentials paths.
+- Use GSC via MCP when you need real indexing truth:
+  - inspect a specific URL
+  - check whether Google has processed a fresh deploy
+  - read sitemap status
+  - read search analytics for queries/pages
+
+**Recommended GSC workflow after SEO changes**
+
+1. Validate the live site first:
+   - check `robots.txt`
+   - check `sitemap.xml`
+   - check the exact page HTML for `meta robots`, canonical, and OG URL
+2. In GSC, resubmit `https://danielmilewski.com/sitemap.xml`.
+3. Inspect the key URLs you changed.
+4. Compare `last crawled` dates before drawing conclusions.
+5. Treat `Discovered - currently not indexed` and `URL is unknown to Google` as indexing/discovery signals, not necessarily code bugs.
+
+**Important interpretation notes**
+
+- GSC can lag behind production. If live HTML is correct but GSC still shows the old state, compare the `last crawled` timestamp before changing code again.
+- Very low or empty GSC performance charts in this project usually mean low search demand or weak indexing coverage, not a broken GSC setup.
+- Historically, filtered blog URLs like `/en/blog?tag=...` were indexable; the project now serves them with `noindex,follow`. If GSC still shows them as indexed, wait for recrawl before taking further action.
+
+**Useful project-specific checks**
+
+- Property: `sc-domain:danielmilewski.com`
+- Sitemap: `https://danielmilewski.com/sitemap.xml`
+- Canonical host: `https://danielmilewski.com`
+- `www.danielmilewski.com` should redirect to the apex host
+- A healthy release should keep `robots.txt` crawlable, `sitemap.xml` valid, and important localized pages indexable
+
 ---
 
 ## Troubleshooting
