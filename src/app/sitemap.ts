@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next";
-import { getAllProjectSlugs, getAllPostSlugs } from "@/lib/content";
+import { getAllProjectSlugs, getAllPosts } from "@/lib/content";
+import { getLatestContentDate } from "@/lib/contentDates";
 import { absoluteUrl, type SiteLocale } from "@/lib/metadata";
 
 const locales = ["en", "pl"] as const satisfies readonly SiteLocale[];
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const latestContentDate = getLatestContentDate();
   const staticPaths = [
     { path: "/", changeFrequency: "monthly" as const, priority: 1.0 },
     { path: "/projects", changeFrequency: "monthly" as const, priority: 0.9 },
@@ -19,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absoluteUrl(locale, path),
       changeFrequency,
       priority,
+      lastModified: latestContentDate,
     }))
   );
 
@@ -31,10 +34,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   const blogRoutes = locales.flatMap((locale) =>
-    getAllPostSlugs(locale).map((slug) => ({
-      url: absoluteUrl(locale, `/blog/${slug}`),
+    getAllPosts(locale).map((post) => ({
+      url: absoluteUrl(locale, `/blog/${post.slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.7,
+      lastModified: post.date,
     }))
   );
 

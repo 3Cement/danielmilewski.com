@@ -70,7 +70,7 @@ This site now publishes machine-readable discovery and agent-integration endpoin
 
 ### Crawl and content preferences
 
-- `/robots.txt` is served by a route handler and includes `Content-Signal` directives for `ai-train`, `search`, and `ai-input`.
+- `/robots.txt` is served by a route handler and documents `Content-Signal` preferences in comments so the file stays standards-compliant for crawlers.
 - Markdown for Agents is enabled at the Cloudflare layer. Browsers still get HTML by default, while requests with `Accept: text/markdown` can receive Markdown responses from Cloudflare.
 
 ### API and status surface
@@ -167,7 +167,7 @@ src/
 │   ├── agentSkills.ts          # Agent Skills Discovery index + SKILL.md bodies
 │   ├── apiCatalog.ts           # API catalog linkset
 │   ├── mcp.ts                  # MCP resources + server card helpers
-│   ├── robots.ts               # robots.txt + Content-Signal helpers
+│   ├── robots.ts               # robots.txt builder + documented Content-Signal preferences
 │   ├── webmcp.ts               # Shared WebMCP route/section helpers
 │   └── webmcpContent.ts        # Server-side WebMCP project/post options
 │   └── ...

@@ -6,7 +6,7 @@ describe("buildRobotsTxt", () => {
     const robots = buildRobotsTxt();
 
     expect(robots).toContain("User-Agent: *");
-    expect(robots).toContain(`Content-Signal: ${CONTENT_SIGNAL}`);
+    expect(robots).toContain(`# Content-Signal: ${CONTENT_SIGNAL}`);
     expect(robots).toContain("Allow: /");
     expect(robots).toContain("Sitemap: https://danielmilewski.com/sitemap.xml");
   });

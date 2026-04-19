@@ -8,7 +8,7 @@ describe("GET /robots.txt", () => {
 
     expect(response.headers.get("Content-Type")).toContain("text/plain");
     expect(body).toContain("User-Agent: *");
-    expect(body).toContain("Content-Signal: ai-train=no, search=yes, ai-input=yes");
+    expect(body).toContain("# Content-Signal: ai-train=no, search=yes, ai-input=yes");
     expect(body).toContain("Sitemap: https://danielmilewski.com/sitemap.xml");
   });
 });

@@ -9,18 +9,42 @@ import { LocalizedLink } from "@/components/ui/LocalizedLink";
 
 interface Props {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ tag?: string }>;
+  searchParams: Promise<{ tag?: string | string[] }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+function getActiveTag(tag: string | string[] | undefined): string | undefined {
+  return typeof tag === "string" ? tag : undefined;
+}
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: Props): Promise<Metadata> {
   const { locale } = await params;
+  const { tag } = await searchParams;
   const t = await getTranslations({ locale, namespace: "metadata" });
-  return buildMetadata({
+  const metadata = buildMetadata({
     title: t("blogTitle"),
     description: t("blogDescription"),
     pathWithoutLocale: "/blog",
     locale: locale as SiteLocale,
   });
+
+  if (!getActiveTag(tag)) {
+    return metadata;
+  }
+
+  return {
+    ...metadata,
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: {
+        index: false,
+        follow: true,
+      },
+    },
+  };
 }
 
 // searchParams intentionally opts this page out of static rendering — tag filtering
@@ -28,12 +52,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPage({ params, searchParams }: Props) {
   const { locale } = await params;
   const { tag } = await searchParams;
+  const activeTag = getActiveTag(tag);
   const t = await getTranslations({ locale, namespace: "blog" });
   const allPosts = getAllPosts(locale);
   const allTags = getAllTags(locale);
 
-  const posts = tag
-    ? allPosts.filter((p) => p.tags.includes(tag))
+  const posts = activeTag
+    ? allPosts.filter((p) => p.tags.includes(activeTag))
     : allPosts;
 
   return (
@@ -67,7 +92,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
             href="/blog"
             className={cn(
               "px-3 py-1 rounded-full text-xs font-medium transition-colors",
-              !tag
+              !activeTag
                 ? "bg-[var(--color-accent)] text-white"
                 : "bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]",
             )}
@@ -81,7 +106,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
               href={`/blog?tag=${encodeURIComponent(t2)}`}
               className={cn(
                 "px-3 py-1 rounded-full text-xs font-medium transition-colors",
-                tag === t2
+                activeTag === t2
                   ? "bg-[var(--color-accent)] text-white"
                   : "bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]",
               )}
