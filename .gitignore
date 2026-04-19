@@ -60,3 +60,6 @@ next-env.d.ts
 # OpenNext / Wrangler local
 .open-next
 .dev.vars
+
+# Local MCP client config
+.mcp.json
