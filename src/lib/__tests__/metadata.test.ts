@@ -117,4 +117,18 @@ describe("buildMetadata", () => {
       },
     ]);
   });
+
+  it("resolves the default Open Graph image to an absolute URL", () => {
+    const meta = buildMetadata({ pathWithoutLocale: "/about", locale: "en" });
+
+    expect(meta.openGraph?.images).toEqual([
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} — Software Engineer`,
+      },
+    ]);
+    expect(meta.twitter?.images).toEqual([`${SITE_URL}/opengraph-image`]);
+  });
 });

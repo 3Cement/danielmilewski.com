@@ -17,13 +17,7 @@ const nextConfig: NextConfig = {
     return createHomepageAgentDiscoveryHeaders(routing.locales);
   },
   async redirects() {
-    const { defaultLocale, locales } = routing;
-
-    const mainRedirects = locales.map((locale) => ({
-      source: `/${locale}/main`,
-      destination: `/${locale}`,
-      permanent: true,
-    }));
+    const { defaultLocale } = routing;
 
     const legacyPaths = ["/about", "/blog", "/contact", "/projects", "/privacy"] as const;
     const localelessRedirects = legacyPaths.map((path) => ({
@@ -37,7 +31,7 @@ const nextConfig: NextConfig = {
       { source: "/home.html", destination: `/${defaultLocale}`, permanent: true as const },
     ];
 
-    return [...mainRedirects, ...localelessRedirects, ...legacyFileRedirects];
+    return [...localelessRedirects, ...legacyFileRedirects];
   },
 };
 

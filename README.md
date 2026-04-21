@@ -91,8 +91,8 @@ This site now publishes machine-readable discovery and agent-integration endpoin
 
 - All user-facing pages live under **`src/app/[locale]/`** (`en`, `pl`).
 - `src/i18n/routing.ts` defines locales and default locale, while `src/i18n/request.ts` loads the right message bundle for the active `[locale]` segment.
-- Visiting `/` or `/main` redirects on the server to a locale homepage, preferring the `NEXT_LOCALE` cookie and then the browser's `Accept-Language` header.
-- Legacy URLs like `/en/main` and `/pl/main` are handled as permanent redirects in `next.config.ts`, which keeps them edge-friendly on Cloudflare.
+- Visiting `/` redirects on the server to a locale homepage, preferring the `NEXT_LOCALE` cookie and then the browser's `Accept-Language` header.
+- Legacy locale-less URLs like `/about`, `/blog`, `/contact`, `/projects`, and `/privacy` are handled as permanent redirects in `next.config.ts`, which keeps them edge-friendly on Cloudflare.
 - Copy lives in **`src/messages/en.json`** and **`src/messages/pl.json`**. Navigation uses **`src/i18n/navigation.ts`** (`Link`, `redirect`, etc.).
 - Root **`src/app/layout.tsx`**: local fonts, global metadata base, wraps children. Locale layout **`src/app/[locale]/layout.tsx`**: `NextIntlClientProvider`, navbar, footer, JSON-LD.
 
@@ -122,7 +122,6 @@ src/
 ├── app/
 │   ├── layout.tsx              # Root: local fonts, metadata base
 │   ├── page.tsx                # Redirects / -> preferred locale
-│   ├── main/page.tsx           # Redirects /main -> preferred locale
 │   ├── globals.css
 │   ├── robots.txt/route.ts
 │   ├── sitemap.ts

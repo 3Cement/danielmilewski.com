@@ -23,6 +23,7 @@ import {
 import { routing } from "@/i18n/routing";
 
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
+const defaultSocialImage = `${SITE_URL}/opengraph-image`;
 
 const geistSans = localFont({
   src: [
@@ -80,9 +81,18 @@ export async function generateMetadata({
     openGraph: {
       siteName: SITE_NAME,
       type: "website",
+      images: [
+        {
+          url: defaultSocialImage,
+          width: 1200,
+          height: 630,
+          alt: `${SITE_NAME} — Software Engineer`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      images: [defaultSocialImage],
     },
     robots: {
       index: true,

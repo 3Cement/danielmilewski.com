@@ -39,6 +39,16 @@ export function absoluteUrl(locale: SiteLocale, pathWithoutLocale: string): stri
 
 const defaultOgImagePath = "/opengraph-image";
 
+function toAbsoluteSiteUrl(path: string): string {
+  if (/^https?:\/\//.test(path)) {
+    return path;
+  }
+
+  const base = SITE_URL.replace(/\/$/, "");
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${normalizedPath}`;
+}
+
 export function buildMetadata({
   title,
   description,
@@ -60,7 +70,7 @@ export function buildMetadata({
   const socialTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Software Engineer`;
   const metaDescription = description ?? SITE_DESCRIPTION;
   const canonical = absoluteUrl(locale, canonicalPathWithoutLocale ?? pathWithoutLocale);
-  const ogImage = image ?? defaultOgImagePath;
+  const ogImage = toAbsoluteSiteUrl(image ?? defaultOgImagePath);
 
   return {
     ...(title ? { title } : {}),
