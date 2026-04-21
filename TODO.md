@@ -46,6 +46,12 @@
   - collect Lighthouse / Core Web Vitals style measurements
   - verify image optimization behavior on the live domain
   - fix the biggest measured bottlenecks instead of guessing
+- Unblock full GA4 reporting access for local MCP analysis:
+  - enable `Google Analytics Admin API` in the Google Cloud project used by the local `google-analytics` MCP server
+  - enable `Google Analytics Data API` in the same Google Cloud project so `run_report` / `run_realtime_report` can execute
+  - confirm the service account behind MCP has at least read access to the GA4 property for `danielmilewski.com`
+  - record the numeric GA4 `property_id` somewhere local and untracked for future MCP runs
+  - reminder: `property_id` is the numeric GA4 property identifier from Google Analytics Admin -> Property Settings, not the `G-XXXXXXXXXX` Measurement ID from Data Streams
 
 ### Lower priority
 
