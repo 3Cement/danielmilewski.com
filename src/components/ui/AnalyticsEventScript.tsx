@@ -1,24 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import { shouldTrackConversionHost } from "@/lib/analytics";
-
-function postAnalyticsPayload(payload: string) {
-  if (typeof navigator.sendBeacon === "function") {
-    navigator.sendBeacon(
-      "/api/analytics",
-      new Blob([payload], { type: "application/json" }),
-    );
-    return;
-  }
-
-  void fetch("/api/analytics", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: payload,
-    keepalive: true,
-  });
-}
+import {
+  isClientAnalyticsEventName,
+  parseClientAnalyticsLocale,
+  sendAnalyticsEvent,
+  shouldTrackConversionHost,
+} from "@/lib/analytics";
 
 export function AnalyticsEventScript() {
   useEffect(() => {
@@ -37,16 +25,18 @@ export function AnalyticsEventScript() {
         return;
       }
 
-      const payload = JSON.stringify({
+      if (!isClientAnalyticsEventName(anchor.dataset.analyticsEvent)) {
+        return;
+      }
+
+      sendAnalyticsEvent({
         event: anchor.dataset.analyticsEvent,
-        timestamp: new Date().toISOString(),
-        pathname: window.location.pathname,
-        locale: anchor.dataset.analyticsLocale || document.documentElement.lang || undefined,
+        locale: parseClientAnalyticsLocale(
+          anchor.dataset.analyticsLocale || document.documentElement.lang,
+        ),
         ctaId: anchor.dataset.analyticsCtaId || undefined,
         surface: anchor.dataset.analyticsSurface || undefined,
       });
-
-      postAnalyticsPayload(payload);
     }
 
     document.addEventListener("click", handleClick, true);

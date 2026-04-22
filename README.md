@@ -341,12 +341,15 @@ This project can also render the **Google Analytics 4** tag via `NEXT_PUBLIC_GA_
 Because this project stays on the free Cloudflare tier, conversion tracking is intentionally split into two layers:
 
 - **Cloudflare Web Analytics** for pageviews, referrers, landing pages, countries, and basic performance.
-- **Structured application logs** for conversion-adjacent events such as:
+- **Google Analytics 4** for consent-based page usage and key click events such as:
+  - `cta_click`
+  - `cv_download_click`
+  - `mailto_click`
+- **Structured application logs** for privacy-limited event verification and contact-flow outcomes such as:
   - `contact_form_success`
   - `contact_form_validation_error`
   - `contact_form_captcha_failed`
   - `contact_form_send_failed`
-  - key CTA / CV / mailto click events
 
 These events are privacy-first:
 

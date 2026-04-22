@@ -1,4 +1,15 @@
 import { SITE_URL } from "@/lib/metadata";
+import {
+  analyticsConsentStorageKey,
+  parseAnalyticsConsentState,
+} from "@/lib/analyticsConsent";
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 
 export function hasRealAnalyticsToken(token: string | undefined): boolean {
   return token != null && token !== "" && token !== "REPLACE_WITH_YOUR_TOKEN";
@@ -80,11 +91,24 @@ const CONTACT_FIELD_NAMES = new Set<string>([
   "subject",
   "message",
 ]);
+const CLIENT_ANALYTICS_EVENT_NAMES = new Set<ClientAnalyticsEventInput["event"]>([
+  "cta_click",
+  "cv_download_click",
+  "mailto_click",
+]);
 
 function isAnalyticsEventName(value: unknown): value is AnalyticsEventName {
   return (
     typeof value === "string" &&
     (analyticsEventNames as readonly string[]).includes(value)
+  );
+}
+
+export function isClientAnalyticsEventName(
+  value: unknown,
+): value is ClientAnalyticsEventInput["event"] {
+  return typeof value === "string" && CLIENT_ANALYTICS_EVENT_NAMES.has(
+    value as ClientAnalyticsEventInput["event"],
   );
 }
 
@@ -103,6 +127,12 @@ function sanitizeShortText(value: unknown): string | undefined {
 
 function sanitizeLocale(value: unknown): "en" | "pl" | undefined {
   return value === "en" || value === "pl" ? value : undefined;
+}
+
+export function parseClientAnalyticsLocale(
+  value: unknown,
+): "en" | "pl" | undefined {
+  return sanitizeLocale(value);
 }
 
 function sanitizePathname(value: unknown): string | undefined {
@@ -184,6 +214,54 @@ export function shouldTrackConversionHost(hostname: string): boolean {
   return isProductionAnalyticsHost(hostname, SITE_URL);
 }
 
+function shouldSendGoogleAnalyticsClientEvent(): boolean {
+  if (
+    typeof window === "undefined" ||
+    !shouldTrackConversionHost(window.location.hostname)
+  ) {
+    return false;
+  }
+
+  const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  if (
+    !hasRealGoogleAnalyticsMeasurementId(measurementId) ||
+    typeof window.gtag !== "function"
+  ) {
+    return false;
+  }
+
+  const consentState = parseAnalyticsConsentState(
+    window.localStorage.getItem(analyticsConsentStorageKey),
+  );
+  if (consentState !== "accepted") {
+    return false;
+  }
+
+  const windowWithGaFlags = window as unknown as Record<string, boolean | undefined>;
+  return windowWithGaFlags[`ga-disable-${measurementId}`] !== true;
+}
+
+function sendGoogleAnalyticsEvent(
+  input: ClientAnalyticsEventInput,
+  pathname: string,
+): void {
+  if (!shouldSendGoogleAnalyticsClientEvent()) {
+    return;
+  }
+
+  window.gtag!("event", input.event, {
+    cta_id: input.ctaId ?? "",
+    locale: input.locale ?? document.documentElement.lang ?? "",
+    surface: input.surface ?? "",
+    pathname,
+    page_path: pathname,
+    page_location: window.location.href,
+    page_title: document.title,
+    host_name: window.location.hostname,
+    transport_type: "beacon",
+  });
+}
+
 export function sendAnalyticsEvent(
   input: ClientAnalyticsEventInput,
   pathname?: string,
@@ -195,9 +273,12 @@ export function sendAnalyticsEvent(
     return;
   }
 
+  const resolvedPathname = pathname ?? window.location.pathname;
+  sendGoogleAnalyticsEvent(input, resolvedPathname);
+
   const payload = JSON.stringify({
     ...input,
-    pathname: pathname ?? window.location.pathname,
+    pathname: resolvedPathname,
     timestamp: new Date().toISOString(),
   });
 

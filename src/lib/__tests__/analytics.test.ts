@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   hasRealAnalyticsToken,
+  isClientAnalyticsEventName,
   hasRealGoogleAnalyticsMeasurementId,
   isProductionAnalyticsHost,
+  parseClientAnalyticsLocale,
   sanitizeAnalyticsEvent,
   shouldTrackConversionHost,
 } from "@/lib/analytics";
@@ -32,6 +34,25 @@ describe("hasRealGoogleAnalyticsMeasurementId", () => {
 
   it("returns true for GA4 measurement ids", () => {
     expect(hasRealGoogleAnalyticsMeasurementId("G-9XHYRXZ4WK")).toBe(true);
+  });
+});
+
+describe("isClientAnalyticsEventName", () => {
+  it("accepts only the supported client-side click events", () => {
+    expect(isClientAnalyticsEventName("cta_click")).toBe(true);
+    expect(isClientAnalyticsEventName("cv_download_click")).toBe(true);
+    expect(isClientAnalyticsEventName("mailto_click")).toBe(true);
+    expect(isClientAnalyticsEventName("contact_form_success")).toBe(false);
+    expect(isClientAnalyticsEventName(undefined)).toBe(false);
+  });
+});
+
+describe("parseClientAnalyticsLocale", () => {
+  it("accepts only supported locales", () => {
+    expect(parseClientAnalyticsLocale("en")).toBe("en");
+    expect(parseClientAnalyticsLocale("pl")).toBe("pl");
+    expect(parseClientAnalyticsLocale("de")).toBeUndefined();
+    expect(parseClientAnalyticsLocale(undefined)).toBeUndefined();
   });
 });
 
