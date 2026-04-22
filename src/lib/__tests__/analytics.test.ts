@@ -38,11 +38,11 @@ describe("hasRealGoogleAnalyticsMeasurementId", () => {
 });
 
 describe("isClientAnalyticsEventName", () => {
-  it("accepts only the supported client-side click events", () => {
+  it("accepts only the supported client-side analytics events", () => {
+    expect(isClientAnalyticsEventName("contact_form_success")).toBe(true);
     expect(isClientAnalyticsEventName("cta_click")).toBe(true);
     expect(isClientAnalyticsEventName("cv_download_click")).toBe(true);
     expect(isClientAnalyticsEventName("mailto_click")).toBe(true);
-    expect(isClientAnalyticsEventName("contact_form_success")).toBe(false);
     expect(isClientAnalyticsEventName(undefined)).toBe(false);
   });
 });

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { getMessages, getTranslations } from "next-intl/server";
-import { SocialLinks, EmailIcon, GitHubIcon, LinkedInIcon } from "@/components/ui/SocialLinks";
+import { SocialLinks, EmailIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/SocialLinks";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactExpectations } from "@/components/contact/ContactExpectations";
 import { isHCaptchaConfigured } from "@/lib/hcaptcha";
-import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, type SiteLocale } from "@/lib/metadata";
+import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, X_URL, type SiteLocale } from "@/lib/metadata";
 import { readServerEnv } from "@/lib/serverEnv";
 import { isTurnstileConfigured } from "@/lib/turnstile";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
@@ -163,6 +163,23 @@ export default async function ContactPage({ params }: Props) {
                     </p>
                     <p className="text-xs text-[var(--color-text-faint)]">
                       {t("githubSee")}
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href={X_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] p-4 transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-surface-muted)]"
+                >
+                  <XIcon />
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-base)]">
+                      X
+                    </p>
+                    <p className="text-xs text-[var(--color-text-faint)]">
+                      {t("xFollow")}
                     </p>
                   </div>
                 </a>

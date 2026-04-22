@@ -1,4 +1,4 @@
-import { GITHUB_URL, LINKEDIN_URL, EMAIL } from "@/lib/metadata";
+import { GITHUB_URL, LINKEDIN_URL, X_URL, EMAIL } from "@/lib/metadata";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
 
 interface SocialLinksProps {
@@ -26,6 +26,15 @@ export function SocialLinks({ className, showEmail = false }: SocialLinksProps) 
         className="text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] transition-colors"
       >
         <LinkedInIcon />
+      </a>
+      <a
+        href={X_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="X"
+        className="text-[var(--color-text-faint)] hover:text-[var(--color-text-base)] transition-colors"
+      >
+        <XIcon />
       </a>
       {showEmail && (
         <TrackedAnchor
@@ -65,6 +74,14 @@ export function EmailIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+    </svg>
+  );
+}
+
+export function XIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2H21l-6.02 6.88L22 22h-5.482l-4.292-5.967L7.004 22H4.246l6.438-7.36L2 2h5.62l3.88 5.4L18.244 2Zm-.967 18h1.526L6.79 3.894H5.153L17.277 20Z" />
     </svg>
   );
 }

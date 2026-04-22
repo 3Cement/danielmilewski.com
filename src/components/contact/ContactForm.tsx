@@ -10,6 +10,7 @@ import {
 import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import { sendContactMessage } from "@/app/actions/sendContactMessage";
+import { sendAnalyticsEvent } from "@/lib/analytics";
 import { initialContactFormState } from "@/components/contact/contactFormState";
 import {
   HCaptchaWidget,
@@ -92,6 +93,7 @@ export function ContactForm({
   const hcaptchaRef = useRef<HCaptchaWidgetHandle>(null);
   const turnstileRef = useRef<TurnstileWidgetHandle>(null);
   const pendingSubmitAfterCaptchaRef = useRef(false);
+  const lastTrackedSuccessStateRef = useRef(state);
   const [captchaToken, setCaptchaToken] = useState("");
 
   useEffect(() => {
@@ -108,6 +110,23 @@ export function ContactForm({
     pendingSubmitAfterCaptchaRef.current = false;
     formRef.current?.requestSubmit();
   }, [captchaToken]);
+
+  useEffect(() => {
+    if (
+      state.status !== "success" ||
+      lastTrackedSuccessStateRef.current === state
+    ) {
+      return;
+    }
+
+    lastTrackedSuccessStateRef.current = state;
+    sendAnalyticsEvent({
+      event: "contact_form_success",
+      locale,
+      ctaId: "contact_form_submit",
+      surface: "contact_page",
+    });
+  }, [locale, state]);
 
   const fieldError = (field: ContactField) => {
     const code = state.fieldErrors?.[field];

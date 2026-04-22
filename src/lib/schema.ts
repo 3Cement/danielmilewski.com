@@ -3,6 +3,7 @@ import {
   SITE_DESCRIPTION,
   GITHUB_URL,
   LINKEDIN_URL,
+  X_URL,
   EMAIL,
   absoluteUrl,
   profileImageAbsoluteUrl,
@@ -21,7 +22,7 @@ export function personSchema(locale: SiteLocale) {
     inLanguage: locale,
     jobTitle: "Software Engineer",
     description: SITE_DESCRIPTION,
-    sameAs: [GITHUB_URL, LINKEDIN_URL],
+    sameAs: [GITHUB_URL, LINKEDIN_URL, X_URL],
     knowsAbout: [
       "Python",
       "Artificial Intelligence",

@@ -76,7 +76,7 @@ export interface AnalyticsEventPayload {
 export interface ClientAnalyticsEventInput {
   event: Extract<
     AnalyticsEventName,
-    "cta_click" | "cv_download_click" | "mailto_click"
+    "contact_form_success" | "cta_click" | "cv_download_click" | "mailto_click"
   >;
   locale?: "en" | "pl";
   ctaId?: string;
@@ -92,6 +92,7 @@ const CONTACT_FIELD_NAMES = new Set<string>([
   "message",
 ]);
 const CLIENT_ANALYTICS_EVENT_NAMES = new Set<ClientAnalyticsEventInput["event"]>([
+  "contact_form_success",
   "cta_click",
   "cv_download_click",
   "mailto_click",

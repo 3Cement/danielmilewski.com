@@ -61,7 +61,7 @@ export async function Footer({ locale }: FooterProps) {
               </nav>
             </div>
             <div className="flex justify-center sm:justify-end">
-              <SocialLinks />
+              <SocialLinks showEmail />
             </div>
           </div>
           <div className="flex justify-center sm:justify-start">

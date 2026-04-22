@@ -4,9 +4,10 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://danielmilew
 export const SITE_NAME = "Daniel Milewski";
 export const SITE_DESCRIPTION =
   "Software engineer focused on backend systems, APIs, automation, and AI-enabled products.";
-export const TWITTER_HANDLE = "@danielmilewski";
+export const TWITTER_HANDLE = "@33cement";
 export const GITHUB_URL = "https://github.com/3Cement";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
+export const X_URL = "https://x.com/33cement";
 export const EMAIL = "danielmilewski123@gmail.com";
 
 /** Public business registry listing (CEIDG / Monitor Firm). */
