@@ -31,7 +31,20 @@ const nextConfig: NextConfig = {
       { source: "/home.html", destination: `/${defaultLocale}`, permanent: true as const },
     ];
 
-    return [...localelessRedirects, ...legacyFileRedirects];
+    const localelessNestedRedirects = [
+      {
+        source: "/blog/:slug+",
+        destination: `/${defaultLocale}/blog/:slug+`,
+        permanent: true as const,
+      },
+      {
+        source: "/projects/:slug+",
+        destination: `/${defaultLocale}/projects/:slug+`,
+        permanent: true as const,
+      },
+    ];
+
+    return [...localelessRedirects, ...legacyFileRedirects, ...localelessNestedRedirects];
   },
 };
 

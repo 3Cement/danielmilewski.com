@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: absoluteUrl(locale, `/projects/${slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.8,
+      lastModified: latestContentDate,
     }))
   );
 
