@@ -9,6 +9,8 @@
   },
   "hero": {
     "badge": "Backend · API · automatyzacja · AI",
+    "badgePrimary": "Backend i API",
+    "badgeSecondary": "AI / LLM",
     "h1": "Buduję solidne systemy backendowe, API i oprogramowanie dla realnych produktów.",
     "sub": "Pomagam zespołom projektować i dostarczać niezawodne rozwiązania: backend, integracje, automatyzację i narzędzia AI tam, gdzie faktycznie mają sens.",
     "cta1": "Zobacz projekty",

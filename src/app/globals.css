@@ -24,6 +24,9 @@
 
   --color-border: #d0d7de;
   --color-border-muted: #eaeef2;
+
+  /* Text color used on top of a solid --color-accent fill (buttons etc.) */
+  --color-on-accent: #ffffff;
 }
 
 /* Dark mode — GitHub dark palette */
@@ -42,6 +45,39 @@
 
   --color-border: #30363d;
   --color-border-muted: #21262d;
+}
+
+/*
+ * Volt — dedicated identity for the homepage and the shared Navbar/Footer chrome.
+ * A deliberate single dark world (does not respond to the light/dark toggle),
+ * with a second accent (--color-accent-2) encoding the site's two pillars:
+ * backend/systems work (teal) and AI/LLM work (coral).
+ */
+.volt {
+  --color-accent: #4fd1c5;
+  --color-accent-muted: #38b6ab;
+  --color-accent-light: #82e4da;
+  --color-accent-2: #ff7a59;
+  --color-on-accent: #08211f;
+
+  --color-surface: #100d16;
+  --color-surface-muted: #17131f;
+  --color-surface-subtle: #1d1828;
+
+  --color-text-base: #f2eefb;
+  --color-text-muted: #a79fc0;
+  --color-text-faint: #776e91;
+
+  --color-border: #2a2436;
+  --color-border-muted: #221d2c;
+
+  background-color: var(--color-surface);
+  color: var(--color-text-base);
+}
+
+.volt-dotgrid {
+  background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 html {
