@@ -14,11 +14,24 @@ interface ProjectCardProps {
   locale: AppLocale;
   project: ProjectMeta;
   labels: ProjectCardLabels;
+  /**
+   * Heading level for the project title. Defaults to "h3" (correct when the
+   * card sits under a section h2, e.g. homepage "Selected work"). Pass "h2"
+   * when the card is the first heading level under a bare page h1, e.g. the
+   * standalone /projects list, to keep the outline sequential.
+   */
+  headingLevel?: "h2" | "h3";
 }
 
-export function ProjectCard({ locale, project, labels }: ProjectCardProps) {
+export function ProjectCard({
+  locale,
+  project,
+  labels,
+  headingLevel = "h3",
+}: ProjectCardProps) {
   const { problemLabel, solutionLabel, readCaseStudy } = labels;
   const previewSrc = project.images?.[0];
+  const Heading = headingLevel;
 
   const body = (
     <>
@@ -26,7 +39,7 @@ export function ProjectCard({ locale, project, labels }: ProjectCardProps) {
         {project.role}
       </p>
 
-      <h3 className="text-lg font-semibold text-[var(--color-text-base)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
+      <Heading className="text-lg font-semibold text-[var(--color-text-base)] mb-3 group-hover:text-[var(--color-accent)] transition-colors">
         <LocalizedLink
           locale={locale}
           href={`/projects/${project.slug}`}
@@ -34,7 +47,7 @@ export function ProjectCard({ locale, project, labels }: ProjectCardProps) {
         >
           {project.title}
         </LocalizedLink>
-      </h3>
+      </Heading>
 
       <p className="text-sm text-[var(--color-text-muted)] leading-relaxed mb-2">
         <span className="font-medium text-[var(--color-text-base)]">{problemLabel}: </span>

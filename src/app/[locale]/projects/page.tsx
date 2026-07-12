@@ -75,6 +75,7 @@ export default async function ProjectsPage({ params }: Props) {
           locale={locale as "en" | "pl"}
           projects={projects}
           labels={cardLabels}
+          headingLevel="h2"
         />
         {projects.length < 4 && (
           <div className="mt-8 p-6 rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface-muted)] text-center">

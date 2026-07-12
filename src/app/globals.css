@@ -12,7 +12,7 @@
   /* Light mode — GitHub-inspired off-white */
   --color-accent: #0969da;
   --color-accent-muted: #0550ae;
-  --color-accent-light: #4493f8;
+  --color-accent-light: #1a56a3;
 
   --color-surface: #ffffff;
   --color-surface-muted: #f6f8fa;
@@ -20,7 +20,7 @@
 
   --color-text-base: #1f2328;
   --color-text-muted: #656d76;
-  --color-text-faint: #9198a1;
+  --color-text-faint: #5f666e;
 
   --color-border: #d0d7de;
   --color-border-muted: #eaeef2;
@@ -41,7 +41,7 @@
 
   --color-text-base: #e6edf3;
   --color-text-muted: #8b949e;
-  --color-text-faint: #484f58;
+  --color-text-faint: #8c939b;
 
   --color-border: #30363d;
   --color-border-muted: #21262d;
@@ -66,7 +66,7 @@
 
   --color-text-base: #f2eefb;
   --color-text-muted: #a79fc0;
-  --color-text-faint: #776e91;
+  --color-text-faint: #9089ab;
 
   --color-border: #2a2436;
   --color-border-muted: #221d2c;

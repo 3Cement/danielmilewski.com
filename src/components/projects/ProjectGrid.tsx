@@ -6,9 +6,15 @@ interface ProjectGridProps {
   locale: AppLocale;
   projects: ProjectMeta[];
   labels: ProjectCardLabels;
+  headingLevel?: "h2" | "h3";
 }
 
-export function ProjectGrid({ locale, projects, labels }: ProjectGridProps) {
+export function ProjectGrid({
+  locale,
+  projects,
+  labels,
+  headingLevel,
+}: ProjectGridProps) {
   return (
     <div className="grid grid-cols-1 gap-8 w-full">
       {projects.map((project) => (
@@ -17,6 +23,7 @@ export function ProjectGrid({ locale, projects, labels }: ProjectGridProps) {
           locale={locale}
           project={project}
           labels={labels}
+          headingLevel={headingLevel}
         />
       ))}
     </div>
