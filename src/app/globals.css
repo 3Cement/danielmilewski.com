@@ -9,10 +9,16 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Light mode — GitHub-inspired off-white */
-  --color-accent: #0969da;
-  --color-accent-muted: #0550ae;
-  --color-accent-light: #1a56a3;
+  /*
+   * Volt — site-wide identity. Two accents encode the site's two pillars:
+   * backend/systems work (teal) and AI/LLM work (coral). Light mode uses
+   * darker, text-safe shades (>=4.5:1 on white); dark mode uses the
+   * brighter shades that read well on the near-black surface.
+   */
+  --color-accent: #0f766e;
+  --color-accent-muted: #115e59;
+  --color-accent-light: #0a7268;
+  --color-accent-2: #c2410c;
 
   --color-surface: #ffffff;
   --color-surface-muted: #f6f8fa;
@@ -29,31 +35,8 @@
   --color-on-accent: #ffffff;
 }
 
-/* Dark mode — GitHub dark palette */
+/* Dark mode — Volt dark: near-black surface, teal + coral accents */
 .dark {
-  --color-accent: #4493f8;
-  --color-accent-muted: #1f6feb;
-  --color-accent-light: #79c0ff;
-
-  --color-surface: #0d1117;
-  --color-surface-muted: #161b22;
-  --color-surface-subtle: #21262d;
-
-  --color-text-base: #e6edf3;
-  --color-text-muted: #8b949e;
-  --color-text-faint: #8c939b;
-
-  --color-border: #30363d;
-  --color-border-muted: #21262d;
-}
-
-/*
- * Volt — dedicated identity for the homepage and the shared Navbar/Footer chrome.
- * A deliberate single dark world (does not respond to the light/dark toggle),
- * with a second accent (--color-accent-2) encoding the site's two pillars:
- * backend/systems work (teal) and AI/LLM work (coral).
- */
-.volt {
   --color-accent: #4fd1c5;
   --color-accent-muted: #38b6ab;
   --color-accent-light: #82e4da;
@@ -70,9 +53,6 @@
 
   --color-border: #2a2436;
   --color-border-muted: #221d2c;
-
-  background-color: var(--color-surface);
-  color: var(--color-text-base);
 }
 
 .volt-dotgrid {
@@ -122,6 +102,6 @@ pre {
 }
 
 ::selection {
-  background-color: #4493f8 / 0.2;
-  background-color: color-mix(in srgb, #4493f8 20%, transparent);
+  background-color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
 }

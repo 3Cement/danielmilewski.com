@@ -18,7 +18,7 @@ export async function HomePageContent({ locale }: HomePageContentProps) {
   const posts = getLatestPosts(locale, 3);
 
   return (
-    <div className="volt">
+    <>
       <Hero locale={locale} />
       <CredibilityStrip locale={locale} />
       <TrustSection locale={locale} />
@@ -28,6 +28,6 @@ export async function HomePageContent({ locale }: HomePageContentProps) {
       <WritingPreview posts={posts} locale={locale} />
       <HomeFAQ locale={locale as "en" | "pl"} />
       <FinalCTA locale={locale} />
-    </div>
+    </>
   );
 }

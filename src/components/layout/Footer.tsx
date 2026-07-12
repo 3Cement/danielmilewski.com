@@ -27,7 +27,7 @@ export async function Footer({ locale }: FooterProps) {
   ];
 
   return (
-    <footer className="volt border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
