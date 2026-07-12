@@ -9,6 +9,8 @@
   },
   "hero": {
     "badge": "Backend · APIs · Automation · AI",
+    "badgePrimary": "Backend & APIs",
+    "badgeSecondary": "AI / LLM",
     "h1": "I build reliable backend systems, APIs, and software for real products.",
     "sub": "I help teams design and ship dependable software: backend services, integrations, automation, and AI-enabled workflows where they add real value.",
     "cta1": "View selected work",

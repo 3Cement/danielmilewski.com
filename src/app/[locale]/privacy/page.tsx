@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { buildMetadata, type SiteLocale } from "@/lib/metadata";
+import { absoluteUrl, buildMetadata, type SiteLocale } from "@/lib/metadata";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { breadcrumbSchema } from "@/lib/schema";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
 export const dynamic = "force-static";
 
@@ -22,6 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PrivacyPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "legal" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
   const year = new Date().getFullYear();
   const sections = [
     {
@@ -46,8 +51,32 @@ export default async function PrivacyPage({ params }: Props) {
     },
   ];
 
+  const structuredData = JSON.stringify(
+    breadcrumbSchema([
+      { name: tNav("home"), item: absoluteUrl(locale as SiteLocale, "/") },
+      {
+        name: t("privacyTitle"),
+        item: absoluteUrl(locale as SiteLocale, "/privacy"),
+      },
+    ]),
+  ).replace(/<\/script>/gi, "<\\/script>");
+
   return (
-    <div className="py-16 px-4">
+    <>
+      <div className="px-4 pt-10">
+        <div className="mx-auto max-w-2xl">
+          <Breadcrumbs
+            ariaLabel={tCommon("breadcrumbsAriaLabel")}
+            locale={locale as "en" | "pl"}
+            items={[
+              { label: tNav("home"), href: "/" },
+              { label: t("privacyTitle") },
+            ]}
+          />
+        </div>
+      </div>
+      <StructuredDataScript id="privacy-structured-data" json={structuredData} />
+      <div className="py-16 px-4">
       <div className="mx-auto max-w-2xl">
         <h1 className="text-3xl font-bold tracking-tight text-[var(--color-text-base)] mb-2">
           {t("privacyTitle")}
@@ -68,6 +97,7 @@ export default async function PrivacyPage({ params }: Props) {
           <p>{t("privacyContact")}</p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

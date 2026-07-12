@@ -33,11 +33,12 @@ export function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
         href={englishPath}
         prefetch={false}
         onClick={() => persistLocale("en")}
-        className={`px-1.5 py-1 text-sm rounded transition-opacity ${
-          locale === "en" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"
+        className={`px-1.5 py-1 text-sm rounded transition-colors ${
+          locale === "en"
+            ? "text-[var(--color-text-base)] font-medium"
+            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]"
         }`}
-        aria-label="Switch to English"
-        aria-pressed={locale === "en"}
+        aria-label="EN — switch to English"
         aria-current={locale === "en" ? "page" : undefined}
       >
         EN
@@ -46,11 +47,12 @@ export function LanguageSwitcher({ locale }: LanguageSwitcherProps) {
         href={polishPath}
         prefetch={false}
         onClick={() => persistLocale("pl")}
-        className={`px-1.5 py-1 text-sm rounded transition-opacity ${
-          locale === "pl" ? "opacity-100 font-medium" : "opacity-40 hover:opacity-70"
+        className={`px-1.5 py-1 text-sm rounded transition-colors ${
+          locale === "pl"
+            ? "text-[var(--color-text-base)] font-medium"
+            : "text-[var(--color-text-muted)] hover:text-[var(--color-text-base)]"
         }`}
-        aria-label="Przełącz na polski"
-        aria-pressed={locale === "pl"}
+        aria-label="PL — przełącz na polski"
         aria-current={locale === "pl" ? "page" : undefined}
       >
         PL
