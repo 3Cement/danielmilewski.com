@@ -5,10 +5,13 @@ import { SocialLinks, EmailIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/compo
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactExpectations } from "@/components/contact/ContactExpectations";
 import { isHCaptchaConfigured } from "@/lib/hcaptcha";
-import { buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, X_URL, type SiteLocale } from "@/lib/metadata";
+import { absoluteUrl, buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LINKEDIN_URL, X_URL, type SiteLocale } from "@/lib/metadata";
 import { readServerEnv } from "@/lib/serverEnv";
 import { isTurnstileConfigured } from "@/lib/turnstile";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { breadcrumbSchema } from "@/lib/schema";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -29,6 +32,8 @@ export default async function ContactPage({ params }: Props) {
   await connection();
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
   const messages = await getMessages({ locale });
   const hcaptchaSiteKey = await readServerEnv("NEXT_PUBLIC_HCAPTCHA_SITE_KEY");
   const hcaptchaSecret = await readServerEnv("HCAPTCHA_SECRET_KEY");
@@ -48,8 +53,32 @@ export default async function ContactPage({ params }: Props) {
 
   const lookingItems = t.raw("lookingItems") as string[];
 
+  const structuredData = JSON.stringify(
+    breadcrumbSchema([
+      { name: tNav("home"), item: absoluteUrl(locale as SiteLocale, "/") },
+      {
+        name: tNav("contact"),
+        item: absoluteUrl(locale as SiteLocale, "/contact"),
+      },
+    ]),
+  ).replace(/<\/script>/gi, "<\\/script>");
+
   return (
-    <div className="py-16 px-4">
+    <>
+      <div className="px-4 pt-10">
+        <div className="mx-auto max-w-6xl">
+          <Breadcrumbs
+            ariaLabel={tCommon("breadcrumbsAriaLabel")}
+            locale={locale as "en" | "pl"}
+            items={[
+              { label: tNav("home"), href: "/" },
+              { label: tNav("contact") },
+            ]}
+          />
+        </div>
+      </div>
+      <StructuredDataScript id="contact-structured-data" json={structuredData} />
+      <div className="py-16 px-4">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] xl:gap-12">
           <div className="min-w-0">
@@ -209,6 +238,7 @@ export default async function ContactPage({ params }: Props) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

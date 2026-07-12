@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Tag } from "@/components/ui/Tag";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import {
+  absoluteUrl,
   buildMetadata,
   COMPANY_REGISTRY_URL,
   CV_URL_EN,
@@ -13,6 +14,9 @@ import {
   type SiteLocale,
 } from "@/lib/metadata";
 import { TrackedAnchor, TrackedLink } from "@/components/ui/TrackedLink";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { breadcrumbSchema, profilePageSchema } from "@/lib/schema";
+import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
 export const dynamic = "force-static";
 
@@ -34,6 +38,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AboutPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about" });
+  const tNav = await getTranslations({ locale, namespace: "nav" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
+
+  const structuredData = JSON.stringify([
+    profilePageSchema(locale as SiteLocale),
+    breadcrumbSchema([
+      { name: tNav("home"), item: absoluteUrl(locale as SiteLocale, "/") },
+      { name: tNav("about"), item: absoluteUrl(locale as SiteLocale, "/about") },
+    ]),
+  ]).replace(/<\/script>/gi, "<\\/script>");
 
   const rawTechStack = t.raw("techStack");
   const techStack =
@@ -56,7 +70,21 @@ export default async function AboutPage({ params }: Props) {
     : [];
 
   return (
-    <div className="py-16 px-4">
+    <>
+      <div className="px-4 pt-10">
+        <div className="mx-auto max-w-6xl">
+          <Breadcrumbs
+            ariaLabel={tCommon("breadcrumbsAriaLabel")}
+            locale={locale as "en" | "pl"}
+            items={[
+              { label: tNav("home"), href: "/" },
+              { label: tNav("about") },
+            ]}
+          />
+        </div>
+      </div>
+      <StructuredDataScript id="about-structured-data" json={structuredData} />
+      <div className="py-16 px-4">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Sidebar */}
@@ -258,6 +286,7 @@ export default async function AboutPage({ params }: Props) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

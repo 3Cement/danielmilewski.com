@@ -35,6 +35,18 @@ export function personSchema(locale: SiteLocale) {
   };
 }
 
+/** Google's dedicated type for a first-hand "creator" profile page (used on /about). */
+export function profilePageSchema(locale: SiteLocale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: absoluteUrl(locale, "/about"),
+    inLanguage: locale,
+    dateModified: getLatestContentDate(),
+    mainEntity: personSchema(locale),
+  };
+}
+
 export function websiteSchema(locale: SiteLocale) {
   return {
     "@context": "https://schema.org",

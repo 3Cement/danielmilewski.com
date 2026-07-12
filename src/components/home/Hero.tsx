@@ -8,6 +8,7 @@ interface HeroProps {
 
 export async function Hero({ locale }: HeroProps) {
   const t = await getTranslations({ locale, namespace: "hero" });
+  const tAbout = await getTranslations({ locale, namespace: "about" });
 
   return (
     <section
@@ -58,6 +59,13 @@ export async function Hero({ locale }: HeroProps) {
               {t("cta2")}
             </TrackedLink>
           </div>
+          <p className="mt-4 flex items-center gap-2 text-xs text-[var(--color-text-faint)]">
+            <span
+              className="block h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500"
+              aria-hidden="true"
+            />
+            {tAbout("availableText")}
+          </p>
           <div className="mt-8">
             <SocialLinks />
           </div>
