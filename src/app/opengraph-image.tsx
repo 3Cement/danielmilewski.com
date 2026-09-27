@@ -16,14 +16,14 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: 72,
-          background: "#0d1117",
-          color: "#e6edf3",
+          background: "#2233d4",
+          color: "#ffffff",
           fontFamily: "ui-sans-serif, system-ui, sans-serif",
         }}
       >
-        <div style={{ fontSize: 56, fontWeight: 700, letterSpacing: -1.5 }}>{SITE_NAME}</div>
-        <div style={{ marginTop: 16, fontSize: 28, color: "#8b949e" }}>Software Engineer</div>
-        <div style={{ marginTop: 32, fontSize: 22, color: "#4493f8" }}>Backend · APIs · Automation</div>
+        <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", color: "#c9cefa" }}>{SITE_NAME}</div>
+        <div style={{ marginTop: 20, fontSize: 88, fontWeight: 800, lineHeight: 0.95, letterSpacing: -3, textTransform: "uppercase" }}>Senior Python Developer</div>
+        <div style={{ marginTop: 36, fontSize: 26, color: "#ff6b2c", fontWeight: 700 }}>Backend · APIs · Data pipelines · Gdańsk / Remote EU</div>
       </div>
     ),
     { ...size },

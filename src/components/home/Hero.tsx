@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { SocialLinks } from "@/components/ui/SocialLinks";
-import { TrackedLink } from "@/components/ui/TrackedLink";
+import Image from "next/image";
+import { TrackedAnchor, TrackedLink } from "@/components/ui/TrackedLink";
+import { CV_URL_EN, CV_URL_PL, PROFILE_IMAGE_PATH } from "@/lib/metadata";
 
 interface HeroProps {
   locale: string;
@@ -8,68 +9,74 @@ interface HeroProps {
 
 export async function Hero({ locale }: HeroProps) {
   const t = await getTranslations({ locale, namespace: "hero" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
+  const h1Lines = t.raw("h1Lines") as string[];
+  const siteLocale = locale as "en" | "pl";
 
   return (
-    <section
-      className="volt-dotgrid relative scroll-mt-24 border-b border-[var(--color-border)] py-24 sm:py-32 px-4"
-      id="hero"
-    >
-      <div className="mx-auto max-w-6xl">
-        <div className="max-w-3xl">
-          <div className="mb-6 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-full border border-[var(--color-accent)]/40 px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide text-[var(--color-accent)]">
-              {t("badgePrimary")}
-            </span>
-            <span className="inline-flex items-center rounded-full border border-[var(--color-accent-2)]/40 px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide text-[var(--color-accent-2)]">
-              {t("badgeSecondary")}
-            </span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[var(--color-text-base)] leading-[1.02] text-balance">
-            {t("h1")}
+    <section className="on-cobalt relative scroll-mt-24 overflow-hidden" id="hero">
+      <div className="mx-auto grid max-w-6xl items-end gap-8 px-4 pt-12 sm:px-6 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:gap-16 lg:px-8">
+        <div>
+          <p className="font-condensed flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-[0.14em]">
+            <span
+              className="block h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--color-signal)] ring-4 ring-white/20"
+              aria-hidden="true"
+            />
+            {t("eyebrow")}
+          </p>
+          <h1 className="font-expanded mt-6 text-[clamp(2.5rem,6.4vw,5.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.035em]">
+            {h1Lines.map((line) => (
+              <span key={line} className="hero-line">
+                {line}{" "}
+              </span>
+            ))}
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-[var(--color-text-muted)] leading-relaxed max-w-2xl">
+          <p className="mt-7 max-w-[36ch] text-lg leading-snug sm:text-xl">
             {t("sub")}
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="mt-8 mb-10 flex flex-wrap gap-3 lg:mb-20">
             <TrackedLink
-              locale={locale as "en" | "pl"}
+              locale={siteLocale}
               href="/projects"
               analytics={{
                 event: "cta_click",
-                locale: locale as "en" | "pl",
+                locale: siteLocale,
                 ctaId: "hero_view_projects",
                 surface: "hero",
               }}
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-[var(--color-on-accent)] shadow-sm hover:bg-[var(--color-accent-muted)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+              className="inline-flex items-center border-2 border-white bg-white px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-[var(--color-cobalt)] transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--color-signal)]"
             >
               {t("cta1")}
             </TrackedLink>
-            <TrackedLink
-              locale={locale as "en" | "pl"}
-              href="/contact"
+            <TrackedAnchor
+              href={siteLocale === "pl" ? CV_URL_PL : CV_URL_EN}
+              target="_blank"
+              rel="noopener"
               analytics={{
                 event: "cta_click",
-                locale: locale as "en" | "pl",
-                ctaId: "hero_contact",
+                locale: siteLocale,
+                ctaId: "hero_download_cv",
                 surface: "hero",
               }}
-              className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-sm font-semibold text-[var(--color-text-base)] ring-1 ring-inset ring-[var(--color-border)] hover:bg-[var(--color-surface-muted)] transition-colors"
+              className="inline-flex items-center border-2 border-white px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--color-signal)]"
             >
               {t("cta2")}
-            </TrackedLink>
-          </div>
-          <p className="mt-4 flex items-center gap-2 text-xs text-[var(--color-text-faint)]">
-            <span
-              className="block h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500"
-              aria-hidden="true"
-            />
-            {tAbout("availableText")}
-          </p>
-          <div className="mt-8">
-            <SocialLinks />
+            </TrackedAnchor>
           </div>
         </div>
+        <figure className="relative self-end">
+          <Image
+            src={PROFILE_IMAGE_PATH}
+            alt={t("photoAlt")}
+            width={440}
+            height={550}
+            priority
+            sizes="(min-width: 1024px) 360px, 320px"
+            className="ml-auto block aspect-[4/5] w-full max-w-[320px] object-cover object-[50%_20%] mix-blend-luminosity grayscale contrast-[1.15] brightness-105 lg:max-w-[360px]"
+          />
+          <figcaption className="font-condensed absolute bottom-6 left-0 bg-[var(--color-signal)] px-3 py-2 text-sm font-extrabold uppercase tracking-[0.08em] text-[#16080a]">
+            {t("status")}
+          </figcaption>
+        </figure>
       </div>
     </section>
   );

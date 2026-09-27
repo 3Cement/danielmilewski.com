@@ -8,91 +8,41 @@
     "toggleMenu": "Toggle menu"
   },
   "hero": {
-    "badge": "Backend · APIs · Automation · AI",
-    "badgePrimary": "Backend & APIs",
-    "badgeSecondary": "AI / LLM",
-    "h1": "I build reliable backend systems, APIs, and software for real products.",
-    "sub": "I help teams design and ship dependable software: backend services, integrations, automation, and AI-enabled workflows where they add real value.",
-    "cta1": "View selected work",
-    "cta2": "Contact me"
-  },
-  "credibility": {
-    "tags": ["Python", "Backend Systems", "REST APIs", "FastAPI", "PostgreSQL", "Automation", "AI / ML"]
+    "eyebrow": "Daniel Milewski · Gdańsk · Remote EU",
+    "h1Lines": [
+      "Senior",
+      "Python",
+      "Developer"
+    ],
+    "sub": "I build backend systems, APIs and data pipelines in Python for fintech and energy companies. Code that runs in production and stays easy to maintain.",
+    "cta1": "See the work",
+    "cta2": "Download CV",
+    "status": "Open to senior roles",
+    "photoAlt": "Daniel Milewski, portrait"
   },
   "trust": {
-    "eyebrow": "Working context",
-    "heading": "Built in environments where software has to stay reliable.",
-    "sub": "The strongest signal I can offer right now is not a polished slogan but the kind of teams and systems I've worked in: research analytics, fintech, and production backend delivery.",
-    "items": [
-      {
-        "label": "Production domains",
-        "value": "Energy, fintech, IT services",
-        "note": "Experience across data-heavy and high-stakes environments where correctness, uptime, and maintainability matter."
-      },
-      {
-        "label": "Ownership style",
-        "value": "Architecture to deploy",
-        "note": "Comfortable taking work from ambiguous problem definition through implementation, cleanup, and production rollout."
-      },
-      {
-        "label": "Engagement model",
-        "value": "Remote-ready B2B in Europe",
-        "note": "Clear communication, registered sole proprietorship in Poland, and a working style that fits remote product and engineering teams."
-      }
-    ],
-    "companiesHeading": "Recent team projects",
+    "label": "Recent teams",
     "companies": [
       {
         "name": "Energy Aspects",
-        "role": "Python Developer",
-        "domain": "Research analytics and internal tools for institutional energy-market products."
+        "role": "Research analytics",
+        "period": "2025–now"
       },
       {
         "name": "JIT Team",
         "role": "Senior Python Developer",
-        "domain": "Backend APIs, integrations, and delivery in a software-house model."
+        "period": "2024–now"
       },
       {
         "name": "Equiti",
-        "role": "Python Developer",
-        "domain": "Brokerage and fintech systems in a regulated, high-availability environment."
-      }
-    ]
-  },
-  "expertise": {
-    "heading": "What I work on",
-    "sub": "The areas where I can take ownership from first line to production.",
-    "items": [
-      {
-        "icon": "🐍",
-        "title": "Python Backend Engineering",
-        "description": "Production-grade Python services built to last: FastAPI, SQLAlchemy, async patterns, clean architecture, tests, CI/CD. Opinionated about maintainability."
-      },
-      {
-        "icon": "🔌",
-        "title": "APIs & System Design",
-        "description": "REST API design, async data pipelines, PostgreSQL, Redis, multi-tenant systems. Comfortable reasoning about scalability and making architectural tradeoffs explicit."
-      },
-      {
-        "icon": "⚙️",
-        "title": "Automation & Integrations",
-        "description": "Python workflows that replace manual, error-prone processes. Celery, scheduled jobs, API integrations, data pipelines. Built to run unattended with clear observability."
-      },
-      {
-        "icon": "🤖",
-        "title": "AI / ML",
-        "description": "RAG pipelines, LLM agents, document intelligence, structured extraction. Practical tooling built as part of a larger system — not standalone demos."
-      },
-      {
-        "icon": "🖥️",
-        "title": "Frontend Delivery",
-        "description": "When the product requires it: Next.js, React, TypeScript, Tailwind. Not a designer, but builds interfaces that work well and don't embarrass the backend."
+        "role": "Online brokerage",
+        "period": "2024–2025"
       }
     ]
   },
   "projects": {
     "heading": "Selected work",
-    "sub": "Projects I'm comfortable putting my name on.",
+    "sub": "Products I designed, built and shipped on my own, from data model to deploy.",
     "allProjects": "All projects",
     "readCaseStudy": "Read case study",
     "problemLabel": "Problem",
@@ -100,19 +50,22 @@
     "pageHeading": "Projects",
     "pageSub": "Things I've built, from side projects to production systems.",
     "comingSoon": "More projects coming",
-    "comingSoonSub": "Currently documenting additional work. Check back soon."
+    "comingSoonSub": "Currently documenting additional work. Check back soon.",
+    "roleLabel": "Role",
+    "stackLabel": "Stack",
+    "liveLabel": "Live"
   },
   "about": {
     "heading": "About",
     "role": "Senior Python Developer",
     "availability": "Availability",
-    "availableText": "Not open to new full-time engagements at the moment",
+    "availableText": "Open to senior Python and backend roles",
     "location": "Location",
     "locationText": "Europe · Remote-friendly",
     "cvHeading": "CV (PDF)",
     "cvEnglish": "CV — English",
     "cvPolish": "CV — Polish",
-    "availabilityNote": "I'm fully committed to a current client project, so I'm not taking on new work at full capacity right now. I'm still happy to connect and discuss future opportunities, timelines, and whether we're a good fit down the line.",
+    "availabilityNote": "I'm looking for my next senior Python or backend role: remote or hybrid across Europe, full-time or B2B. Send me the role description and I'll get back to you within a few working days.",
     "companyHeading": "Business",
     "companyBody": "I operate as a registered sole proprietorship (CEIDG) in Poland for freelance and B2B contracts — programming and related IT services (PKD 62.10.B and associated codes). Registered address: ul. Obrońców Westerplatte 144A, 80-317 Gdańsk.\n\nNIP: 8442338935 · REGON: 522772081",
     "companyRegistryLink": "Public company record (Monitor Firm / PB.pl)",
@@ -151,13 +104,46 @@
     ],
     "techHeading": "Tools & technologies",
     "techStack": {
-      "Core languages": ["Python", "TypeScript"],
-      "Backend": ["FastAPI", "SQLAlchemy", "Alembic", "Pydantic", "Celery", "ARQ"],
-      "Data": ["PostgreSQL", "Redis", "SQLite", "Pandas"],
-      "Infrastructure": ["Docker", "GitHub Actions", "Vercel", "Linux"],
-      "Frontend": ["Next.js", "React", "Tailwind CSS"],
-      "AI / ML": ["LangChain", "OpenAI API", "Anthropic API", "instructor", "Pinecone", "Chroma"],
-      "Testing": ["pytest"]
+      "Core languages": [
+        "Python",
+        "TypeScript"
+      ],
+      "Backend": [
+        "FastAPI",
+        "SQLAlchemy",
+        "Alembic",
+        "Pydantic",
+        "Celery",
+        "ARQ"
+      ],
+      "Data": [
+        "PostgreSQL",
+        "Redis",
+        "SQLite",
+        "Pandas"
+      ],
+      "Infrastructure": [
+        "Docker",
+        "GitHub Actions",
+        "Vercel",
+        "Linux"
+      ],
+      "Frontend": [
+        "Next.js",
+        "React",
+        "Tailwind CSS"
+      ],
+      "AI / ML": [
+        "LangChain",
+        "OpenAI API",
+        "Anthropic API",
+        "instructor",
+        "Pinecone",
+        "Chroma"
+      ],
+      "Testing": [
+        "pytest"
+      ]
     },
     "howHeading": "How I work",
     "how1": "I start with the problem, not the stack. A good solution is one that fits the actual constraints — team size, operational maturity, timeline, budget — not the one that uses the most interesting technology.",
@@ -166,7 +152,7 @@
   },
   "contact": {
     "heading": "Get in touch",
-    "sub": "I'm focused on an ongoing project, so I'm not starting new engagements at full capacity — but I'm glad to hear what you're building and explore options for later. You can use the form below or email me directly.",
+    "sub": "I'm open to senior Python and backend roles, and to well-defined B2B projects. Use the form below or email me directly.",
     "cvHeading": "CV (PDF)",
     "cvEnglish": "CV — English",
     "cvPolish": "CV — Polish",
@@ -329,7 +315,7 @@
     "errorRetry": "Try again"
   },
   "metadata": {
-    "siteDescription": "Software engineer focused on backend systems, APIs, automation, and AI-enabled products.",
+    "siteDescription": "Senior Python developer building backend systems, APIs, data pipelines, and LLM features with FastAPI and PostgreSQL. Based in Gdańsk, working remotely across Europe.",
     "aboutDescription": "Software engineer with a background in backend engineering, fintech, and energy market intelligence. Based in Europe, working remotely.",
     "contactDescription": "Contact Daniel Milewski about backend systems, APIs, automation, and AI-enabled products.",
     "privacyDescription": "Privacy policy for danielmilewski.com — data handling on this portfolio site.",
@@ -340,5 +326,30 @@
     "contactTitle": "Contact",
     "projectsTitle": "Projects",
     "privacyTitle": "Privacy policy"
+  },
+  "approach": {
+    "heading": "How I work",
+    "sub": "What a team can expect from me in the first month and after.",
+    "items": [
+      {
+        "title": "Problem before stack",
+        "body": "I pick tools that fit the team's size, budget and operational maturity, not the most interesting ones."
+      },
+      {
+        "title": "Bad news early",
+        "body": "If something will slip or hides complexity, you hear about it in planning, not at the deadline."
+      },
+      {
+        "title": "Code for the next person",
+        "body": "Clear names, small modules and tests on the paths that matter, so others can contribute on day one."
+      }
+    ]
+  },
+  "hire": {
+    "heading": "Hiring a Python engineer?",
+    "sub": "Send me the role or the problem. I reply within a few working days, in English or Polish.",
+    "copy": "Copy email",
+    "copied": "Copied",
+    "contactForm": "Contact form"
   }
 }

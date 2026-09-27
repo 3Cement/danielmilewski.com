@@ -19,13 +19,13 @@ test("home page renders trust signals", async ({ page }) => {
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: /I build reliable backend systems/i,
+      name: /Senior Python Developer/i,
     }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
       level: 2,
-      name: /Built in environments where software has to stay reliable/i,
+      name: /Recent teams/i,
     }),
   ).toBeVisible();
   await expect(page.getByText("Energy Aspects")).toBeVisible();
@@ -40,8 +40,8 @@ test("language switcher moves from EN to PL", async ({ page }) => {
   await expect(page).toHaveURL(/\/pl$/);
   await expect(
     page.getByRole("heading", {
-      level: 1,
-      name: /Buduję solidne systemy backendowe/i,
+      level: 2,
+      name: /Ostatnie zespoły/i,
     }),
   ).toBeVisible();
 });

@@ -25,14 +25,15 @@ import { routing } from "@/i18n/routing";
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
 const defaultSocialImage = `${SITE_URL}/opengraph-image`;
 
-const geistSans = localFont({
+const archivo = localFont({
   src: [
-    { path: "../fonts/geist-latin.woff2", weight: "100 900", style: "normal" },
-    { path: "../fonts/geist-latin-ext.woff2", weight: "100 900", style: "normal" },
+    { path: "../fonts/archivo-latin.woff2", weight: "100 900", style: "normal" },
+    { path: "../fonts/archivo-latin-ext.woff2", weight: "100 900", style: "normal" },
   ],
-  variable: "--font-geist-sans",
+  variable: "--font-archivo",
   display: "swap",
-  fallback: ["system-ui", "sans-serif"],
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
+  fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 
 const geistMono = localFont({
@@ -64,7 +65,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "metadata" });
   return {
     title: {
-      default: `${SITE_NAME} — Software Engineer`,
+      default: `${SITE_NAME} — Senior Python Developer`,
       template: `%s — ${SITE_NAME}`,
     },
     description: t("siteDescription"),
@@ -86,7 +87,7 @@ export async function generateMetadata({
           url: defaultSocialImage,
           width: 1200,
           height: 630,
-          alt: `${SITE_NAME} — Software Engineer`,
+          alt: `${SITE_NAME} — Senior Python Developer`,
         },
       ],
     },
@@ -130,7 +131,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={siteLocale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
+        className={`${archivo.variable} ${geistMono.variable} min-h-screen flex flex-col`}
       >
         <ThemeInitializer />
         <ThemeSync />

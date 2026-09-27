@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import Image from "next/image";
 import {
   NavbarControls,
   type NavbarLink,
@@ -21,7 +20,7 @@ export async function Navbar({ locale }: NavbarProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-surface)]/90 backdrop-blur-sm">
+    <header className="on-cobalt sticky top-0 z-50">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -29,17 +28,9 @@ export async function Navbar({ locale }: NavbarProps) {
             locale={locale}
             href="/"
             prefetch
-            className="group inline-flex items-center gap-3 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
+            className="font-expanded text-base lg:text-lg font-black uppercase tracking-tight text-[var(--color-text-base)] hover:text-[var(--color-signal)] transition-colors"
           >
-            <Image
-              src="/logo.svg"
-              alt="Daniel Milewski logo"
-              width={120}
-              height={86}
-              priority
-              className="relative top-px h-7 w-auto shrink-0"
-            />
-            <span className="leading-none">Daniel Milewski</span>
+            Daniel Milewski
           </LocalizedLink>
 
           <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
@@ -49,7 +40,7 @@ export async function Navbar({ locale }: NavbarProps) {
                 locale={locale}
                 href={link.href}
                 prefetch
-                className="px-3 py-2 rounded-md text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] hover:bg-[var(--color-surface-muted)] transition-colors"
+                className="px-2 lg:px-3 py-2 text-xs lg:text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] hover:underline underline-offset-4 transition-colors"
               >
                 {link.label}
               </LocalizedLink>

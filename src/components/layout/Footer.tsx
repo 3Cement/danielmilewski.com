@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import Image from "next/image";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { COMPANY_NIP, SITE_NAME } from "@/lib/metadata";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
@@ -27,7 +26,7 @@ export async function Footer({ locale }: FooterProps) {
   ];
 
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+    <footer className="on-ink">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
@@ -35,16 +34,9 @@ export async function Footer({ locale }: FooterProps) {
               <LocalizedLink
                 locale={locale}
                 href="/"
-                className="inline-flex items-center gap-3 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-accent)] transition-colors"
+                className="inline-flex items-center gap-3 text-sm font-semibold text-[var(--color-text-base)] hover:text-[var(--color-signal)] transition-colors"
               >
-                <Image
-                  src="/logo.svg"
-                  alt="Daniel Milewski logo"
-                  width={120}
-                  height={86}
-                  className="relative top-px h-6 w-auto shrink-0"
-                />
-                <span className="leading-none">{SITE_NAME}</span>
+                <span className="font-expanded font-black uppercase leading-none">{SITE_NAME}</span>
               </LocalizedLink>
               <nav className="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2" aria-label="Footer navigation">
                 {footerLinks.map((link) => (

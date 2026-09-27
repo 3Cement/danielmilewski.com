@@ -20,7 +20,7 @@ export function personSchema(locale: SiteLocale) {
     url: absoluteUrl(locale, "/"),
     email: EMAIL,
     inLanguage: locale,
-    jobTitle: "Software Engineer",
+    jobTitle: "Senior Python Developer",
     description: SITE_DESCRIPTION,
     sameAs: [GITHUB_URL, LINKEDIN_URL, X_URL],
     knowsAbout: [
@@ -57,11 +57,6 @@ export function websiteSchema(locale: SiteLocale) {
     description: SITE_DESCRIPTION,
     dateModified: getLatestContentDate(),
     author: { "@type": "Person", name: SITE_NAME },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${absoluteUrl(locale, "/blog")}?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -157,7 +152,7 @@ export function homePageSchema(locale: SiteLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: `${SITE_NAME} — Software Engineer`,
+    name: `${SITE_NAME} — Senior Python Developer`,
     url: absoluteUrl(locale, "/"),
     inLanguage: locale,
     description: SITE_DESCRIPTION,

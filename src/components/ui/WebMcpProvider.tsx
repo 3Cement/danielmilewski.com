@@ -179,7 +179,7 @@ export function WebMcpProvider({
               type: "string",
               enum: [...WEBMCP_HOME_SECTIONS],
               description:
-                "Homepage section to reveal. Allowed values: hero, trust, projects, expertise, about, writing, faq, contact.",
+                "Homepage section to reveal. Allowed values: hero, trust, projects, approach, writing, faq, contact.",
             },
           },
           required: ["section"],
