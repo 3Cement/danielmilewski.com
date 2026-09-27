@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { getAllPosts } from "@/lib/content";
-import { BlogCard } from "@/components/blog/BlogCard";
+import { PostList } from "@/components/blog/PostList";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { buildMetadata, type SiteLocale } from "@/lib/metadata";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
 
@@ -30,41 +31,28 @@ export default async function BlogPage({ params }: Props) {
   const allPosts = getAllPosts(locale);
 
   return (
-    <div className="py-16 px-4">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text-base)]">
-            {t("pageHeading")}
-          </h1>
-          <p className="mt-3 text-lg text-[var(--color-text-muted)] max-w-xl">
-            {t("pageSub")}
-          </p>
-          <TrackedAnchor
-            href={`/${locale}/feed.xml`}
-            analytics={{
-              event: "cta_click",
-              locale: locale as "en" | "pl",
-              ctaId: "blog_rss_feed",
-              surface: "blog_index",
-            }}
-            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[var(--color-accent)] hover:underline"
-          >
-            {t("rssFeed")}
-          </TrackedAnchor>
-        </div>
-
+    <>
+      <PageHeader locale={locale as "en" | "pl"} title={t("pageHeading")} sub={t("pageSub")}>
+        <TrackedAnchor
+          href={`/${locale}/feed.xml`}
+          analytics={{
+            event: "cta_click",
+            locale: locale as "en" | "pl",
+            ctaId: "blog_rss_feed",
+            surface: "blog_index",
+          }}
+          className="mt-8 inline-block border-b-2 border-[var(--color-signal)] text-sm font-bold uppercase tracking-wider hover:text-[var(--color-signal)]"
+        >
+          {t("rssFeed")}
+        </TrackedAnchor>
+      </PageHeader>
+      <div className="mx-auto max-w-6xl px-4 pt-6 pb-20 sm:px-6 lg:px-8">
         {allPosts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {allPosts.map((post) => (
-              <BlogCard key={post.slug} post={post} locale={locale} />
-            ))}
-          </div>
+          <PostList posts={allPosts} locale={locale} detailed headingLevel="h2" />
         ) : (
-          <p className="text-sm text-[var(--color-text-faint)]">
-            {t("noResults")}
-          </p>
+          <p className="py-10 text-[var(--color-text-faint)]">{t("noResults")}</p>
         )}
       </div>
-    </div>
+    </>
   );
 }

@@ -14,7 +14,8 @@ import {
 } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { HireCTA } from "@/components/home/HireCTA";
 import { breadcrumbSchema, softwareSchema } from "@/lib/schema";
 import { localizeHtmlContent } from "@/lib/localizeHtmlContent";
 import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
@@ -104,19 +105,21 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <>
-      <div className="px-4 pt-10">
-        <div className="mx-auto max-w-6xl">
-          <Breadcrumbs
-            ariaLabel={tCommon("breadcrumbsAriaLabel")}
-            locale={locale as "en" | "pl"}
-            items={[
-              { label: tNav("home"), href: "/" },
-              { label: tNav("projects"), href: "/projects" },
-              { label: project.title },
-            ]}
-          />
-        </div>
-      </div>
+      <PageHeader
+        locale={locale as "en" | "pl"}
+        variant="article"
+        title={project.title}
+        eyebrow={project.role}
+        sub={project.overview}
+        breadcrumbs={{
+          ariaLabel: tCommon("breadcrumbsAriaLabel"),
+          items: [
+            { label: tNav("home"), href: "/" },
+            { label: tNav("projects"), href: "/projects" },
+            { label: project.title },
+          ],
+        }}
+      />
       <StructuredDataScript id="project-structured-data" json={structuredData} />
       <CaseStudySection
         locale={locale}
@@ -125,6 +128,7 @@ export default async function ProjectPage({ params }: Props) {
         relatedProjects={relatedProjects}
         relatedPosts={relatedPosts}
       />
+      <HireCTA locale={locale} />
     </>
   );
 }

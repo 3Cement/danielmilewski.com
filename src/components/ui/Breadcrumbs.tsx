@@ -14,8 +14,8 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items, ariaLabel, locale }: BreadcrumbsProps) {
   return (
-    <nav aria-label={ariaLabel} className="mb-8">
-      <ol className="flex flex-wrap items-center gap-2 text-sm text-[var(--color-text-faint)]">
+    <nav aria-label={ariaLabel} className="mb-10">
+      <ol className="font-condensed flex flex-wrap items-center gap-2 text-sm font-semibold uppercase tracking-[0.08em] text-[var(--color-text-faint)]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 
@@ -25,12 +25,12 @@ export function Breadcrumbs({ items, ariaLabel, locale }: BreadcrumbsProps) {
                 <LocalizedLink
                   locale={locale}
                   href={item.href}
-                  className="hover:text-[var(--color-text-base)] transition-colors"
+                  className="hover:text-[var(--color-text-base)] hover:underline underline-offset-4 transition-colors"
                 >
                   {item.label}
                 </LocalizedLink>
               ) : (
-                <span className={isLast ? "text-[var(--color-text-base)]" : undefined}>
+                <span className={isLast ? "line-clamp-1 text-[var(--color-text-base)]" : undefined}>
                   {item.label}
                 </span>
               )}

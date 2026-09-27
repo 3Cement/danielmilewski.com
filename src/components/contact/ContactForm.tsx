@@ -72,7 +72,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-accent-muted)] disabled:cursor-not-allowed disabled:opacity-70"
+      className="btn btn-primary whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-70"
     >
       {pending ? submitPendingLabel : submitLabel}
     </button>
@@ -161,9 +161,9 @@ export function ContactForm({
   };
 
   return (
-    <section className="mb-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8">
+    <section className="mb-8 border-t-[3px] border-[var(--color-text-base)] pt-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold tracking-tight text-[var(--color-text-base)]">
+        <h2 className="font-expanded text-2xl font-extrabold uppercase tracking-tight text-[var(--color-text-base)]">
           {messages.heading}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -294,7 +294,7 @@ export function ContactForm({
           <p
             role={state.status === "error" ? "alert" : "status"}
             className={cn(
-              "rounded-lg border px-4 py-3 text-sm",
+              "border-l-4 px-4 py-3 text-sm",
               state.status === "success"
                 ? "border-emerald-200 bg-emerald-50 text-emerald-800"
                 : "border-red-200 bg-red-50 text-red-800",
@@ -346,7 +346,7 @@ function FormField({
 }: InputFieldProps) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-medium text-[var(--color-text-base)]">
+      <span className="label-caps mb-2 block !text-[var(--color-text-base)]">
         {label}
       </span>
       <input
@@ -360,7 +360,7 @@ function FormField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
         className={cn(
-          "w-full rounded-xl border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text-base)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]",
+          "w-full border-2 bg-[var(--color-surface)] px-4 py-3 text-base text-[var(--color-text-base)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]",
           error
             ? "border-red-400 focus:border-red-500"
             : "border-[var(--color-border)] focus:border-[var(--color-accent)]",
@@ -395,7 +395,7 @@ function FormTextArea({
 }: TextAreaProps) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-medium text-[var(--color-text-base)]">
+      <span className="label-caps mb-2 block !text-[var(--color-text-base)]">
         {label}
       </span>
       <textarea
@@ -408,7 +408,7 @@ function FormTextArea({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${name}-error` : undefined}
         className={cn(
-          "w-full rounded-xl border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-text-base)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]",
+          "w-full border-2 bg-[var(--color-surface)] px-4 py-3 text-base text-[var(--color-text-base)] outline-none transition-colors placeholder:text-[var(--color-text-faint)]",
           error
             ? "border-red-400 focus:border-red-500"
             : "border-[var(--color-border)] focus:border-[var(--color-accent)]",
