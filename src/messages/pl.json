@@ -48,7 +48,7 @@
     "problemLabel": "Problem",
     "solutionLabel": "Rozwiązanie",
     "pageHeading": "Projekty",
-    "pageSub": "Rzeczy, które zbudowałem — od side projektów po systemy produkcyjne.",
+    "pageSub": "Aplikacje i strony dla klientów, które zbudowałem: od własnych narzędzi po systemy produkcyjne.",
     "comingSoon": "Więcej projektów wkrótce",
     "comingSoonSub": "Trwa dokumentowanie kolejnych projektów. Zajrzyj wkrótce.",
     "roleLabel": "Rola",
@@ -71,7 +71,7 @@
     "companyRegistryLink": "Publiczny wpis firmy (Monitor Firm / PB.pl)",
     "getInTouch": "Napisz do mnie",
     "backgroundHeading": "O mnie",
-    "bio1": "Jestem inżynierem oprogramowania z doświadczeniem w backendzie, systemach finansowych i automatyzacji. Pracowałem w obszarze analityki rynku energii, fintech i usług IT — głównie budując oprogramowanie obsługujące prawdziwe dane i brzegowe przypadki.",
+    "bio1": "Jestem inżynierem oprogramowania z doświadczeniem w backendzie, systemach finansowych i automatyzacji. Pracowałem w obszarze analityki rynku energii, fintechu i usług IT — głównie budując oprogramowanie obsługujące prawdziwe dane i brzegowe przypadki.",
     "bio2": "Python pozostaje jednym z moich głównych narzędzi. Pracuję też z AI/ML i frontendem, gdy projekt tego wymaga, ale systemy backendowe i API to moje główne pole działania.",
     "bio3": "Potrafię wziąć odpowiedzialność za projekt od początku do końca: od decyzji architektonicznych przez implementację po wdrożenie. Zależy mi na jakości kodu, przejrzystej architekturze i decyzjach, które następny inżynier będzie w stanie zrozumieć.",
     "bio4": "Najlepiej pracuję z firmami, które mają jasno określony problem, szanują inżynierię i potrzebują kogoś, kto komunikuje się sprawnie zarówno z technicznymi, jak i nietechnicznymi interesariuszami.",
@@ -163,7 +163,7 @@
     "xFollow": "Obserwuj aktualizacje i notatki",
     "lookingHeading": "Czego szukam",
     "lookingItems": [
-      "Projekty Pythonowe (backend, API, automatyzacja)",
+      "Projekty w Pythonie (backend, API, automatyzacja)",
       "Zespoły, które cenią jakość inżynierską i jasną komunikację",
       "Projekty krótko- lub długoterminowe (obie opcje są OK)",
       "Praca zdalna lub hybrydowa, strefa czasowa Europa"
@@ -205,8 +205,8 @@
     "privacyNote": "Ten formularz wysyła wiadomość do mnie przez Resend i może wysłać automatyczne potwierdzenie na Twój adres e-mail. Nie wpisuj tu sekretów ani wrażliwych danych dostępowych.",
     "botProtectionNote": "Formularz korzysta z niewidocznej ochrony antyspamowej, która zwykle działa automatycznie i pokazuje challenge tylko w podejrzanych przypadkach.",
     "invisibleCaptchaNoticePrefix": "Ta strona jest chroniona przez hCaptcha, a jej użycie podlega",
-    "privacyPolicyLabel": "Privacy Policy",
-    "termsLabel": "Terms of Service",
+    "privacyPolicyLabel": "Polityce prywatności",
+    "termsLabel": "Warunkom korzystania z usługi",
     "andLabel": "i",
     "websiteLabel": "Strona WWW",
     "messages": {
@@ -305,7 +305,7 @@
     "viewProjects": "Zobacz projekty",
     "contactHeading": "Masz backend, API albo system, który trzeba dowieźć lub uporządkować?",
     "contactSub": "Jeśli budujesz produkt, modernizujesz usługę albo chcesz uporządkować bardziej złożony fragment systemu, chętnie porozmawiam o zakresie, dopasowaniu i terminach.",
-    "breadcrumbsAriaLabel": "Okruszki"
+    "breadcrumbsAriaLabel": "Ścieżka nawigacji"
   },
   "errors": {
     "notFoundTitle": "Nie znaleziono strony",
@@ -319,7 +319,7 @@
     "aboutDescription": "Inżynier oprogramowania z doświadczeniem w backendzie, fintech i analityce rynku energii. Pracuje zdalnie z Europy.",
     "contactDescription": "Kontakt z Danielem Milewskim w sprawie backendu, API, automatyzacji i produktów z AI.",
     "privacyDescription": "Polityka prywatności serwisu danielmilewski.com.",
-    "projectsDescription": "Projekty Daniela Milewskiego — od narzędzi osobistych po systemy produkcyjne.",
+    "projectsDescription": "Projekty Daniela Milewskiego: aplikacje produkcyjne, platformy danych i strony dla klientów nastawione na SEO.",
     "blogDescription": "Notatki o Pythonie, inżynierii backendowej i oprogramowaniu, które działa.",
     "aboutTitle": "O mnie",
     "blogTitle": "Blog",
