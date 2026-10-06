@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { TrackedAnchor, TrackedLink } from "@/components/ui/TrackedLink";
-import { CV_URL_EN, CV_URL_PL, PROFILE_IMAGE_PATH } from "@/lib/metadata";
+import { CV_URL_EN, CV_URL_PL, PROFILE_IMAGE_640_PATH } from "@/lib/metadata";
 
 interface HeroProps {
   locale: string;
@@ -66,11 +66,13 @@ export async function Hero({ locale }: HeroProps) {
         </div>
         <figure className="relative self-end">
           <Image
-            src={PROFILE_IMAGE_PATH}
+            src={PROFILE_IMAGE_640_PATH}
             alt={t("photoAlt")}
             width={440}
             height={550}
             priority
+            unoptimized
+            fetchPriority="high"
             sizes="(min-width: 1024px) 360px, 320px"
             className="ml-auto block aspect-[4/5] w-full max-w-[320px] object-cover object-[50%_20%] mix-blend-luminosity grayscale contrast-[1.15] brightness-105 lg:max-w-[360px]"
           />

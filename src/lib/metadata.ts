@@ -19,6 +19,12 @@ export const COMPANY_REGON = "522772081";
 
 /** Local file in /public — professional headshot. */
 export const PROFILE_IMAGE_PATH = "/daniel-milewski.webp";
+/**
+ * Pre-scaled 640px copy for the hero/about portrait. Served unoptimized: on
+ * OpenNext the /_next/image route adds ~350ms TTFB per request with no edge
+ * caching, which made this LCP image slow on mobile.
+ */
+export const PROFILE_IMAGE_640_PATH = "/daniel-milewski-640.webp";
 
 export const CV_URL_EN = "/cv/cv-en.pdf";
 export const CV_URL_PL = "/cv/cv-pl.pdf";
