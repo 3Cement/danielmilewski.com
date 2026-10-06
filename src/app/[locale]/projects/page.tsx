@@ -68,6 +68,7 @@ export default async function ProjectsPage({ params }: Props) {
             labels={labels}
             reversed={index % 2 === 1}
             headingLevel="h2"
+            eager={index === 0}
           />
         ))}
         {projects.length < 4 && (
