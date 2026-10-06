@@ -103,6 +103,10 @@ const mdxBuildComponents = {
   },
   // Body screenshots sit below the fold; without this every one loads with the page.
   img: (props) => createElement("img", { ...props, loading: "lazy", decoding: "async" }),
+  a: (props) =>
+    /^https?:\/\//.test(props.href ?? "")
+      ? createElement("a", { ...props, target: "_blank", rel: "noopener noreferrer" })
+      : createElement("a", props),
 };
 
 async function renderMdxToHtml(content, pathLabel) {

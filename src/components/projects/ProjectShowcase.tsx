@@ -65,9 +65,15 @@ export function ProjectShowcase({
           }
         >
           {host && (
-            <span className="font-condensed absolute -top-3.5 left-3 z-10 bg-[var(--color-text-base)] px-2.5 py-1.5 text-xs font-bold uppercase tracking-[0.1em] text-[var(--color-surface)] sm:left-6">
-              {labels.liveLabel} · {host}
-            </span>
+            // Sits above the stretched title link, so it opens the live site instead of the case study.
+            <a
+              href={project.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-condensed absolute -top-3.5 left-3 z-30 bg-[var(--color-text-base)] px-2.5 py-1.5 text-xs font-bold uppercase tracking-[0.1em] text-[var(--color-surface)] transition-colors hover:bg-[var(--color-cobalt)] hover:text-[var(--color-on-cobalt)] sm:left-6"
+            >
+              {labels.liveLabel} · {host} <span aria-hidden="true">↗</span>
+            </a>
           )}
           <Image
             src={previewSrc}
