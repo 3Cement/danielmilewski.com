@@ -16,12 +16,13 @@ export async function Hero({ locale }: HeroProps) {
     <section className="on-cobalt relative scroll-mt-24 overflow-hidden" id="hero">
       <div className="mx-auto grid max-w-6xl items-end gap-8 px-4 pt-12 sm:px-6 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:gap-16 lg:px-8">
         <div>
-          <p className="font-condensed flex flex-wrap items-center gap-3 text-sm font-bold uppercase tracking-[0.14em]">
+          {/* Single line: the fallback font has no condensed width, so wrapping here shifted the hero (CLS) while Archivo loaded. */}
+          <p className="font-condensed flex items-center gap-3 text-sm font-bold uppercase tracking-[0.14em]">
             <span
               className="block h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--color-signal)] ring-4 ring-white/20"
               aria-hidden="true"
             />
-            {t("eyebrow")}
+            <span className="min-w-0 truncate">{t("eyebrow")}</span>
           </p>
           <h1 className="font-expanded mt-6 text-[clamp(2.25rem,5.4vw,4.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.035em]">
             {h1Lines.map((line) => (
@@ -33,7 +34,7 @@ export async function Hero({ locale }: HeroProps) {
           <p className="mt-7 max-w-[36ch] text-lg leading-snug sm:text-xl">
             {t("sub")}
           </p>
-          <div className="mt-8 mb-10 flex flex-wrap gap-3 lg:mb-20">
+          <div className="mt-8 mb-10 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap lg:mb-20">
             <TrackedLink
               locale={siteLocale}
               href="/projects"

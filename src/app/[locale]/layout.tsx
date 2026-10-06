@@ -129,7 +129,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   const webMcpPostOptions = buildWebMcpPostOptions(siteLocale);
 
   return (
-    <html lang={siteLocale} suppressHydrationWarning>
+    <html lang={siteLocale} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={`${archivo.variable} ${geistMono.variable} min-h-screen flex flex-col`}
       >
