@@ -10,7 +10,7 @@ import {
   COMPANY_REGISTRY_URL,
   CV_URL_EN,
   CV_URL_PL,
-  PROFILE_IMAGE_PATH,
+  PROFILE_IMAGE_640_PATH,
   SITE_NAME,
   type SiteLocale,
 } from "@/lib/metadata";
@@ -92,11 +92,13 @@ export default async function AboutPage({ params }: Props) {
         aside={
           <figure className="relative m-0 self-end">
             <Image
-              src={PROFILE_IMAGE_PATH}
+              src={PROFILE_IMAGE_640_PATH}
               alt={SITE_NAME}
               width={600}
               height={750}
               priority
+              unoptimized
+              fetchPriority="high"
               sizes="(min-width: 1024px) 300px, 260px"
               className="block aspect-[4/5] w-full max-w-[260px] object-cover object-[50%_20%] mix-blend-luminosity grayscale contrast-[1.15] brightness-105 lg:ml-auto lg:max-w-[300px]"
             />
