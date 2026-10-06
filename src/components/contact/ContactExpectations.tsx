@@ -18,9 +18,9 @@ export async function ContactExpectations({
   const items = t.raw("items") as ExpectationItem[];
 
   return (
-    <section className="mb-8 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm sm:p-8">
+    <section className="mb-8 border-t-[3px] border-[var(--color-text-base)] pt-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold tracking-tight text-[var(--color-text-base)]">
+        <h2 className="font-expanded text-2xl font-extrabold uppercase tracking-tight text-[var(--color-text-base)]">
           {t("heading")}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -38,9 +38,9 @@ export async function ContactExpectations({
         {items.map((item) => (
           <article
             key={item.title}
-            className="rounded-xl border border-[var(--color-border-muted)] bg-[var(--color-surface-muted)] p-4"
+            className="border-b border-[var(--color-border)] pb-4"
           >
-            <p className="text-sm font-semibold text-[var(--color-text-base)]">
+            <p className="font-bold text-[var(--color-text-base)]">
               {item.title}
             </p>
             <p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">

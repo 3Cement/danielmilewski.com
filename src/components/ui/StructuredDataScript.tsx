@@ -1,17 +1,18 @@
-import Script from "next/script";
-
 interface StructuredDataScriptProps {
   id: string;
   json: string;
 }
 
+/**
+ * Plain <script> so the JSON-LD lands in the server HTML. next/script with
+ * beforeInteractive only emits a JS push, invisible to non-JS crawlers.
+ */
 export function StructuredDataScript({ id, json }: StructuredDataScriptProps) {
   return (
-    <Script
+    <script
       id={id}
       type="application/ld+json"
-      strategy="beforeInteractive"
-      dangerouslySetInnerHTML={{ __html: json }}
+      dangerouslySetInnerHTML={{ __html: json.replace(/</g, "\\u003c") }}
     />
   );
 }

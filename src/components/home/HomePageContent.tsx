@@ -1,12 +1,10 @@
 import { Hero } from "@/components/home/Hero";
-import { CredibilityStrip } from "@/components/home/CredibilityStrip";
 import { TrustSection } from "@/components/home/TrustSection";
 import { SelectedProjects } from "@/components/home/SelectedProjects";
-import { ExpertiseGrid } from "@/components/home/ExpertiseGrid";
-import { AboutPreview } from "@/components/home/AboutPreview";
-import { WritingPreview } from "@/components/home/WritingPreview";
-import { FinalCTA } from "@/components/home/FinalCTA";
+import { ApproachSection } from "@/components/home/ApproachSection";
+import { WritingList } from "@/components/home/WritingList";
 import { HomeFAQ } from "@/components/home/HomeFAQ";
+import { HireCTA } from "@/components/home/HireCTA";
 import { getFeaturedProjects, getLatestPosts } from "@/lib/content";
 
 interface HomePageContentProps {
@@ -20,14 +18,12 @@ export async function HomePageContent({ locale }: HomePageContentProps) {
   return (
     <>
       <Hero locale={locale} />
-      <CredibilityStrip locale={locale} />
       <TrustSection locale={locale} />
       <SelectedProjects projects={projects} locale={locale} />
-      <ExpertiseGrid locale={locale} />
-      <AboutPreview locale={locale} />
-      <WritingPreview posts={posts} locale={locale} />
+      <ApproachSection locale={locale} />
+      <WritingList posts={posts} locale={locale} />
       <HomeFAQ locale={locale as "en" | "pl"} />
-      <FinalCTA locale={locale} />
+      <HireCTA locale={locale} />
     </>
   );
 }

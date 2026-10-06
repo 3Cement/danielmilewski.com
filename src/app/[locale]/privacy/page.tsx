@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { absoluteUrl, buildMetadata, type SiteLocale } from "@/lib/metadata";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { breadcrumbSchema } from "@/lib/schema";
 import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
@@ -63,40 +63,30 @@ export default async function PrivacyPage({ params }: Props) {
 
   return (
     <>
-      <div className="px-4 pt-10">
-        <div className="mx-auto max-w-2xl">
-          <Breadcrumbs
-            ariaLabel={tCommon("breadcrumbsAriaLabel")}
-            locale={locale as "en" | "pl"}
-            items={[
-              { label: tNav("home"), href: "/" },
-              { label: t("privacyTitle") },
-            ]}
-          />
-        </div>
-      </div>
-      <StructuredDataScript id="privacy-structured-data" json={structuredData} />
-      <div className="py-16 px-4">
-      <div className="mx-auto max-w-2xl">
-        <h1 className="text-3xl font-bold tracking-tight text-[var(--color-text-base)] mb-2">
-          {t("privacyTitle")}
-        </h1>
-        <p className="text-sm text-[var(--color-text-faint)] mb-10">
-          {year} — {t("privacyUpdates")}
+      <PageHeader
+        locale={locale as "en" | "pl"}
+        title={t("privacyTitle")}
+        breadcrumbs={{
+          ariaLabel: tCommon("breadcrumbsAriaLabel"),
+          items: [{ label: tNav("home"), href: "/" }, { label: t("privacyTitle") }],
+        }}
+      >
+        <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
+          {year} · {t("privacyUpdates")}
         </p>
-        <div className="space-y-8 text-[var(--color-text-muted)] leading-relaxed">
+      </PageHeader>
+      <StructuredDataScript id="privacy-structured-data" json={structuredData} />
+      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+        <div className="space-y-10 text-lg leading-relaxed text-[var(--color-text-muted)]">
           <p>{t("privacyIntro")}</p>
           {sections.map((section) => (
-            <section key={section.title} className="space-y-2">
-              <h2 className="text-lg font-semibold text-[var(--color-text-base)]">
-                {section.title}
-              </h2>
+            <section key={section.title}>
+              <h2 className="heading-rule">{section.title}</h2>
               <p>{section.body}</p>
             </section>
           ))}
-          <p>{t("privacyContact")}</p>
+          <p className="border-l-4 border-[var(--color-signal)] pl-4">{t("privacyContact")}</p>
         </div>
-      </div>
       </div>
     </>
   );

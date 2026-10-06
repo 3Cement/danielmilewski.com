@@ -1,0 +1,73 @@
+---
+title: "Your JSON-LD Might Not Be in Your HTML: A Next.js App Router Trap"
+slug: "nextjs-json-ld-trap"
+date: "2026-10-06"
+excerpt: "I found my own portfolio shipping structured data that crawlers without JavaScript could not see. One component change fixed it. Here is how to check yours."
+tags: ["Next.js", "SEO", "Structured Data", "TypeScript"]
+relatedProjectSlugs: []
+---
+
+While auditing this site I ran a simple check: fetch a page with `curl` and look for `<script type="application/ld+json">`. There was none. The schema was there when I inspected the page in a browser, Google's tools could see it after rendering, but the raw HTML did not contain a single JSON-LD tag.
+
+## What was going on
+
+The structured data was rendered with `next/script`:
+
+```tsx
+import Script from "next/script";
+
+<Script
+  id="site-structured-data"
+  type="application/ld+json"
+  strategy="beforeInteractive"
+  dangerouslySetInnerHTML={{ __html: json }}
+/>
+```
+
+It looks reasonable, and it is a pattern you will find in many tutorials. In the App Router, though, a `beforeInteractive` script is not written into the HTML as a tag. Next.js serialises it into an inline bootstrap call (`self.__next_s.push(...)`) and inserts the real `<script>` element on the client.
+
+For a browser, the end result is the same. For anything that reads HTML without running JavaScript, the structured data simply does not exist. That includes many AI crawlers, link preview bots and a lot of SEO tooling.
+
+## The fix
+
+JSON-LD is data, not a script to execute, so it does not need `next/script` at all. The Next.js docs recommend a plain `<script>` tag rendered by the server component:
+
+```tsx
+export function StructuredDataScript({ id, json }: { id: string; json: string }) {
+  return (
+    <script
+      id={id}
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: json.replace(/</g, "\\u003c") }}
+    />
+  );
+}
+```
+
+The `replace` escapes `<` so that a string like `</script>` inside your data cannot close the tag early.
+
+## How to check your own site
+
+```bash
+curl -s https://your-site.com/ | grep -c 'type="application/ld+json"'
+```
+
+If that prints `0` but your browser's DevTools show the schema, you have the same problem. For a stricter check, parse every JSON-LD block and list the types:
+
+```python
+import json, re, urllib.request
+
+html = urllib.request.urlopen("https://your-site.com/").read().decode()
+for block in re.findall(r'<script[^>]*application/ld\+json[^>]*>(.*?)</script>', html, re.S):
+    data = json.loads(block)
+    items = data if isinstance(data, list) else data.get("@graph", [data])
+    print([item.get("@type") for item in items])
+```
+
+## Lessons
+
+- **Test the HTML, not the DOM.** DevTools show the page after JavaScript has run. Crawlers often see something else.
+- **Data is not a script.** `next/script` exists to control loading of executable code. Inline data belongs in a regular tag.
+- **Add it to your audit checklist.** This bug is silent: nothing breaks, no console error, and rich result tests that render JavaScript still pass.
+
+After the change, every page on this site ships its `Person`, `WebSite`, `ProfilePage` and `BreadcrumbList` data directly in the server HTML. If you want a second pair of eyes on a Next.js site's technical SEO, [get in touch](/en/contact).

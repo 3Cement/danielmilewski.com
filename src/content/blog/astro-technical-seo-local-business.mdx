@@ -1,0 +1,71 @@
+---
+title: "Technical SEO for Astro Sites: What Moved the Needle for Two Interior Design Studios"
+slug: "astro-technical-seo-local-business"
+date: "2026-08-20"
+excerpt: "Two photo-heavy local business sites, one stack. What mattered for indexing, AI visibility and mobile speed, and what turned out to be noise."
+tags: ["Astro", "SEO", "Web Performance", "Structured Data"]
+relatedProjectSlugs: ["demarestudio", "koprowskastudio"]
+---
+
+This year I shipped two websites for interior design studios: [DeMāre Studio](/en/projects/demarestudio) in Gdańsk and [Koprowska Studio](/en/projects/koprowskastudio), working in Warsaw and the Tricity. Same industry, same stack (Astro on Cloudflare), very similar goals: show large photography, rank locally, turn visits into inquiries.
+
+Here is what made a measurable difference, and what did not.
+
+## 1. Put the SEO layer in the layout, not in pages
+
+Both sites get canonical URLs, `hreflang` (PL, EN, `x-default`), Open Graph and JSON-LD from one shared layout component. A page only passes its title, description and path.
+
+This sounds like housekeeping, but it is the single biggest reliability win. On a bilingual site, the most common SEO bug is a page that exists in both languages but only links to one of them. If hreflang is generated from the route, that bug cannot happen.
+
+## 2. Structured data describes the business, not the page
+
+For a local service business, the JSON-LD that matters is the organisation graph:
+
+- `ProfessionalService` + `LocalBusiness` with address, VAT ID, founding year and `sameAs` links,
+- `Person` for the founder, linked with `founder` / `worksFor`,
+- `areaServed` listing the actual cities,
+- an `OfferCatalog` (or separate `Service` entries) for what the studio sells.
+
+Each page then adds a `WebPage` node that points back to the organisation by `@id`. One graph, many entry points. Search engines and AI assistants get the same consistent answer to "who is this, where do they work, what do they do" from every URL.
+
+## 3. Intent pages beat a single "Services" page
+
+On DeMāre Studio the biggest content change after launch was splitting one services page into five dedicated pages (apartment design, house design, investment apartment, online design, supervision) and adding local landing pages for Gdańsk, Gdynia and Sopot. Each page answers one query well instead of one page answering five queries badly.
+
+The rule I follow: a new page is justified only if it has a distinct search intent and enough unique content to answer it. City pages with the same text and a swapped city name are a liability, not an asset.
+
+## 4. The hero image is the whole mobile score
+
+On photo-led sites the Largest Contentful Paint element is almost always the hero photo. Lab numbers from PageSpeed make this obvious:
+
+| Site (homepage) | Desktop | Mobile | Mobile LCP |
+| --- | --- | --- | --- |
+| DeMāre Studio | - | 89 | 2.5 s |
+| Koprowska Studio | 100 | 80 | 5.3 s |
+
+What helped DeMāre go from 3.2 s to 2.5 s LCP on mobile:
+
+- responsive `srcset` generated at build time, so phones never download the 2400 px version,
+- `fetchpriority="high"` and `loading="eager"` only on the first slide, lazy loading on the rest,
+- no render-blocking scripts before the hero.
+
+On Koprowska Studio the next steps are a tighter mobile crop of the hero and removing a redirect: the bare domain goes through an extra hop before reaching `www`. Redirects are easy to forget because the site "works", but on a slow mobile connection every hop is paid before the first byte of HTML.
+
+## 5. AI visibility is mostly the basics done right
+
+`llms.txt`, open access for GPTBot, ClaudeBot and PerplexityBot in `robots.txt`, and freshness signals (`dateModified`) are cheap and worth doing. But the content itself matters more: short definitions, lists, and FAQ answers that can be quoted on their own. AI assistants quote passages, not pages.
+
+## What turned out to be noise
+
+- Chasing 100/100 on every audit tool. Different tools weight things differently; a 93 vs 97 is rarely a business difference.
+- Keyword density tweaks. Clear headings that match real questions did more.
+- Adding schema types that have no visible counterpart on the page. If it is not on the page, it should not be in the JSON-LD.
+
+## Takeaways
+
+- Generate canonical, hreflang and JSON-LD from the layout so they cannot drift.
+- Model the business once as a graph and reference it from every page.
+- Build pages around distinct search intents.
+- On photo-heavy sites, optimise the hero image and kill redirects before anything else.
+
+If you run a service business and want a site built this way, [let's talk](/en/contact).

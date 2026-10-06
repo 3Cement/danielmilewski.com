@@ -113,7 +113,7 @@ describe("buildMetadata", () => {
         url: `${SITE_URL}/en/blog/my-post/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Software Engineer`,
+        alt: `${SITE_NAME} — Senior Python Developer`,
       },
     ]);
   });
@@ -126,7 +126,7 @@ describe("buildMetadata", () => {
         url: `${SITE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Software Engineer`,
+        alt: `${SITE_NAME} — Senior Python Developer`,
       },
     ]);
     expect(meta.twitter?.images).toEqual([`${SITE_URL}/opengraph-image`]);

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://danielmilewski.com";
 export const SITE_NAME = "Daniel Milewski";
 export const SITE_DESCRIPTION =
-  "Software engineer focused on backend systems, APIs, automation, and AI-enabled products.";
+  "Senior Python developer building backend systems, APIs, data pipelines, and LLM features with FastAPI and PostgreSQL. Based in Gdańsk, working remotely across Europe.";
 export const TWITTER_HANDLE = "@33cement";
 export const GITHUB_URL = "https://github.com/3Cement";
 export const LINKEDIN_URL = "https://www.linkedin.com/in/daniel-milewski/";
@@ -68,7 +68,7 @@ export function buildMetadata({
   type?: "website" | "article";
   canonicalPathWithoutLocale?: string;
 }): Metadata {
-  const socialTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Software Engineer`;
+  const socialTitle = title ? `${title} — ${SITE_NAME}` : `${SITE_NAME} — Senior Python Developer`;
   const metaDescription = description ?? SITE_DESCRIPTION;
   const canonical = absoluteUrl(locale, canonicalPathWithoutLocale ?? pathWithoutLocale);
   const ogImage = toAbsoluteSiteUrl(image ?? defaultOgImagePath);

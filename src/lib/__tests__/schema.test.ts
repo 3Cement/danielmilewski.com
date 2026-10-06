@@ -58,7 +58,7 @@ describe("homePageSchema", () => {
       "@type": "WebPage",
       inLanguage: "pl",
       url: expect.stringContaining("/pl"),
-      dateModified: "2024-11-15",
+      dateModified: "2026-10-06",
     });
   });
 });

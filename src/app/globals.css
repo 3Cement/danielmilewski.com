@@ -6,58 +6,116 @@
 
 @theme inline {
   /* Fonts */
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-archivo);
   --font-mono: var(--font-geist-mono);
 
   /*
-   * Volt — site-wide identity. Two accents encode the site's two pillars:
-   * backend/systems work (teal) and AI/LLM work (coral). Light mode uses
-   * darker, text-safe shades (>=4.5:1 on white); dark mode uses the
-   * brighter shades that read well on the near-black surface.
+   * Cobalt — site-wide identity. A muted cobalt carries the brand
+   * (navbar, hero, links, primary buttons); a warm signal orange is used
+   * sparingly for status and hover accents. Light mode shades keep text
+   * contrast >=4.5:1 on white.
    */
-  --color-accent: #0f766e;
-  --color-accent-muted: #115e59;
-  --color-accent-light: #0a7268;
+  --color-accent: #303cb8;
+  --color-accent-muted: #263093;
+  --color-accent-light: #4350c8;
   --color-accent-2: #c2410c;
+  --color-signal: #f47a42;
+  --color-cobalt: #303cb8;
+  --color-on-cobalt: #ffffff;
+  --color-ink: #0d0e14;
+  --color-on-ink: #f1f2f6;
 
   --color-surface: #ffffff;
-  --color-surface-muted: #f6f8fa;
-  --color-surface-subtle: #eaeef2;
+  --color-surface-muted: #f1f2f6;
+  --color-surface-subtle: #e6e8ef;
 
-  --color-text-base: #1f2328;
-  --color-text-muted: #656d76;
-  --color-text-faint: #5f666e;
+  --color-text-base: #0d0e14;
+  --color-text-muted: #4b4f5e;
+  --color-text-faint: #5b6070;
 
-  --color-border: #d0d7de;
-  --color-border-muted: #eaeef2;
+  --color-border: #d8dae3;
+  --color-border-muted: #e6e8ef;
 
   /* Text color used on top of a solid --color-accent fill (buttons etc.) */
   --color-on-accent: #ffffff;
 }
 
-/* Dark mode — Volt dark: near-black surface, teal + coral accents */
+/* Dark mode — deep navy surface, brighter cobalt for text-level accents */
 .dark {
-  --color-accent: #4fd1c5;
-  --color-accent-muted: #38b6ab;
-  --color-accent-light: #82e4da;
-  --color-accent-2: #ff7a59;
-  --color-on-accent: #08211f;
+  --color-accent: #9aa3f5;
+  --color-accent-muted: #a9b1ff;
+  --color-accent-light: #b8bfff;
+  --color-accent-2: #f4925f;
+  --color-signal: #f4925f;
+  --color-cobalt: #3442c4;
+  --color-on-accent: #0b0c14;
+  --color-ink: #05060c;
+  --color-on-ink: #eef0fa;
 
-  --color-surface: #100d16;
-  --color-surface-muted: #17131f;
-  --color-surface-subtle: #1d1828;
+  --color-surface: #0b0c14;
+  --color-surface-muted: #13152a;
+  --color-surface-subtle: #1b1e38;
 
-  --color-text-base: #f2eefb;
-  --color-text-muted: #a79fc0;
-  --color-text-faint: #9089ab;
+  --color-text-base: #eef0fa;
+  --color-text-muted: #a6abc4;
+  --color-text-faint: #9197b3;
 
-  --color-border: #2a2436;
-  --color-border-muted: #221d2c;
+  --color-border: #262a45;
+  --color-border-muted: #1e2138;
 }
 
-.volt-dotgrid {
-  background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
-  background-size: 20px 20px;
+/*
+ * Re-maps the text/surface tokens for content sitting on a solid cobalt
+ * or ink fill, so shared controls (theme toggle, language switcher, links)
+ * stay legible without per-component overrides.
+ */
+.on-cobalt,
+.on-ink {
+  --color-text-base: #ffffff;
+  --color-text-muted: rgb(255 255 255 / 0.86);
+  --color-text-faint: rgb(255 255 255 / 0.74);
+  --color-surface-muted: rgb(255 255 255 / 0.12);
+  --color-border: rgb(255 255 255 / 0.28);
+  --color-border-muted: rgb(255 255 255 / 0.16);
+  color: var(--color-text-base);
+}
+.on-cobalt {
+  background-color: var(--color-cobalt);
+}
+.on-ink {
+  background-color: var(--color-ink);
+}
+
+/* Archivo width axis: expanded for display type, condensed for labels. */
+.font-expanded {
+  font-stretch: 125%;
+}
+.font-condensed {
+  font-stretch: 75%;
+}
+
+@keyframes hero-rise {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
+}
+.hero-line {
+  display: block;
+  animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.hero-line:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.hero-line:nth-child(3) {
+  animation-delay: 0.16s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-line {
+    animation: none;
+  }
 }
 
 html {
@@ -67,14 +125,14 @@ html {
 body {
   background-color: var(--color-surface);
   color: var(--color-text-base);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 3px solid var(--color-signal);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -104,4 +162,85 @@ pre {
 ::selection {
   background-color: var(--color-accent);
   background-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+/*
+ * Cobalt building blocks shared by subpages. Square corners, heavy rules and
+ * uppercase labels echo the homepage poster layout.
+ */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 2px solid currentColor;
+    padding: 0.8rem 1.35rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--color-signal);
+  }
+  .btn-primary {
+    background: var(--color-cobalt);
+    border-color: var(--color-cobalt);
+    color: var(--color-on-cobalt);
+  }
+  .btn-outline {
+    color: var(--color-text-base);
+  }
+  .label-caps {
+    font-stretch: 75%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .heading-rule {
+    font-stretch: 125%;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    color: var(--color-text-base);
+    border-top: 3px solid var(--color-text-base);
+    padding-top: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .panel {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 1.5rem;
+  }
+  .panel-muted {
+    background: var(--color-surface-muted);
+    padding: 1.5rem;
+  }
+  .link-rule {
+    border-bottom: 3px solid var(--color-cobalt);
+    padding-bottom: 2px;
+    font-size: 0.875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-base);
+  }
+  .link-rule:hover {
+    color: var(--color-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn:hover {
+    transition: none;
+    transform: none;
+  }
 }

@@ -10,7 +10,7 @@ describe("sitemap", () => {
         entry.url === "https://danielmilewski.com/en/blog/llm-apps-in-production",
     );
 
-    expect(home?.lastModified).toBe("2024-11-15");
+    expect(home?.lastModified).toBe("2026-10-06");
     expect(blogPost?.lastModified).toBe("2024-11-15");
   });
 });

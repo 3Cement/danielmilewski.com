@@ -1,0 +1,73 @@
+---
+title: "Twój JSON-LD może nie trafiać do HTML-a: pułapka w Next.js App Router"
+slug: "nextjs-json-ld-trap"
+date: "2026-10-06"
+excerpt: "Moje własne portfolio wysyłało dane strukturalne, których nie widziały crawlery bez JavaScriptu. Naprawiła to zmiana jednego komponentu. Oto jak sprawdzić swoją stronę."
+tags: ["Next.js", "SEO", "Dane strukturalne", "TypeScript"]
+relatedProjectSlugs: []
+---
+
+Podczas audytu tej strony zrobiłem prosty test: pobrałem podstronę przez `curl` i poszukałem `<script type="application/ld+json">`. Nie było ani jednego. Dane strukturalne były widoczne w przeglądarce, narzędzia Google widziały je po wyrenderowaniu, ale surowy HTML nie zawierał żadnego tagu JSON-LD.
+
+## Co się działo
+
+Dane strukturalne były renderowane przez `next/script`:
+
+```tsx
+import Script from "next/script";
+
+<Script
+  id="site-structured-data"
+  type="application/ld+json"
+  strategy="beforeInteractive"
+  dangerouslySetInnerHTML={{ __html: json }}
+/>
+```
+
+Wygląda rozsądnie i ten wzorzec pojawia się w wielu tutorialach. W App Routerze skrypt z `beforeInteractive` nie jest jednak zapisywany w HTML-u jako tag. Next.js serializuje go do wywołania inline (`self.__next_s.push(...)`), a prawdziwy element `<script>` wstawia dopiero po stronie klienta.
+
+Dla przeglądarki efekt jest ten sam. Dla wszystkiego, co czyta HTML bez uruchamiania JavaScriptu, dane strukturalne po prostu nie istnieją. Dotyczy to wielu crawlerów AI, botów generujących podglądy linków i sporej części narzędzi SEO.
+
+## Poprawka
+
+JSON-LD to dane, a nie skrypt do wykonania, więc w ogóle nie potrzebuje `next/script`. Dokumentacja Next.js zaleca zwykły tag `<script>` renderowany w komponencie serwerowym:
+
+```tsx
+export function StructuredDataScript({ id, json }: { id: string; json: string }) {
+  return (
+    <script
+      id={id}
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: json.replace(/</g, "\\u003c") }}
+    />
+  );
+}
+```
+
+`replace` escapuje znak `<`, żeby ciąg typu `</script>` w danych nie mógł przedwcześnie zamknąć tagu.
+
+## Jak sprawdzić swoją stronę
+
+```bash
+curl -s https://twoja-strona.pl/ | grep -c 'type="application/ld+json"'
+```
+
+Jeśli wynik to `0`, a DevTools w przeglądarce pokazują schema, masz ten sam problem. Dokładniejszy test parsuje każdy blok JSON-LD i wypisuje typy:
+
+```python
+import json, re, urllib.request
+
+html = urllib.request.urlopen("https://twoja-strona.pl/").read().decode()
+for block in re.findall(r'<script[^>]*application/ld\+json[^>]*>(.*?)</script>', html, re.S):
+    data = json.loads(block)
+    items = data if isinstance(data, list) else data.get("@graph", [data])
+    print([item.get("@type") for item in items])
+```
+
+## Wnioski
+
+- **Testuj HTML, nie DOM.** DevTools pokazują stronę po uruchomieniu JavaScriptu. Crawlery często widzą coś innego.
+- **Dane to nie skrypt.** `next/script` służy do sterowania ładowaniem kodu wykonywalnego. Dane inline należą do zwykłego tagu.
+- **Dopisz to do checklisty audytu.** Ten błąd jest cichy: nic się nie psuje, nie ma błędu w konsoli, a testy wyników rozszerzonych, które renderują JavaScript, dalej przechodzą.
+
+Po zmianie każda podstrona tego serwisu wysyła dane `Person`, `WebSite`, `ProfilePage` i `BreadcrumbList` bezpośrednio w HTML-u z serwera. Jeśli chcesz, żebym spojrzał na technical SEO Twojej strony w Next.js, [napisz do mnie](/pl/contact).

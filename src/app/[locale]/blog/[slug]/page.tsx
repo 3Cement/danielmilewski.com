@@ -9,8 +9,7 @@ import {
 } from "@/lib/content";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { extractHeadings } from "@/lib/headings";
-import { Tag } from "@/components/ui/Tag";
-import { BlogCard } from "@/components/blog/BlogCard";
+import { PostList } from "@/components/blog/PostList";
 import {
   absoluteUrl,
   buildMetadata,
@@ -18,12 +17,12 @@ import {
   type SiteLocale,
 } from "@/lib/metadata";
 import { routing } from "@/i18n/routing";
-import { ContactCTA } from "@/components/ui/ContactCTA";
+import { HireCTA } from "@/components/home/HireCTA";
+import { PageHeader } from "@/components/ui/PageHeader";
 import {
   blogPostingSchema,
   breadcrumbSchema,
 } from "@/lib/schema";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { LocalizedLink } from "@/components/ui/LocalizedLink";
 import { localizeHtmlContent } from "@/lib/localizeHtmlContent";
 import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
@@ -119,21 +118,26 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      <div className="px-4 pt-10">
-        <div className="mx-auto max-w-6xl">
-          <Breadcrumbs
-            ariaLabel={tCommon("breadcrumbsAriaLabel")}
-            locale={locale as "en" | "pl"}
-            items={[
-              { label: tNav("home"), href: "/" },
-              { label: tNav("blog"), href: "/blog" },
-              { label: post.title },
-            ]}
-          />
-        </div>
-      </div>
+      <PageHeader
+        locale={locale as "en" | "pl"}
+        variant="article"
+        title={post.title}
+        eyebrow={post.tags.join(" · ")}
+        breadcrumbs={{
+          ariaLabel: tCommon("breadcrumbsAriaLabel"),
+          items: [
+            { label: tNav("home"), href: "/" },
+            { label: tNav("blog"), href: "/blog" },
+            { label: post.title },
+          ],
+        }}
+      >
+        <p className="mt-6 text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)]">
+          <time dateTime={post.date}>{date}</time> · {post.readingTime} {t("minRead")}
+        </p>
+      </PageHeader>
       <StructuredDataScript id="blog-post-structured-data" json={structuredData} />
-      <div className="py-16 px-4">
+      <div className="px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
             {/* TOC sidebar */}
@@ -148,39 +152,24 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Main content */}
             <div className="lg:col-span-3 order-1">
-              {/* Header */}
-              <header className="mb-10">
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {post.tags.map((tag) => (
-                    <Tag key={tag} label={tag} />
-                  ))}
-                </div>
-                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text-base)] leading-tight mb-4">
-                  {post.title}
-                </h1>
-                <p className="text-sm text-[var(--color-text-faint)]">
-                  {date} · {post.readingTime} {t("minRead")}
-                </p>
-              </header>
-
               {/* Body */}
               <div
-                className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-blockquote:border-[var(--color-accent)]"
+                className="prose prose-zinc dark:prose-invert max-w-none prose-headings:font-extrabold prose-headings:tracking-tight prose-pre:rounded-none prose-a:text-[var(--color-accent)] prose-code:text-[var(--color-accent-light)] prose-pre:bg-[var(--color-surface-muted)] prose-blockquote:border-[var(--color-accent)]"
                 dangerouslySetInnerHTML={{ __html: localizedContentHtml }}
               />
 
               {relatedProjects.length > 0 && (
                 <div className="mt-12">
-                  <h2 className="text-lg font-semibold text-[var(--color-text-base)] mb-6">
+                  <h2 className="heading-rule">
                     {t("relatedProjects")}
                   </h2>
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     {relatedProjects.map((project) => (
                       <article
                         key={project!.slug}
-                        className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] p-5"
+                        className="panel-muted"
                       >
-                        <h3 className="text-base font-semibold text-[var(--color-text-base)]">
+                        <h3 className="font-expanded text-lg font-extrabold leading-tight text-[var(--color-text-base)]">
                           <LocalizedLink
                             locale={locale as "en" | "pl"}
                             href={`/projects/${project!.slug}`}
@@ -201,28 +190,19 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Related posts */}
               {related.length > 0 && (
                 <div className="mt-12">
-                  <h2 className="text-lg font-semibold text-[var(--color-text-base)] mb-6">
+                  <h2 className="heading-rule !mb-0">
                     {t("relatedPosts")}
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {related.map((p) => (
-                      <BlogCard key={p.slug} post={p} locale={locale} />
-                    ))}
-                  </div>
+                  <PostList posts={related} locale={locale} />
                 </div>
               )}
 
-              {/* CTA */}
-              <div className="mt-12 border-t border-[var(--color-border)]">
-                <ContactCTA locale={locale} />
-              </div>
-
               {/* Back link */}
-              <div className="pt-2 border-t border-[var(--color-border)]">
+              <div className="mt-12">
                 <LocalizedLink
                   locale={locale as "en" | "pl"}
                   href="/blog"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)] hover:text-[var(--color-text-base)] transition-colors"
+                  className="link-rule inline-flex items-center gap-2"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -234,6 +214,7 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
       </div>
+      <HireCTA locale={locale} />
     </>
   );
 }

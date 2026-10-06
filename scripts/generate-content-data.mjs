@@ -101,6 +101,8 @@ const mdxBuildComponents = {
     void id;
     return createElement("h3", { ...rest, id: slugifyHeading(plainTextFromChildren(children)) }, children);
   },
+  // Body screenshots sit below the fold; without this every one loads with the page.
+  img: (props) => createElement("img", { ...props, loading: "lazy", decoding: "async" }),
 };
 
 async function renderMdxToHtml(content, pathLabel) {

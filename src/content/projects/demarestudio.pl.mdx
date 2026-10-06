@@ -1,5 +1,5 @@
 ---
-title: "DeMāre Studio — strona dla studia wnętrz z naciskiem na SEO i konwersję"
+title: "DeMāre Studio — strona architekta wnętrz nastawiona na SEO"
 slug: "demarestudio"
 featured: true
 featuredRank: 2
@@ -7,7 +7,7 @@ shortProblem: "Studio potrzebowało strony premium, która buduje zaufanie, pozy
 shortSolution: "Zaprojektowałem i wdrożyłem kompletną stronę w Astro: UX pod konwersję, pełne fundamenty technical SEO, gotowość GEO/AEO i iteracyjne poprawki oparte o realne audyty."
 stack: ["Astro", "TypeScript", "CSS", "Cloudflare Pages", "Cloudflare Analytics", "Formspree", "Structured Data", "Technical SEO", "GEO/AEO"]
 role: "Samodzielny Full-Stack Engineer"
-outcome: "Strona działa produkcyjnie pod demarestudio.com z mocnymi wynikami: SEO 97/100, Szybkość 93/100, AI Ready 100/100, Indeksowanie 100/100, RODO 100/100 (snapshot Dr Strona: 10.04.2026)."
+outcome: "Strona działa pod demarestudio.com i stale się rozwija: 5 podstron usług, 3 strony lokalne, 6 poradników na blogu i 14 realizacji. LCP na mobile spadło z 3,2 s do 2,5 s (PageSpeed, 06.10.2026); audyt po wdrożeniu: SEO 97/100, AI Ready 100/100, RODO 100/100."
 overview: "DeMāre Studio to dwujęzyczna strona marketingowa dla studia projektowania wnętrz z Gdańska. Celem projektu było połączenie estetyki premium z wysoką skutecznością techniczną i sprzedażową."
 demo: "https://demarestudio.com/"
 repo: ""
@@ -17,9 +17,11 @@ images: [
   "/images/demarestudio/services.webp",
   "/images/demarestudio/process.webp",
   "/images/demarestudio/about.webp",
-  "/images/demarestudio/contact.webp"
+  "/images/demarestudio/contact.webp",
+  "/images/demarestudio/blog.webp",
+  "/images/demarestudio/mobile.webp"
 ]
-relatedSlugs: []
+relatedSlugs: ["koprowskastudio"]
 relatedPostSlugs: []
 ---
 
@@ -85,7 +87,20 @@ Potraktowałem projekt jak wdrożenie produktu marketingowego opartego na danych
 
 - **HSTS** (`Strict-Transport-Security`) ustawiane jest na brzegu **Cloudflare** (SSL/TLS → Edge Certificates), a nie w samym kodzie Astro — standard przy statycznej stronie za Cloudflare.
 
-## Wyniki SEO i wydajności (snapshot)
+## Druga iteracja: treści, lokalne SEO i UX (2026)
+
+Po wdrożeniu strona dalej rosła. Druga runda skupiła się na intencjach wyszukiwania i ruchu z długiego ogona:
+
+- **Podstrony usług:** hub `/uslugi/` i pięć osobnych stron (projekt mieszkania, projekt domu, apartament inwestycyjny, projekt online, nadzór autorski), każda opisana danymi `Service`.
+- **Strony lokalne** dla Gdańska, Gdyni i Sopotu pod zapytania typu „architekt wnętrz + miasto”.
+- **Blog** z sześcioma praktycznymi poradnikami (koszt architekta wnętrz w Gdańsku, współpraca z projektantem, japandi a nowoczesny minimalizm, mieszkanie deweloperskie, mieszkanie pod wynajem, nadzór autorski).
+- **Strona FAQ** z danymi strukturalnymi `FAQPage`, osobna podstrona studia i 14 podstron realizacji.
+- **Tryb jasny i ciemny** oraz nowa strona główna z pełnoekranowym sliderem zdjęć.
+- **Baner zgód**, który ładuje Google Analytics dopiero po akceptacji.
+
+Aktualny pomiar PageSpeed (strona główna, mobile, **06.10.2026**): wydajność 89/100, LCP 2,5 s (wcześniej 3,2 s), CLS 0,004, TBT 0 ms.
+
+## Wyniki SEO i wydajności (snapshot po wdrożeniu)
 
 Źródło: audyt Dr Strona (drstrona.pl), pomiar z **10.04.2026, 16:21:51**.
 
@@ -125,3 +140,7 @@ Strona działa jako pełne narzędzie pozyskiwania klientów: łączy estetykę 
 ![Podstrona O mnie / o studiu wzmacniająca wiarygodność](/images/demarestudio/about.webp)
 
 ![Podstrona kontaktu z formularzem i CTA do zapytania](/images/demarestudio/contact.webp)
+
+![Blog z poradnikami o projektowaniu wnętrz w Trójmieście](/images/demarestudio/blog.webp)
+
+![Strona główna DeMāre Studio na telefonie](/images/demarestudio/mobile.webp)

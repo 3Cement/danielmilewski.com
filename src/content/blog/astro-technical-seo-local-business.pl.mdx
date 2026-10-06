@@ -1,0 +1,71 @@
+---
+title: "Technical SEO w Astro: co realnie pomogło dwóm pracowniom wnętrz"
+slug: "astro-technical-seo-local-business"
+date: "2026-08-20"
+excerpt: "Dwie lokalne firmy, dużo zdjęć, jeden stack. Co miało znaczenie dla indeksowania, widoczności w AI i szybkości na mobile, a co okazało się szumem."
+tags: ["Astro", "SEO", "Wydajność", "Dane strukturalne"]
+relatedProjectSlugs: ["demarestudio", "koprowskastudio"]
+---
+
+W tym roku wdrożyłem dwie strony dla pracowni projektowania wnętrz: [DeMāre Studio](/pl/projects/demarestudio) z Gdańska i [Koprowska Studio](/pl/projects/koprowskastudio), działające w Warszawie i Trójmieście. Ta sama branża, ten sam stack (Astro na Cloudflare), bardzo podobne cele: pokazać duże zdjęcia, być widocznym lokalnie i zamieniać odwiedziny w zapytania.
+
+Poniżej to, co dało mierzalną różnicę, i to, co jej nie dało.
+
+## 1. Warstwa SEO w layoucie, nie w podstronach
+
+Obie strony dostają canonicale, `hreflang` (PL, EN, `x-default`), Open Graph i JSON-LD z jednego wspólnego komponentu layoutu. Podstrona przekazuje tylko tytuł, opis i ścieżkę.
+
+Brzmi jak porządki, ale to największy zysk w niezawodności. Na stronie dwujęzycznej najczęstszy błąd SEO to podstrona, która istnieje w obu językach, ale linkuje tylko do jednej wersji. Jeśli hreflang generuje się z routingu, ten błąd po prostu nie może wystąpić.
+
+## 2. Dane strukturalne opisują firmę, nie podstronę
+
+Dla lokalnej firmy usługowej liczy się graf organizacji:
+
+- `ProfessionalService` + `LocalBusiness` z adresem, NIP-em, rokiem założenia i linkami `sameAs`,
+- `Person` dla założycielki, połączony przez `founder` / `worksFor`,
+- `areaServed` z faktycznymi miastami,
+- `OfferCatalog` (albo osobne wpisy `Service`) z tym, co pracownia sprzedaje.
+
+Każda podstrona dodaje węzeł `WebPage`, który wskazuje na organizację przez `@id`. Jeden graf, wiele punktów wejścia. Wyszukiwarki i asystenci AI dostają z każdego adresu tę samą, spójną odpowiedź na pytanie „kto to jest, gdzie działa, czym się zajmuje”.
+
+## 3. Podstrony pod intencje wygrywają z jedną „Ofertą”
+
+Na DeMāre Studio największą zmianą po wdrożeniu był podział jednej strony usług na pięć osobnych (projekt mieszkania, projekt domu, apartament inwestycyjny, projekt online, nadzór autorski) oraz dodanie stron lokalnych dla Gdańska, Gdyni i Sopotu. Każda podstrona dobrze odpowiada na jedno zapytanie, zamiast jednej, która słabo odpowiada na pięć.
+
+Zasada, której się trzymam: nowa podstrona ma sens tylko wtedy, gdy ma odrębną intencję wyszukiwania i wystarczająco dużo unikalnej treści, żeby na nią odpowiedzieć. Strony miast z tym samym tekstem i podmienioną nazwą miasta to obciążenie, a nie atut.
+
+## 4. Zdjęcie w hero to cały wynik na mobile
+
+Na stronach opartych o zdjęcia elementem Largest Contentful Paint prawie zawsze jest zdjęcie w hero. Wyniki laboratoryjne z PageSpeed pokazują to wprost:
+
+| Strona (główna) | Desktop | Mobile | LCP mobile |
+| --- | --- | --- | --- |
+| DeMāre Studio | - | 89 | 2,5 s |
+| Koprowska Studio | 100 | 80 | 5,3 s |
+
+Co pomogło DeMāre zejść z 3,2 s do 2,5 s LCP na mobile:
+
+- responsywne `srcset` generowane w czasie budowania, żeby telefon nigdy nie pobierał wersji 2400 px,
+- `fetchpriority="high"` i `loading="eager"` tylko na pierwszym slajdzie, lazy loading na pozostałych,
+- brak skryptów blokujących render przed hero.
+
+Na Koprowska Studio kolejne kroki to ciaśniejszy kadr hero na mobile i usunięcie przekierowania: domena bez `www` przechodzi przez dodatkowy skok, zanim dotrze do właściwego adresu. O przekierowaniach łatwo zapomnieć, bo strona „działa”, ale na wolnym łączu mobilnym każdy skok kosztuje czas przed pierwszym bajtem HTML-a.
+
+## 5. Widoczność w AI to głównie dobrze zrobione podstawy
+
+`llms.txt`, otwarty dostęp dla GPTBot, ClaudeBot i PerplexityBot w `robots.txt` oraz sygnały świeżości (`dateModified`) są tanie i warto je mieć. Ważniejsza jest jednak sama treść: krótkie definicje, listy i odpowiedzi FAQ, które da się zacytować w oderwaniu od reszty. Asystenci AI cytują fragmenty, a nie całe strony.
+
+## Co okazało się szumem
+
+- Pogoń za 100/100 w każdym narzędziu audytowym. Każde liczy inaczej, a różnica 93 vs 97 rzadko przekłada się na biznes.
+- Dopieszczanie gęstości słów kluczowych. Więcej dały czytelne nagłówki odpowiadające na prawdziwe pytania.
+- Dodawanie typów schema, które nie mają odpowiednika na stronie. Jeśli czegoś nie ma na stronie, nie powinno tego być w JSON-LD.
+
+## Wnioski
+
+- Generuj canonicale, hreflang i JSON-LD z layoutu, żeby nie mogły się rozjechać.
+- Opisz firmę raz jako graf i odwołuj się do niego z każdej podstrony.
+- Buduj podstrony wokół odrębnych intencji wyszukiwania.
+- Na stronach ze zdjęciami najpierw zoptymalizuj hero i usuń przekierowania.
+
+Jeśli prowadzisz firmę usługową i chcesz mieć tak zbudowaną stronę, [napisz do mnie](/pl/contact).

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         url: defaultSocialImage,
         width: 1200,
         height: 630,
-        alt: `${SITE_NAME} — Software Engineer`,
+        alt: `${SITE_NAME} — Senior Python Developer`,
       },
     ],
   },

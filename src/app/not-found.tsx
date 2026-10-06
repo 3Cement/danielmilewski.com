@@ -30,6 +30,16 @@ export const metadata: Metadata = {
   },
 };
 
+const linkStyle = {
+  color: "#ffffff",
+  fontWeight: 700,
+  fontSize: "0.875rem",
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
+  textDecoration: "none",
+  borderBottom: "2px solid #f47a42",
+} as const;
+
 export default function GlobalNotFound() {
   return (
     <div
@@ -37,38 +47,45 @@ export default function GlobalNotFound() {
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem",
-        background: "#0d1117",
-        color: "#e6edf3",
-        fontFamily: "system-ui, sans-serif",
+        padding: "2rem 1rem",
+        background: "#303cb8",
+        color: "#ffffff",
+        fontFamily: '"Helvetica Neue", Arial, system-ui, sans-serif',
       }}
     >
-      <div style={{ maxWidth: "32rem", textAlign: "center" }}>
-        <p style={{ margin: 0, color: "#58a6ff", fontSize: "0.875rem", fontWeight: 600 }}>404</p>
-        <h1 style={{ margin: "0.75rem 0 1rem", fontSize: "2rem", lineHeight: 1.1 }}>
+      <div style={{ maxWidth: "72rem", margin: "0 auto", width: "100%" }}>
+        <p
+          aria-hidden="true"
+          style={{ margin: 0, fontSize: "clamp(5rem, 18vw, 12rem)", fontWeight: 900, lineHeight: 1, letterSpacing: "-0.04em" }}
+        >
+          404
+        </p>
+        <h1 style={{ margin: "1rem 0", fontSize: "clamp(1.75rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1, textTransform: "uppercase" }}>
           Page not found
         </h1>
-        <p style={{ margin: 0, color: "#8b949e", lineHeight: 1.6 }}>
+        <p style={{ margin: 0, fontSize: "1.125rem", lineHeight: 1.5, maxWidth: "48ch" }}>
           The page you requested does not exist or has moved.
         </p>
-        <div style={{ marginTop: "1.5rem" }}>
+        <div style={{ marginTop: "2rem", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1.5rem" }}>
           <Link
             href="/en"
             style={{
               display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "0.75rem",
-              background: "#1f6feb",
-              color: "#ffffff",
-              fontWeight: 600,
-              padding: "0.75rem 1.125rem",
+              background: "#ffffff",
+              color: "#303cb8",
+              fontWeight: 700,
+              fontSize: "0.875rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              padding: "0.8rem 1.35rem",
               textDecoration: "none",
             }}
           >
             Back to home
           </Link>
+          <Link href="/en/projects" style={linkStyle}>Projects</Link>
+          <Link href="/en/blog" style={linkStyle}>Writing</Link>
+          <Link href="/en/contact" style={linkStyle}>Contact</Link>
         </div>
       </div>
     </div>

@@ -1,0 +1,108 @@
+---
+title: "Koprowska Studio — dwujęzyczna strona pracowni wnętrz"
+slug: "koprowskastudio"
+featured: true
+featuredRank: 3
+shortProblem: "Pracownia projektująca wnętrza w Warszawie i Trójmieście potrzebowała strony, na której duże, fotograficzne realizacje ładują się szybko, dobrze czytają się po polsku i angielsku, a Google jasno rozumie, czym zajmuje się firma."
+shortSolution: "Zbudowałem statyczną stronę w Astro: portfolio oparte na zdjęciach, routing PL/EN z hreflang, pełny graf danych strukturalnych LocalBusiness i Person, formularz Formspree oraz restrykcyjne nagłówki bezpieczeństwa na Cloudflare."
+stack: ["Astro", "TypeScript", "CSS", "Cloudflare", "Formspree", "Structured Data", "Technical SEO", "Responsive Images"]
+role: "Samodzielny Full-Stack Engineer"
+outcome: "Strona działa pod koprowskastudio.com. PageSpeed desktop 100/100 (LCP 0,4 s, CLS 0,003), wersje PL/EN z hreflang, rozbudowane dane strukturalne, HSTS i restrykcyjny CSP (pomiar 06.10.2026)."
+overview: "Koprowska Studio to pracownia projektowania wnętrz założona w 2018 roku przez Katarzynę Koprowską, realizująca domy i mieszkania w Warszawie, Trójmieście i na Kaszubach. Strona pokazuje realizacje w formie dużych zdjęć, tłumaczy sposób pracy pracowni i zamienia odwiedziny w zapytania o projekt."
+demo: "https://www.koprowskastudio.com/"
+repo: ""
+images: [
+  "/images/koprowskastudio/home-card.webp",
+  "/images/koprowskastudio/portfolio.webp",
+  "/images/koprowskastudio/project.webp",
+  "/images/koprowskastudio/services.webp",
+  "/images/koprowskastudio/about.webp",
+  "/images/koprowskastudio/contact.webp",
+  "/images/koprowskastudio/mobile.webp"
+]
+relatedSlugs: ["demarestudio"]
+relatedPostSlugs: []
+---
+
+## Problem / kontekst
+
+Praca pracowni jest wizualna: gotowe domy, naturalne materiały, detale widoczne dopiero na dużych zdjęciach. Strona miała:
+
+- pokazywać każdą realizację jako pełnoekranową historię w zdjęciach, bez spowalniania strony,
+- działać po polsku i angielsku z poprawnymi sygnałami językowymi dla wyszukiwarek,
+- opisywać firmę (lokalizację, usługi, założycielkę, obszar działania) w sposób czytelny dla Google i asystentów AI,
+- prowadzić odwiedzających od portfolio do krótkiego formularza zapytania.
+
+## Podejście
+
+1. Ułożyłem strukturę strony wokół tego, jak klienci podejmują decyzję: najpierw realizacje, potem sposób pracy, potem osoba stojąca za pracownią, na końcu kontakt.
+2. Utrzymałem spokojny język wizualny (ciepłe neutralne kolory, szeryfowe nagłówki, dużo światła), żeby to zdjęcia niosły stronę.
+3. Wykorzystałem statyczny build Astro z przetwarzaniem obrazów w czasie budowania, więc każde zdjęcie trafia do przeglądarki jako responsywny WebP w kilku szerokościach.
+4. Warstwę SEO (canonicale, hreflang, sitemapa, Open Graph, JSON-LD) wbudowałem we wspólny layout, a nie w pojedyncze podstrony.
+
+## Co zostało wdrożone
+
+- Strona główna z pełnoekranowym sliderem realizacji, cytatem założycielki, sekcją kontaktową i publikacjami prasowymi.
+- Lista realizacji i cztery podstrony projektów (Farmhouse Kaszuby, dom w Zawadach, dom w Serocku, mieszkanie na Garnizonie w Gdańsku).
+- Podstrony „O pracowni” i „Współpraca”: oferta (konsultacje, kompleksowy projekt wnętrza, nadzór autorski) oraz proces projektowy krok po kroku.
+- Kontakt z formularzem Formspree, stroną podziękowania i bezpośrednim adresem e-mail.
+- Pełna wersja angielska pod `/en/` z przełącznikiem języka na każdej podstronie.
+- Polityka prywatności i dwujęzyczna strona 404 oznaczona `noindex`.
+
+## Szczegóły techniczne
+
+### SEO i indeksowanie
+
+- Canonicale na hoście `www`, `hreflang` dla `pl`, `en` i `x-default` na każdej podstronie.
+- Indeks map strony ze wszystkimi 20 adresami PL i EN oraz `robots.txt` wskazujący na niego.
+- Unikalne tytuły i opisy dla każdej podstrony, Open Graph i karty Twittera z grafiką 1200x630.
+
+### Dane strukturalne
+
+- Jeden graf JSON-LD na podstronę: `WebSite`, `WebPage`, `ProfessionalService` + `LocalBusiness` oraz `Person` dla założycielki.
+- Dane firmy: pełna nazwa, adres, NIP, rok założenia, języki, `sameAs` (Instagram, Pinterest).
+- `areaServed` obejmujące Warszawę, Trójmiasto, Gdańsk, Gdynię, Sopot i Kaszuby oraz `OfferCatalog` z trzema usługami.
+
+### Wydajność
+
+- Responsywne `srcset` (od 720 do 2400 px) generowane w czasie budowania i `fetchpriority="high"` dla pierwszego zdjęcia w hero.
+- Animacje pojawiania się przez `IntersectionObserver` z fallbackiem bez JS, więc treść nigdy nie zostaje ukryta.
+- Brak frameworka po stronie klienta: tylko małe skrypty inline dla menu mobilnego i animacji.
+
+### Dostępność i bezpieczeństwo
+
+- Skip link, pułapka fokusu i obsługa `Escape` w menu mobilnym, `aria-label` na linkach z ikonami.
+- HSTS, restrykcyjny `Content-Security-Policy` (tylko `self` i Formspree), `X-Frame-Options` i `Referrer-Policy` ustawione na brzegu sieci.
+
+## Wyniki (snapshot)
+
+Źródło: Google PageSpeed Insights, strona główna, **06.10.2026**.
+
+| Metryka | Desktop | Mobile |
+| --- | --- | --- |
+| Wydajność | 100/100 | 80/100 |
+| LCP | 0,4 s | 5,3 s |
+| CLS | 0,003 | 0 |
+| Total Blocking Time | 0 ms | 0 ms |
+
+Desktop osiąga maksimum. Na mobile elementem LCP jest pełnoekranowe zdjęcie w hero, a domena bez `www` dokłada przekierowanie przed załadowaniem strony. Kolejne kroki to mniejszy kadr hero na mobile i obsługa domeny głównej bez dodatkowego przekierowania.
+
+## Efekt
+
+Pracownia ma szybką, dwujęzyczną stronę, która pokazuje realizacje w pełnym rozmiarze i jasno opisuje firmę wyszukiwarkom. Razem z [DeMāre Studio](/pl/projects/demarestudio) projekt pokazuje powtarzalny proces dla usług opartych na zdjęciach: architektura treści, statyczny build w Astro, warstwa SEO i danych strukturalnych, a potem pomiar po wdrożeniu.
+
+## Zrzuty ekranu
+
+![Strona główna Koprowska Studio z pełnoekranowym sliderem wnętrz](/images/koprowskastudio/home-card.webp)
+
+![Lista realizacji z dużymi zdjęciami projektów](/images/koprowskastudio/portfolio.webp)
+
+![Podstrona projektu Farmhouse Kaszuby z salonem i kamiennym kominkiem](/images/koprowskastudio/project.webp)
+
+![Podstrona Współpraca z ofertą i procesem projektowym](/images/koprowskastudio/services.webp)
+
+![Podstrona O pracowni z portretem założycielki](/images/koprowskastudio/about.webp)
+
+![Podstrona kontaktu z krótkim formularzem zapytania](/images/koprowskastudio/contact.webp)
+
+![Strona główna Koprowska Studio na telefonie](/images/koprowskastudio/mobile.webp)

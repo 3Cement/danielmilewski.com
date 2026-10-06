@@ -9,7 +9,8 @@ import { absoluteUrl, buildMetadata, CV_URL_EN, CV_URL_PL, EMAIL, GITHUB_URL, LI
 import { readServerEnv } from "@/lib/serverEnv";
 import { isTurnstileConfigured } from "@/lib/turnstile";
 import { TrackedAnchor } from "@/components/ui/TrackedLink";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { CopyEmailButton } from "@/components/home/CopyEmailButton";
 import { breadcrumbSchema } from "@/lib/schema";
 import { StructuredDataScript } from "@/components/ui/StructuredDataScript";
 
@@ -34,6 +35,7 @@ export default async function ContactPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: "contact" });
   const tNav = await getTranslations({ locale, namespace: "nav" });
   const tCommon = await getTranslations({ locale, namespace: "common" });
+  const tHire = await getTranslations({ locale, namespace: "hire" });
   const messages = await getMessages({ locale });
   const hcaptchaSiteKey = await readServerEnv("NEXT_PUBLIC_HCAPTCHA_SITE_KEY");
   const hcaptchaSecret = await readServerEnv("HCAPTCHA_SECRET_KEY");
@@ -65,68 +67,51 @@ export default async function ContactPage({ params }: Props) {
 
   return (
     <>
-      <div className="px-4 pt-10">
-        <div className="mx-auto max-w-6xl">
-          <Breadcrumbs
-            ariaLabel={tCommon("breadcrumbsAriaLabel")}
-            locale={locale as "en" | "pl"}
-            items={[
-              { label: tNav("home"), href: "/" },
-              { label: tNav("contact") },
-            ]}
-          />
+      <PageHeader
+        locale={locale as "en" | "pl"}
+        title={t("heading")}
+        sub={t("sub")}
+        breadcrumbs={{
+          ariaLabel: tCommon("breadcrumbsAriaLabel"),
+          items: [{ label: tNav("home"), href: "/" }, { label: tNav("contact") }],
+        }}
+      >
+        <div className="mt-8 flex flex-wrap gap-3">
+          <TrackedAnchor
+            href={CV_URL_EN}
+            target="_blank"
+            rel="noopener noreferrer"
+            analytics={{
+              event: "cv_download_click",
+              locale: locale as "en" | "pl",
+              ctaId: "contact_cv_en",
+              surface: "contact_page",
+            }}
+            className="btn border-white text-white"
+          >
+            {t("cvEnglish")}
+          </TrackedAnchor>
+          <TrackedAnchor
+            href={CV_URL_PL}
+            target="_blank"
+            rel="noopener noreferrer"
+            analytics={{
+              event: "cv_download_click",
+              locale: locale as "en" | "pl",
+              ctaId: "contact_cv_pl",
+              surface: "contact_page",
+            }}
+            className="btn border-white text-white"
+          >
+            {t("cvPolish")}
+          </TrackedAnchor>
         </div>
-      </div>
+      </PageHeader>
       <StructuredDataScript id="contact-structured-data" json={structuredData} />
-      <div className="py-16 px-4">
+      <div className="px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] xl:gap-12">
+        <div className="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
           <div className="min-w-0">
-            <div className="max-w-3xl">
-              <h1 className="mb-4 text-3xl font-bold tracking-tight text-[var(--color-text-base)] sm:text-4xl">
-                {t("heading")}
-              </h1>
-              <p className="mb-8 text-lg leading-relaxed text-[var(--color-text-muted)]">
-                {t("sub")}
-              </p>
-
-              <div className="mb-10">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[var(--color-text-faint)]">
-                  {t("cvHeading")}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <TrackedAnchor
-                    href={CV_URL_EN}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    analytics={{
-                      event: "cv_download_click",
-                      locale: locale as "en" | "pl",
-                      ctaId: "contact_cv_en",
-                      surface: "contact_page",
-                    }}
-                    className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] transition-colors hover:border-[var(--color-accent)]/50"
-                  >
-                    {t("cvEnglish")}
-                  </TrackedAnchor>
-                  <TrackedAnchor
-                    href={CV_URL_PL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    analytics={{
-                      event: "cv_download_click",
-                      locale: locale as "en" | "pl",
-                      ctaId: "contact_cv_pl",
-                      surface: "contact_page",
-                    }}
-                    className="inline-flex items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-4 py-2 text-sm font-medium text-[var(--color-text-base)] transition-colors hover:border-[var(--color-accent)]/50"
-                  >
-                    {t("cvPolish")}
-                  </TrackedAnchor>
-                </div>
-              </div>
-            </div>
-
             <ContactForm
               locale={locale as "en" | "pl"}
               messages={messages.contactForm}
@@ -139,8 +124,8 @@ export default async function ContactPage({ params }: Props) {
             <div className="space-y-8 xl:sticky xl:top-24">
               <ContactExpectations locale={locale} compact />
 
-              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] p-6">
-                <p className="mb-2 text-sm font-semibold text-[var(--color-text-base)]">
+              <div className="on-ink p-6">
+                <p className="font-expanded mb-2 text-xl font-extrabold uppercase">
                   {t("emailHeading")}
                 </p>
                 <p className="mb-4 text-sm text-[var(--color-text-muted)]">
@@ -154,11 +139,17 @@ export default async function ContactPage({ params }: Props) {
                     ctaId: "contact_direct_email",
                     surface: "contact_page",
                   }}
-                  className="inline-flex items-center gap-2 font-medium text-[var(--color-accent)] hover:underline"
+                  className="inline-flex items-center gap-2 break-all font-bold hover:text-[var(--color-signal)]"
                 >
                   <EmailIcon size={16} />
                   {EMAIL}
                 </TrackedAnchor>
+                <CopyEmailButton
+                  email={EMAIL}
+                  label={tHire("copy")}
+                  copiedLabel={tHire("copied")}
+                  className="font-condensed mt-4 block cursor-pointer bg-[var(--color-signal)] px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#16080a]"
+                />
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
@@ -166,11 +157,11 @@ export default async function ContactPage({ params }: Props) {
                   href={LINKEDIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] p-4 transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-surface-muted)]"
+                  className="flex items-center gap-3 border-2 border-[var(--color-text-base)] p-4 transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--color-signal)]"
                 >
                   <LinkedInIcon />
                   <div>
-                    <p className="text-sm font-medium text-[var(--color-text-base)]">
+                    <p className="text-sm font-bold uppercase tracking-wider text-[var(--color-text-base)]">
                       LinkedIn
                     </p>
                     <p className="text-xs text-[var(--color-text-faint)]">
@@ -183,11 +174,11 @@ export default async function ContactPage({ params }: Props) {
                   href={GITHUB_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] p-4 transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-surface-muted)]"
+                  className="flex items-center gap-3 border-2 border-[var(--color-text-base)] p-4 transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--color-signal)]"
                 >
                   <GitHubIcon />
                   <div>
-                    <p className="text-sm font-medium text-[var(--color-text-base)]">
+                    <p className="text-sm font-bold uppercase tracking-wider text-[var(--color-text-base)]">
                       GitHub
                     </p>
                     <p className="text-xs text-[var(--color-text-faint)]">
@@ -200,11 +191,11 @@ export default async function ContactPage({ params }: Props) {
                   href={X_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-xl border border-[var(--color-border)] p-4 transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-surface-muted)]"
+                  className="flex items-center gap-3 border-2 border-[var(--color-text-base)] p-4 transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--color-signal)]"
                 >
                   <XIcon />
                   <div>
-                    <p className="text-sm font-medium text-[var(--color-text-base)]">
+                    <p className="text-sm font-bold uppercase tracking-wider text-[var(--color-text-base)]">
                       X
                     </p>
                     <p className="text-xs text-[var(--color-text-faint)]">
@@ -215,14 +206,14 @@ export default async function ContactPage({ params }: Props) {
               </div>
 
               <div>
-                <h2 className="mb-4 text-base font-semibold text-[var(--color-text-base)]">
+                <h2 className="heading-rule">
                   {t("lookingHeading")}
                 </h2>
                 <ul className="space-y-2 text-sm text-[var(--color-text-muted)]">
                   {lookingItems.map((item: string) => (
                     <li key={item} className="flex items-start gap-2">
                       <span
-                        className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]"
+                        className="mt-1.5 block h-2 w-2 shrink-0 bg-[var(--color-signal)]"
                         aria-hidden="true"
                       />
                       {item}
