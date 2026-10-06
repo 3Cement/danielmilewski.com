@@ -1,0 +1,97 @@
+---
+title: "Koszt nabycia metodą FIFO w Pythonie: czego nauczył mnie InvestTracker"
+slug: "fifo-cost-basis-python"
+date: "2025-11-18"
+excerpt: "Liczenie zrealizowanego zysku wygląda na jedną linijkę, dopóki nie pojawią się częściowe sprzedaże, kilka walut i importy z brokerów. Oto model, który się sprawdził."
+tags: ["Python", "Fintech", "PostgreSQL", "Backend"]
+relatedProjectSlugs: ["investtracker"]
+---
+
+Zaczynając InvestTrackera zakładałem, że zysk i strata to prosta arytmetyka: obecna wartość minus to, co zapłaciłem. To działa dokładnie przy jednym zakupie i zerze sprzedaży. Prawdziwy portfel ma częściowe sprzedaże, dywidendy, prowizje, splity i pozycje kupione w trzech walutach. Ten wpis opisuje model kosztu nabycia, który to wszystko przetrwał.
+
+## Dlaczego FIFO i dlaczego to ważne
+
+Polskie przepisy dla papierów wartościowych opierają się na **FIFO** (first in, first out): gdy sprzedajesz część pozycji, za sprzedane uznaje się najpierw akcje kupione najwcześniej. Jeśli liczysz koszt jako prostą średnią, zrealizowany zysk nie zgodzi się z tym, czego oczekuje urząd skarbowy, a liczby w aplikacji po cichu rozjadą się z rzeczywistością.
+
+Kluczowe pytanie nie brzmi więc „ile średnio zapłaciłem?”, tylko „które konkretne partie zużyła ta sprzedaż?”.
+
+## Modeluj partie, nie pozycje
+
+Najważniejszą decyzją było przechowywanie **partii (lotów)** jako osobnych wierszy zamiast bieżącej średniej na pozycji:
+
+```python
+from dataclasses import dataclass
+from datetime import date
+from decimal import Decimal
+
+@dataclass
+class Lot:
+    quantity: Decimal          # pozostała ilość, nie początkowa
+    unit_cost: Decimal         # w walucie instrumentu
+    fx_rate: Decimal           # kurs waluta instrumentu -> waluta bazowa z dnia zakupu
+    acquired_at: date
+```
+
+Sprzedaż przechodzi przez partie od najstarszej do najnowszej i je zużywa:
+
+```python
+def consume_fifo(lots: list[Lot], qty: Decimal) -> tuple[Decimal, list[Lot]]:
+    """Zwraca koszt (w walucie bazowej) sprzedanej ilości i pozostałe partie."""
+    cost = Decimal("0")
+    remaining = []
+    for lot in sorted(lots, key=lambda l: l.acquired_at):
+        if qty <= 0:
+            remaining.append(lot)
+            continue
+        take = min(lot.quantity, qty)
+        cost += take * lot.unit_cost * lot.fx_rate
+        qty -= take
+        if lot.quantity > take:
+            remaining.append(Lot(lot.quantity - take, lot.unit_cost, lot.fx_rate, lot.acquired_at))
+    if qty > 0:
+        raise ValueError("Sprzedaż przekracza posiadaną ilość")
+    return cost, remaining
+```
+
+Jest celowo nudna: czysta funkcja, bez ORM, łatwa do przetestowania tabelą przypadków.
+
+## Lekcje, które kosztowały mnie czas
+
+### `Decimal` wszędzie, od pierwszego commita
+
+Float wystarczy do wykresu, ale nie do pieniędzy. Błąd typu `0.1 + 0.2` pomnożony przez setki transakcji daje wynik przesunięty o kilka groszy, a to dokładnie ten rodzaj błędu, który niszczy zaufanie do aplikacji finansowej. W PostgreSQL odpowiednikiem jest `NUMERIC`, który SQLAlchemy bez niespodzianek mapuje na `Decimal`.
+
+### Zamrażaj kurs walutowy z dnia transakcji
+
+Dla akcji w USD kupionej w 2023 i sprzedanej w 2025 koszt w PLN liczy się po kursie z dnia zakupu, a nie dzisiejszym. Kurs zapisuję na partii (z API NBP dla właściwego dnia), więc ponowne przeliczenie nigdy nie zależy od zapytania na żywo.
+
+### Przeliczaj od nowa, nie łataj
+
+Importy z brokerów przychodzą z opóźnieniem i w losowej kolejności. Zamiast łatać partie przyrostowo, gdy pojawia się starsza transakcja, przeliczam całą pozycję z historii transakcji. Dla portfeli prywatnych jest to wystarczająco szybkie i usuwa całą klasę błędów typu „kolejność importu zmieniła wynik”.
+
+### Split to też transakcja
+
+Split 1:10 nie jest ani zakupem, ani sprzedażą, ale zmienia każdą otwartą partię: ilość razy 10, koszt jednostkowy przez 10. Zapisanie go jako jawnego zdarzenia w historii pozwala zachować podejście z przeliczaniem od nowa.
+
+## Testy
+
+Najwięcej dały testy `pytest` oparte na tabeli przypadków spisanych z prawdziwych wyciągów od brokerów:
+
+```python
+@pytest.mark.parametrize("buys, sell_qty, expected_cost", [
+    ([(10, "100")], 4, Decimal("400")),
+    ([(10, "100"), (10, "120")], 15, Decimal("1600")),
+])
+def test_fifo_cost(buys, sell_qty, expected_cost):
+    ...
+```
+
+Gdy jakaś liczba na dashboardzie wyglądała podejrzanie, pierwszym krokiem zawsze było dopisanie przypadku do tej tabeli.
+
+## Wnioski
+
+- Przechowuj partie, a nie średnie, jeśli system podatkowy używa FIFO.
+- `Decimal` w Pythonie i `NUMERIC` w PostgreSQL, bez wyjątków.
+- Zapisuj kurs walutowy na partii i przeliczaj pozycje z historii zamiast je łatać.
+
+Cały system jest opisany w [case study InvestTrackera](/pl/projects/investtracker). Jeśli budujesz coś podobnego i chcesz porównać podejścia, [napisz do mnie](/pl/contact).

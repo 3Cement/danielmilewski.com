@@ -3,7 +3,7 @@ import { formatContentDate, getLatestContentDate } from "@/lib/contentDates";
 
 describe("getLatestContentDate", () => {
   it("returns the latest post date from content", () => {
-    expect(getLatestContentDate()).toBe("2024-11-15");
+    expect(getLatestContentDate()).toBe("2026-10-06");
   });
 });
 

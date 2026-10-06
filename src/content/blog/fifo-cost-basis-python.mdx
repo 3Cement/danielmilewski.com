@@ -1,0 +1,97 @@
+---
+title: "FIFO Cost Basis in Python: What I Learned Building InvestTracker"
+slug: "fifo-cost-basis-python"
+date: "2025-11-18"
+excerpt: "Calculating realized P&L sounds like a one-liner until you add partial sells, multiple currencies and broker imports. Here is the model that held up."
+tags: ["Python", "Fintech", "PostgreSQL", "Backend"]
+relatedProjectSlugs: ["investtracker"]
+---
+
+When I started InvestTracker, I assumed profit and loss was simple arithmetic: current value minus what you paid. That holds for exactly one buy and zero sells. Real portfolios have partial sells, dividends, fees, stock splits and positions bought in three currencies. This post covers the cost basis model that survived all of that.
+
+## Why FIFO, and why it matters
+
+Polish tax rules for securities use **FIFO** (first in, first out): when you sell part of a position, the shares you bought first count as sold first. If you calculate cost basis as a simple average, your realized gain will not match what the tax office expects, and the numbers in the app quietly drift from reality.
+
+So the core question is not "what did I pay on average?" but "which specific lots did this sell consume?"
+
+## Model lots, not positions
+
+The key decision was storing **lots** as first-class rows instead of a running average on the position:
+
+```python
+from dataclasses import dataclass
+from datetime import date
+from decimal import Decimal
+
+@dataclass
+class Lot:
+    quantity: Decimal          # remaining, not original
+    unit_cost: Decimal         # in the instrument currency
+    fx_rate: Decimal           # instrument currency -> base currency at buy time
+    acquired_at: date
+```
+
+A sell walks the lots from oldest to newest and consumes them:
+
+```python
+def consume_fifo(lots: list[Lot], qty: Decimal) -> tuple[Decimal, list[Lot]]:
+    """Return cost basis (base currency) of the sold quantity and the remaining lots."""
+    cost = Decimal("0")
+    remaining = []
+    for lot in sorted(lots, key=lambda l: l.acquired_at):
+        if qty <= 0:
+            remaining.append(lot)
+            continue
+        take = min(lot.quantity, qty)
+        cost += take * lot.unit_cost * lot.fx_rate
+        qty -= take
+        if lot.quantity > take:
+            remaining.append(Lot(lot.quantity - take, lot.unit_cost, lot.fx_rate, lot.acquired_at))
+    if qty > 0:
+        raise ValueError("Sell exceeds held quantity")
+    return cost, remaining
+```
+
+It is deliberately boring: a pure function, no ORM, easy to test with a table of cases.
+
+## Lessons that cost me time
+
+### Use `Decimal` everywhere, from the first commit
+
+Floats are fine for a chart and wrong for money. A `0.1 + 0.2` error multiplied across hundreds of transactions turns into a P&L that is off by a few grosze, which is exactly the kind of bug that destroys trust in a finance app. In PostgreSQL, the matching type is `NUMERIC`, and SQLAlchemy maps it to `Decimal` without surprises.
+
+### Freeze the FX rate at transaction time
+
+For a USD stock bought in 2023 and sold in 2025, the cost basis in PLN uses the rate from the buy date, not today's rate. I store the rate on the lot (sourced from the NBP API for the relevant day) so a recalculation never depends on a live call.
+
+### Rebuild, do not patch
+
+Broker imports arrive late and out of order. Instead of patching lots incrementally when an older transaction appears, I recalculate the whole position from its transaction history. It is fast enough for personal portfolios and removes an entire class of "the order of imports changed the result" bugs.
+
+### Splits are transactions too
+
+A 1:10 split is not a buy or a sell, but it changes every open lot: quantity times 10, unit cost divided by 10. Modelling it as an explicit event in the history keeps the rebuild approach working.
+
+## Testing
+
+Most of the value came from table-driven `pytest` cases written from real broker statements:
+
+```python
+@pytest.mark.parametrize("buys, sell_qty, expected_cost", [
+    ([(10, "100")], 4, Decimal("400")),
+    ([(10, "100"), (10, "120")], 15, Decimal("1600")),
+])
+def test_fifo_cost(buys, sell_qty, expected_cost):
+    ...
+```
+
+When a number in the dashboard looked wrong, the first step was always adding the failing case to this table.
+
+## Takeaways
+
+- Store lots, not averages, if the tax regime uses FIFO.
+- `Decimal` in Python and `NUMERIC` in PostgreSQL, no exceptions.
+- Persist the FX rate per lot and rebuild positions from history instead of patching.
+
+The full system is described in the [InvestTracker case study](/en/projects/investtracker). If you are building something similar and want to compare notes, [get in touch](/en/contact).
