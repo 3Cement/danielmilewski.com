@@ -73,7 +73,10 @@ export async function CaseStudySection({
                         rel="noopener noreferrer"
                         className="link-rule inline-block"
                       >
-                        {t("liveDemo")}
+                        {t("liveDemo")} <span aria-hidden="true">↗</span>
+                        <span className="block text-sm font-normal text-[var(--color-text-muted)]">
+                          {new URL(project.demo).host.replace(/^www\./, "")}
+                        </span>
                       </a>
                     )}
                   </div>
