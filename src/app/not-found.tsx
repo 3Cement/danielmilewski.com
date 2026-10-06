@@ -37,7 +37,7 @@ const linkStyle = {
   textTransform: "uppercase",
   letterSpacing: "0.06em",
   textDecoration: "none",
-  borderBottom: "2px solid #ff6b2c",
+  borderBottom: "2px solid #f47a42",
 } as const;
 
 export default function GlobalNotFound() {
@@ -48,7 +48,7 @@ export default function GlobalNotFound() {
         display: "flex",
         alignItems: "center",
         padding: "2rem 1rem",
-        background: "#2233d4",
+        background: "#303cb8",
         color: "#ffffff",
         fontFamily: '"Helvetica Neue", Arial, system-ui, sans-serif',
       }}
@@ -72,7 +72,7 @@ export default function GlobalNotFound() {
             style={{
               display: "inline-flex",
               background: "#ffffff",
-              color: "#2233d4",
+              color: "#303cb8",
               fontWeight: 700,
               fontSize: "0.875rem",
               textTransform: "uppercase",

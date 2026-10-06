@@ -21,7 +21,7 @@ export async function HireCTA({ locale }: HireCTAProps) {
   return (
     <section className="on-ink mt-16 scroll-mt-24 sm:mt-28" id="contact">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-28 lg:px-8">
-        <h2 className="font-expanded max-w-[16ch] text-[clamp(2.1rem,5.6vw,4.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-balance">
+        <h2 className="font-expanded max-w-[16ch] text-[clamp(1.85rem,4.4vw,3.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-balance">
           {t("heading")}
         </h2>
         <p className="mt-5 max-w-[44ch] text-lg text-[var(--color-text-muted)]">{t("sub")}</p>
@@ -29,7 +29,7 @@ export async function HireCTA({ locale }: HireCTAProps) {
           <TrackedAnchor
             href={`mailto:${EMAIL}`}
             analytics={{ event: "cta_click", locale: siteLocale, ctaId: "home_hire_email", surface: "hire_cta" }}
-            className="font-expanded break-all text-[clamp(1.35rem,4.4vw,3.5rem)] font-extrabold leading-tight tracking-tight hover:text-[var(--color-signal)] transition-colors"
+            className="font-expanded break-all text-[clamp(1.25rem,3.6vw,2.75rem)] font-extrabold leading-tight tracking-tight hover:text-[var(--color-signal)] transition-colors"
           >
             {EMAIL}
           </TrackedAnchor>

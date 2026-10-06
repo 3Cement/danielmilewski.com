@@ -13,7 +13,7 @@ export function SectionHeading({ title, sub, id, link }: SectionHeadingProps) {
     <div className="flex flex-wrap items-end justify-between gap-4 border-b-[3px] border-[var(--color-text-base)] pt-16 pb-6 sm:pt-28">
       <h2
         id={id}
-        className="font-expanded max-w-[20ch] text-[clamp(2.1rem,5.6vw,4.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-[var(--color-text-base)] text-balance"
+        className="font-expanded max-w-[20ch] text-[clamp(1.85rem,4.4vw,3.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-[var(--color-text-base)] text-balance"
       >
         {title}
       </h2>

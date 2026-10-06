@@ -10,17 +10,17 @@
   --font-mono: var(--font-geist-mono);
 
   /*
-   * Cobalt — site-wide identity. A saturated cobalt carries the brand
+   * Cobalt — site-wide identity. A muted cobalt carries the brand
    * (navbar, hero, links, primary buttons); a warm signal orange is used
    * sparingly for status and hover accents. Light mode shades keep text
    * contrast >=4.5:1 on white.
    */
-  --color-accent: #2233d4;
-  --color-accent-muted: #1a28a8;
-  --color-accent-light: #3a4ae0;
+  --color-accent: #303cb8;
+  --color-accent-muted: #263093;
+  --color-accent-light: #4350c8;
   --color-accent-2: #c2410c;
-  --color-signal: #ff6b2c;
-  --color-cobalt: #2233d4;
+  --color-signal: #f47a42;
+  --color-cobalt: #303cb8;
   --color-on-cobalt: #ffffff;
   --color-ink: #0d0e14;
   --color-on-ink: #f1f2f6;
@@ -42,12 +42,12 @@
 
 /* Dark mode — deep navy surface, brighter cobalt for text-level accents */
 .dark {
-  --color-accent: #8d98ff;
+  --color-accent: #9aa3f5;
   --color-accent-muted: #a9b1ff;
   --color-accent-light: #b8bfff;
-  --color-accent-2: #ff8a55;
-  --color-signal: #ff8a55;
-  --color-cobalt: #2d3ee6;
+  --color-accent-2: #f4925f;
+  --color-signal: #f4925f;
+  --color-cobalt: #3442c4;
   --color-on-accent: #0b0c14;
   --color-ink: #05060c;
   --color-on-ink: #eef0fa;

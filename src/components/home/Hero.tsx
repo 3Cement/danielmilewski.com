@@ -23,7 +23,7 @@ export async function Hero({ locale }: HeroProps) {
             />
             {t("eyebrow")}
           </p>
-          <h1 className="font-expanded mt-6 text-[clamp(2.5rem,6.4vw,5.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.035em]">
+          <h1 className="font-expanded mt-6 text-[clamp(2.25rem,5.4vw,4.5rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.035em]">
             {h1Lines.map((line) => (
               <span key={line} className="hero-line">
                 {line}{" "}

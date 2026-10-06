@@ -26,8 +26,8 @@ export function PageHeader({
 }: PageHeaderProps) {
   const titleClass =
     variant === "page"
-      ? "text-[clamp(2.5rem,7vw,5.5rem)] uppercase leading-[0.9] tracking-[-0.035em]"
-      : "text-[clamp(1.9rem,4.2vw,3.5rem)] leading-[1.02] tracking-[-0.025em]";
+      ? "text-[clamp(2.15rem,5.6vw,4.5rem)] uppercase leading-[0.9] tracking-[-0.035em]"
+      : "text-[clamp(1.6rem,3.6vw,2.85rem)] leading-[1.02] tracking-[-0.025em]";
 
   return (
     <header className="on-cobalt">
