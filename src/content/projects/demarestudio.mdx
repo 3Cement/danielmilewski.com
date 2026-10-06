@@ -1,5 +1,5 @@
 ---
-title: "DeMāre Studio — SEO-first Interior Design Website (Astro)"
+title: "DeMāre Studio — SEO-first Interior Designer Website"
 slug: "demarestudio"
 featured: true
 featuredRank: 2
@@ -7,7 +7,7 @@ shortProblem: "The studio needed a premium website that converts local traffic i
 shortSolution: "I delivered a complete Astro website with bilingual UX, strong technical SEO, GEO/AEO readiness, high mobile performance, and a measurable audit-driven optimization process."
 stack: ["Astro", "TypeScript", "CSS", "Cloudflare Pages", "Cloudflare Analytics", "Formspree", "Structured Data", "Technical SEO", "GEO/AEO"]
 role: "Solo Full-Stack Engineer"
-outcome: "Production launch at demarestudio.com with strong scores: SEO 97/100, Speed 93/100, AI Ready 100/100, Indexing 100/100, GDPR 100/100 (Dr Strona snapshot: 2026-04-10)."
+outcome: "Live at demarestudio.com and still growing: 5 service pages, 3 local landing pages, 6 blog guides and 14 case pages. Mobile LCP improved from 3.2 s to 2.5 s (PageSpeed, 2026-10-06); launch audit: SEO 97/100, AI Ready 100/100, GDPR 100/100."
 overview: "DeMāre Studio is a bilingual marketing website for an interior design business in Gdańsk. The project focused on clear conversion paths, premium visual presentation, technical SEO correctness, and AI-search visibility."
 demo: "https://demarestudio.com/"
 repo: ""
@@ -17,9 +17,11 @@ images: [
   "/images/demarestudio/services.webp",
   "/images/demarestudio/process.webp",
   "/images/demarestudio/about.webp",
-  "/images/demarestudio/contact.webp"
+  "/images/demarestudio/contact.webp",
+  "/images/demarestudio/blog.webp",
+  "/images/demarestudio/mobile.webp"
 ]
-relatedSlugs: []
+relatedSlugs: ["koprowskastudio"]
 relatedPostSlugs: []
 ---
 
@@ -85,7 +87,20 @@ I treated this as a performance + SEO product build, not just a visual redesign:
 
 - **HSTS** (`Strict-Transport-Security`) is configured at the **Cloudflare** edge (SSL/TLS → Edge Certificates), not inside the Astro bundle — typical for static sites behind Cloudflare.
 
-## SEO and performance results (snapshot)
+## Iteration 2: content, local SEO and UX (2026)
+
+After launch the site kept growing. The second round focused on search intent and long-tail traffic:
+
+- **Service pages:** a `/uslugi/` hub with five dedicated pages (apartment design, house design, investment apartment, online design, author's supervision), each described in `Service` schema.
+- **Local landing pages** for Gdańsk, Gdynia and Sopot, targeting "interior designer + city" queries.
+- **Blog** with six practical guides (designer fees in Gdańsk, working with a designer, japandi vs modern minimalism, developer apartments, rental apartments, author's supervision).
+- **FAQ page** with `FAQPage` structured data, plus a separate studio page and 14 project case pages.
+- **Light and dark theme** toggle, and a redesigned homepage with a full-screen photo slider.
+- **Consent banner** that loads Google Analytics only after opt-in.
+
+Current PageSpeed snapshot (homepage, mobile, **2026-10-06**): performance 89/100, LCP 2.5 s (down from 3.2 s at launch), CLS 0.004, TBT 0 ms.
+
+## SEO and performance results (launch snapshot)
 
 Source: Dr Strona (drstrona.pl) audit snapshot from **2026-04-10 16:21:51**.
 
@@ -125,3 +140,7 @@ The website now operates as a complete lead-generation asset with premium presen
 ![About page introducing the designer and studio credibility signals](/images/demarestudio/about.webp)
 
 ![Contact page with direct CTA, email, phone, and structured inquiry form](/images/demarestudio/contact.webp)
+
+![Blog index with interior design guides for the Tricity](/images/demarestudio/blog.webp)
+
+![DeMāre Studio homepage on a mobile phone](/images/demarestudio/mobile.webp)

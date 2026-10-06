@@ -1,0 +1,108 @@
+---
+title: "Koprowska Studio — Bilingual Interior Design Website"
+slug: "koprowskastudio"
+featured: true
+featuredRank: 3
+shortProblem: "An interior design studio working in Warsaw and the Tricity needed a site where large, photo-led projects load fast, read well in Polish and English, and give Google a clear picture of the business."
+shortSolution: "I built a static Astro site with an image-first portfolio, PL/EN routing with hreflang, a full LocalBusiness and Person schema graph, a Formspree contact flow and strict security headers on Cloudflare."
+stack: ["Astro", "TypeScript", "CSS", "Cloudflare", "Formspree", "Structured Data", "Technical SEO", "Responsive Images"]
+role: "Solo Full-Stack Engineer"
+outcome: "Live at koprowskastudio.com. PageSpeed desktop 100/100 (LCP 0.4 s, CLS 0.003), PL/EN with hreflang, rich structured data, HSTS and a strict CSP (measured 2026-10-06)."
+overview: "Koprowska Studio is an interior design practice founded in 2018 by Katarzyna Koprowska, working on houses and apartments in Warsaw, the Tricity and Kashubia. The website presents the portfolio as large photography, explains how the studio works and turns visits into project inquiries."
+demo: "https://www.koprowskastudio.com/"
+repo: ""
+images: [
+  "/images/koprowskastudio/home-card.webp",
+  "/images/koprowskastudio/portfolio.webp",
+  "/images/koprowskastudio/project.webp",
+  "/images/koprowskastudio/services.webp",
+  "/images/koprowskastudio/about.webp",
+  "/images/koprowskastudio/contact.webp",
+  "/images/koprowskastudio/mobile.webp"
+]
+relatedSlugs: ["demarestudio"]
+relatedPostSlugs: []
+---
+
+## Problem / Context
+
+The studio's work is visual: finished houses, natural materials, details that only show in large photographs. The website had to:
+
+- present each project as a full-width photo story without slowing the page down,
+- work in Polish and English with proper language signals for search engines,
+- describe the business (location, services, founder, service area) in a way Google and AI assistants can read,
+- lead visitors from the portfolio to a short inquiry form.
+
+## Approach
+
+1. Structured the site around how clients decide: portfolio first, then how the studio works, then who is behind it, then contact.
+2. Kept the visual language quiet (warm neutral palette, serif display type, generous whitespace) so the photography carries the page.
+3. Used Astro's static output with build-time image processing, so every photo ships as responsive WebP at several widths.
+4. Built the SEO layer (canonicals, hreflang, sitemap, Open Graph, JSON-LD) into the shared layout instead of per page.
+
+## What I shipped
+
+- Homepage with a full-screen project slider, a quote from the founder, a contact teaser and a press section.
+- Portfolio index and four case pages (Farmhouse Kaszuby, Zawady house, Serock house, Garnizon apartment in Gdańsk).
+- "About the studio" and "How we work" pages: services (consultation, full interior design, author's supervision) and a step-by-step design process.
+- Contact page with a Formspree form, thank-you page and direct email.
+- Full English version under `/en/`, with a language switch on every page.
+- Privacy policy and a bilingual, `noindex` 404 page.
+
+## Technical implementation details
+
+### SEO and indexing
+
+- Canonical URLs on the `www` host, `hreflang` for `pl`, `en` and `x-default` on every page.
+- XML sitemap index with all 20 PL and EN URLs, `robots.txt` pointing to it.
+- Unique titles and descriptions per page, Open Graph and Twitter cards with a 1200x630 image.
+
+### Structured data
+
+- One JSON-LD graph per page: `WebSite`, `WebPage`, `ProfessionalService` + `LocalBusiness` and `Person` for the founder.
+- Business details: legal name, address, VAT ID, founding year, languages, `sameAs` (Instagram, Pinterest).
+- `areaServed` covering Warsaw, the Tricity, Gdańsk, Gdynia, Sopot and Kashubia, plus an `OfferCatalog` with the three services.
+
+### Performance
+
+- Responsive `srcset` (720 to 2400 px) generated at build time, `fetchpriority="high"` on the first hero image.
+- Scroll reveal animations through `IntersectionObserver` with a no-JS fallback, so content never stays hidden.
+- No client framework: small inline scripts only for the mobile menu and reveal animations.
+
+### Accessibility and security
+
+- Skip link, focus trap and `Escape` handling in the mobile menu, `aria-label` on icon links.
+- HSTS, a strict `Content-Security-Policy` (only `self` plus Formspree), `X-Frame-Options` and `Referrer-Policy` set at the edge.
+
+## Results (snapshot)
+
+Source: Google PageSpeed Insights, homepage, **2026-10-06**.
+
+| Metric | Desktop | Mobile |
+| --- | --- | --- |
+| Performance | 100/100 | 80/100 |
+| LCP | 0.4 s | 5.3 s |
+| CLS | 0.003 | 0 |
+| Total Blocking Time | 0 ms | 0 ms |
+
+Desktop is at the ceiling. On mobile the full-screen hero photo is the LCP element, and the apex domain adds a redirect to `www` before the page loads. Next steps are a smaller mobile hero crop and serving the apex domain without the extra hop.
+
+## Outcome
+
+The studio has a fast, bilingual site that shows its work at full size and describes the business clearly to search engines. Together with [DeMāre Studio](/en/projects/demarestudio), it shows a repeatable process for photo-heavy service businesses: content architecture, static Astro build, SEO and schema layer, then measurement after launch.
+
+## Screenshots
+
+![Koprowska Studio homepage with a full-screen interior photo slider](/images/koprowskastudio/home-card.webp)
+
+![Portfolio index with large project photography](/images/koprowskastudio/portfolio.webp)
+
+![Farmhouse Kaszuby case page with a stone fireplace living room](/images/koprowskastudio/project.webp)
+
+![How we work page introducing services and the design process](/images/koprowskastudio/services.webp)
+
+![About the studio page with a portrait of the founder](/images/koprowskastudio/about.webp)
+
+![Contact page with a short inquiry form](/images/koprowskastudio/contact.webp)
+
+![Koprowska Studio homepage on a mobile phone](/images/koprowskastudio/mobile.webp)
