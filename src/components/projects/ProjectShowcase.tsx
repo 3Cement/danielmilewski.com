@@ -1,7 +1,7 @@
-import Image from "next/image";
 import type { ProjectMeta } from "@/types/project";
 import { LocalizedLink } from "@/components/ui/LocalizedLink";
 import { type AppLocale } from "@/lib/localeHref";
+import { previewSrcSet, previewVariant } from "@/lib/previewImages";
 
 export interface ProjectShowcaseLabels {
   liveLabel: string;
@@ -75,14 +75,18 @@ export function ProjectShowcase({
               {labels.liveLabel} · {host} <span aria-hidden="true">↗</span>
             </a>
           )}
-          <Image
-            src={previewSrc}
+          {/* Static srcset variants instead of next/image: /_next/image on OpenNext is slow and uncached. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={previewVariant(previewSrc, 1280)}
+            srcSet={previewSrcSet(previewSrc)}
             alt={project.title}
             width={1280}
             height={800}
             sizes="(min-width: 1024px) 640px, 100vw"
-            loading={eager ? "eager" : undefined}
+            loading={eager ? "eager" : "lazy"}
             fetchPriority={eager ? "high" : undefined}
+            decoding="async"
             className="block aspect-[16/10] w-full object-cover object-top shadow-[0_30px_60px_-30px_rgba(13,14,40,0.45)] transition-transform duration-300 group-hover:-translate-y-1"
           />
         </figure>
