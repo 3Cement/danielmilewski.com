@@ -100,7 +100,7 @@ export default async function AboutPage({ params }: Props) {
               unoptimized
               fetchPriority="high"
               sizes="(min-width: 1024px) 300px, 260px"
-              className="block aspect-[4/5] w-full max-w-[260px] object-cover object-[50%_20%] mix-blend-luminosity grayscale contrast-[1.15] brightness-105 lg:ml-auto lg:max-w-[300px]"
+              className="block aspect-[4/5] w-full max-w-[260px] object-cover object-[50%_20%] lg:ml-auto lg:max-w-[300px]"
             />
             <figcaption className="font-condensed absolute bottom-5 left-0 max-w-[90%] bg-[var(--color-signal)] px-3 py-2 text-xs font-extrabold uppercase tracking-[0.08em] text-[#16080a]">
               {t("availableText")}

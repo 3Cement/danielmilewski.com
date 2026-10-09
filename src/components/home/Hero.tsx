@@ -74,7 +74,7 @@ export async function Hero({ locale }: HeroProps) {
             unoptimized
             fetchPriority="high"
             sizes="(min-width: 1024px) 360px, 320px"
-            className="ml-auto block aspect-[4/5] w-full max-w-[320px] object-cover object-[50%_20%] mix-blend-luminosity grayscale contrast-[1.15] brightness-105 lg:max-w-[360px]"
+            className="ml-auto block aspect-[4/5] w-full max-w-[320px] object-cover object-[50%_20%] lg:max-w-[360px]"
           />
           <figcaption className="font-condensed absolute bottom-6 left-0 bg-[var(--color-signal)] px-3 py-2 text-sm font-extrabold uppercase tracking-[0.08em] text-[#16080a]">
             {t("status")}
