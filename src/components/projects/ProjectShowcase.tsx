@@ -83,7 +83,8 @@ export function ProjectShowcase({
             alt={project.title}
             width={1280}
             height={800}
-            sizes="(min-width: 1024px) 640px, 100vw"
+            // Measured rendered widths: padding/gutters eat 56px below sm, 96px below lg; capped at 554px from lg.
+            sizes="(min-width: 1024px) 554px, (min-width: 640px) calc(100vw - 96px), calc(100vw - 56px)"
             loading={eager ? "eager" : "lazy"}
             fetchPriority={eager ? "high" : undefined}
             decoding="async"
