@@ -8,6 +8,7 @@ import { createElement, isValidElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import * as runtime from "react/jsx-runtime";
 import readingTime from "reading-time";
+import sharp from "sharp";
 
 const LOCALES = ["en", "pl"];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -16,6 +17,9 @@ const PROJECTS_DIR = path.join(root, "src/content/projects");
 const BLOG_DIR = path.join(root, "src/content/blog");
 const OUT_DIR = path.join(root, "src/generated");
 const OUT_FILE = path.join(OUT_DIR, "content-data.json");
+const PUBLIC_DIR = path.join(root, "public");
+// Keep in sync with PREVIEW_WIDTHS in src/lib/previewImages.ts.
+const PREVIEW_WIDTHS = [640, 1280];
 
 function stripContent(entry) {
   const { content, ...meta } = entry;
@@ -213,7 +217,34 @@ async function readPosts() {
   return { postMetasByLocale, postByLocaleAndSlug };
 }
 
+/**
+ * Static WebP variants of each project's preview screenshot (images[0]), so
+ * cards can use a plain srcset instead of /_next/image, which on OpenNext
+ * answers in 0.4-0.8 s per request without edge caching.
+ */
+async function generatePreviewVariants(projectMetasByLocale) {
+  const previews = new Set(
+    Object.values(projectMetasByLocale)
+      .flat()
+      .map((project) => project.images?.[0])
+      .filter((src) => typeof src === "string" && src.endsWith(".webp")),
+  );
+
+  for (const src of previews) {
+    const input = path.join(PUBLIC_DIR, src);
+    if (!fs.existsSync(input)) continue;
+    const inputMtime = fs.statSync(input).mtimeMs;
+    for (const width of PREVIEW_WIDTHS) {
+      const output = input.replace(/\.webp$/, `-${width}.webp`);
+      if (fs.existsSync(output) && fs.statSync(output).mtimeMs >= inputMtime) continue;
+      await sharp(input).resize({ width, withoutEnlargement: true }).webp({ quality: 78 }).toFile(output);
+      console.log("Wrote", path.relative(root, output));
+    }
+  }
+}
+
 const [projects, posts] = await Promise.all([readProjects(), readPosts()]);
+await generatePreviewVariants(projects.projectMetasByLocale);
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 fs.writeFileSync(
