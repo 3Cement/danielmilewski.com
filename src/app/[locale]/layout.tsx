@@ -25,14 +25,15 @@ import { routing } from "@/i18n/routing";
 const cfAnalyticsToken = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN;
 const defaultSocialImage = `${SITE_URL}/opengraph-image`;
 
+// Single subset of Archivo v2.001 (OFL): Latin, Latin-1, Latin Extended-A
+// (Polish, ā) plus typographic punctuation; axes trimmed to the ranges the
+// site uses (wght 400-900, wdth 75-125). Replaces two 88 KB Google subsets
+// that were both preloaded on every page.
 const archivo = localFont({
-  src: [
-    { path: "../fonts/archivo-latin.woff2", weight: "100 900", style: "normal" },
-    { path: "../fonts/archivo-latin-ext.woff2", weight: "100 900", style: "normal" },
-  ],
+  src: [{ path: "../fonts/archivo.woff2", weight: "400 900", style: "normal" }],
   variable: "--font-archivo",
   display: "swap",
-  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
+  declarations: [{ prop: "font-stretch", value: "75% 125%" }],
   fallback: ["Helvetica Neue", "Arial", "sans-serif"],
 });
 

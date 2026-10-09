@@ -23,10 +23,10 @@ export default async function NotFound() {
         <p className="font-expanded text-[clamp(5rem,18vw,12rem)] font-extrabold leading-none tracking-[-0.04em]" aria-hidden="true">
           404
         </p>
-        <h1 className="font-expanded mt-4 max-w-[20ch] text-[clamp(1.75rem,4vw,3rem)] font-extrabold uppercase leading-none tracking-tight">
+        <h1 className="font-expanded mt-4 max-w-[10em] text-[clamp(1.75rem,4vw,3rem)] font-extrabold uppercase leading-none tracking-tight">
           {t("notFoundTitle")}
         </h1>
-        <p className="mt-5 max-w-[48ch] text-lg">{t("notFoundDescription")}</p>
+        <p className="mt-5 max-w-[24em] text-lg">{t("notFoundDescription")}</p>
         <div className="mt-8 flex flex-wrap items-center gap-6">
           <LocalizedLink
             locale={locale}

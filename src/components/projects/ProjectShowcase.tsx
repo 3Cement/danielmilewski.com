@@ -100,7 +100,7 @@ export function ProjectShowcase({
         {subtitle && (
           <p className="mt-2 font-semibold text-[var(--color-text-base)]">{subtitle}</p>
         )}
-        <p className="mt-4 max-w-[48ch] leading-relaxed text-[var(--color-text-muted)]">
+        <p className="mt-4 max-w-[24em] leading-relaxed text-[var(--color-text-muted)]">
           {project.shortProblem}
         </p>
         <dl className="mt-5 border-t-2 border-[var(--color-text-base)]">

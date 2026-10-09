@@ -155,7 +155,7 @@ export default async function AboutPage({ params }: Props) {
         <div className="min-w-0 space-y-16">
           <section>
             <h2 className="heading-rule">{t("backgroundHeading")}</h2>
-            <div className="max-w-[65ch] space-y-4 text-lg leading-relaxed text-[var(--color-text-muted)]">
+            <div className="max-w-[32.5em] space-y-4 text-lg leading-relaxed text-[var(--color-text-muted)]">
               <p>{t("bio2")}</p>
               <p>{t("bio3")}</p>
               <p>{t("bio4")}</p>
@@ -183,7 +183,7 @@ export default async function AboutPage({ params }: Props) {
                     </h3>
                     <p className="mt-1 font-bold text-[var(--color-text-base)]">{item.role}</p>
                     <p className="label-caps mt-1 normal-case tracking-normal">{item.domain}</p>
-                    <p className="mt-3 max-w-[60ch] leading-relaxed text-[var(--color-text-muted)]">{item.note}</p>
+                    <p className="mt-3 max-w-[30em] leading-relaxed text-[var(--color-text-muted)]">{item.note}</p>
                   </div>
                 </li>
               ))}
@@ -227,7 +227,7 @@ export default async function AboutPage({ params }: Props) {
 
           <section>
             <h2 className="heading-rule">{t("companyHeading")}</h2>
-            <p className="mb-4 max-w-[65ch] whitespace-pre-line leading-relaxed text-[var(--color-text-muted)]">
+            <p className="mb-4 max-w-[32.5em] whitespace-pre-line leading-relaxed text-[var(--color-text-muted)]">
               {t("companyBody")}
             </p>
             <a href={COMPANY_REGISTRY_URL} target="_blank" rel="noopener noreferrer" className="link-rule">

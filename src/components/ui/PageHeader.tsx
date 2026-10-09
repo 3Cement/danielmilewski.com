@@ -47,8 +47,8 @@ export function PageHeader({
               {eyebrow}
             </p>
           )}
-          <h1 className={"font-expanded max-w-[22ch] font-extrabold text-balance " + titleClass}>{title}</h1>
-          {sub && <p className="mt-6 max-w-[52ch] text-lg leading-snug sm:text-xl">{sub}</p>}
+          <h1 className={"font-expanded max-w-[11em] font-extrabold text-balance " + titleClass}>{title}</h1>
+          {sub && <p className="mt-6 max-w-[26em] text-lg leading-snug sm:text-xl">{sub}</p>}
           {children}
         </div>
         {aside}
