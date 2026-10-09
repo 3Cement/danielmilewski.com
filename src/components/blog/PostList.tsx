@@ -41,7 +41,7 @@ export async function PostList({ posts, locale, detailed = false, headingLevel =
               </Heading>
               {detailed && (
                 <>
-                  <p className="mt-2 max-w-[65ch] leading-relaxed text-[var(--color-text-muted)]">
+                  <p className="mt-2 max-w-[32.5em] leading-relaxed text-[var(--color-text-muted)]">
                     {post.excerpt}
                   </p>
                   <p className="font-condensed mt-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--color-text-faint)]">

@@ -21,10 +21,10 @@ export async function HireCTA({ locale }: HireCTAProps) {
   return (
     <section className="on-ink mt-16 scroll-mt-24 sm:mt-28" id="contact">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-28 lg:px-8">
-        <h2 className="font-expanded max-w-[16ch] text-[clamp(1.85rem,4.4vw,3.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-balance">
+        <h2 className="font-expanded max-w-[8em] text-[clamp(1.85rem,4.4vw,3.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.03em] text-balance">
           {t("heading")}
         </h2>
-        <p className="mt-5 max-w-[44ch] text-lg text-[var(--color-text-muted)]">{t("sub")}</p>
+        <p className="mt-5 max-w-[22em] text-lg text-[var(--color-text-muted)]">{t("sub")}</p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <TrackedAnchor
             href={`mailto:${EMAIL}`}

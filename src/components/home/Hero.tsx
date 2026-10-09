@@ -31,7 +31,7 @@ export async function Hero({ locale }: HeroProps) {
               </span>
             ))}
           </h1>
-          <p className="mt-7 max-w-[36ch] text-lg leading-snug sm:text-xl">
+          <p className="mt-7 max-w-[18em] text-lg leading-snug sm:text-xl">
             {t("sub")}
           </p>
           <div className="mt-8 mb-10 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap lg:mb-20">
