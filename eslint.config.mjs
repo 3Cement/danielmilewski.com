@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     // Generated deployment/runtime artifacts:
     ".open-next/**",
     ".wrangler/**",
+    "workers/**",
   ]),
 ]);
 

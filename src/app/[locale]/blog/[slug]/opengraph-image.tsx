@@ -1,8 +1,16 @@
 import { ImageResponse } from "next/og";
-import { getPostBySlug } from "@/lib/content";
+import { getAllPostSlugs, getPostBySlug } from "@/lib/content";
+import { routing } from "@/i18n/routing";
 
+export const dynamic = "force-static";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) =>
+    getAllPostSlugs(locale).map((slug) => ({ locale, slug })),
+  );
+}
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
