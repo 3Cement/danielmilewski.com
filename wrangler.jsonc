@@ -1,6 +1,9 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"main": ".open-next/worker.js",
+	"main": "workers/cloudflare.ts",
+	"cache": {
+		"enabled": true
+	},
 	"name": "danielmilewskicom",
 	"vars": {
 		"NEXT_PUBLIC_SITE_URL": "https://danielmilewski.com",
